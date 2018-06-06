@@ -1,5 +1,7 @@
 <template>
-    <div class="split"></div>
+    <div class="address">
+        输入地址信息（发货地址和收货地址）
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -7,8 +9,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .split
+    .user
         width 100%
-        height 10px*2
-        background transparent
+        height 100%
 </style>

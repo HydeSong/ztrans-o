@@ -1,6 +1,6 @@
 
 <template>
-  <div class="navigation">
+  <div class="home">
     <md-button @click="call">叫车服务</md-button>
     <split></split>
     <md-button @click="join">司机加盟</md-button>
@@ -29,5 +29,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+  .home
+    padding 30px
 </style>

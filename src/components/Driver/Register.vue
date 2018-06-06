@@ -1,5 +1,7 @@
 <template>
-    <div class="split"></div>
+    <div class="driver">
+        司机注册
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -7,8 +9,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .split
-        width 100%
-        height 10px*2
-        background transparent
+    .driver
+        background yellow
 </style>

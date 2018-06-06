@@ -1,6 +1,6 @@
 <template>
     <div class="driver">
-        driver
+        司机主页
     </div>
 </template>
 
