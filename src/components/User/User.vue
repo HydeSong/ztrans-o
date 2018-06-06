@@ -1,6 +1,6 @@
 <template>
     <div class="user">
-        user
+
     </div>
 </template>
 
@@ -10,5 +10,6 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
     .user
-        background yellow
+        width 100%
+        height 100%
 </style>

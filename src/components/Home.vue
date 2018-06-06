@@ -8,7 +8,7 @@
 </template>
 
 <script>
-  import { Button, Toast } from 'mand-mobile'
+  import {Button} from 'mand-mobile'
   import Split from './Base/Split'
 
   export default {
