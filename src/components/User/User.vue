@@ -30,13 +30,13 @@
                         title="请输入发货地"
                         arrow="arrow-right"
                         class="shipping-address"
-                        @click="onClick">
+                        @click="fillShipping">
                 </md-field-item>
                 <md-field-item
                         name="item1"
                         title="请输入目的地"
                         arrow="arrow-right"
-                        @click="onClick">
+                        @click="fillReceiver">
                 </md-field-item>
             </md-field>
             <split></split>
@@ -95,7 +95,7 @@
   import {setCookie, getCookie} from '@/common/js/cache'
 
   export default {
-    name: 'drop-menu-demo',
+    name: 'user',
     components: {
       [Button.name]: Button,
       [Agree.name]: Agree,
@@ -163,6 +163,12 @@
         Dialog.alert({
           content: `点击了 ${name}`,
         })
+      },
+      fillShipping () {
+        this.$router.push('/user/address/shipping')
+      },
+      fillReceiver () {
+        this.$router.push('/user/address/receiver')
       },
       onChange(name, checked) {
         console.log(`agree name = ${name} is ${checked ? 'checked' : 'unchecked'}`)

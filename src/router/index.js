@@ -27,7 +27,7 @@ const router = new Router({
       component: User,
       children:  [
         {
-          path: 'address',
+          path: 'address/:id',
           component: Address
         }
       ]

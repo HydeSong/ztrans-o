@@ -42,6 +42,9 @@
             justify-content flex-start
         .navbar-title
             position relative
+            display flex
+            align-items center
+            justify-content center
             & > div
                 width 33.33%
                 left 33.33%
