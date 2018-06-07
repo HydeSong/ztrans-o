@@ -7,6 +7,8 @@ import Home from '@/components/Home'
 import User from '@/components/User/User'
 import Address from '@/components/User/Address'
 import Driver from '@/components/Driver/Driver'
+import Login from '@/components/Driver/Login'
+import Register from '@/components/Driver/Register'
 
 Vue.use(Router)
 
@@ -35,7 +37,17 @@ const router = new Router({
     {
       path: '/driver',
       name: 'driver',
-      component: Driver
+      component: Driver,
+      children:  [
+        {
+          path: 'login',
+          component: Login
+        },
+        {
+          path: 'register',
+          component: Register
+        }
+      ]
     },
     {
       path: '/test',

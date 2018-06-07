@@ -288,6 +288,9 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+    .md-tabs{
+        min-height: 440px!important
+    }
     .vehicle-type{
         background-color: #fff;
     }

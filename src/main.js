@@ -11,8 +11,8 @@ if ('ontouchstart' in window) {
 }
 
 Vue.use(VueLazyLoad, {
-  loading: './assets/images/default.png',
-  error: './assets/images/default.png'
+  loading: require('./assets/images/default.png'),
+  error: require('./assets/images/default.png')
 })
 
 Vue.config.productionTip = false

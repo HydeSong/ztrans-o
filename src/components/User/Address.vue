@@ -59,13 +59,12 @@
             <md-date-picker
                     ref="datePicker"
                     v-model="isDatePickerShow"
-                    type="custom"
+                    type="datetime"
                     today-text="&(今天)"
                     title="选择发货时间"
-                    is-twelve-hours
-                    :text-render="textRender"
-                    :custom-types="['yyyy', 'MM','dd', 'hh', 'mm']"
                     :default-date="currentDate"
+                    :minDate="currentDate"
+                    is-twelve-hours
                     @change="onDatePickerChange"
                     @confirm="onDatePickerConfirm"
             ></md-date-picker>
@@ -77,11 +76,15 @@
                     title="选择收货点个数"
             ></md-picker>
         </div>
+        <split></split>
+        <div class="footer">
+            <md-button>确 认</md-button>
+        </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {Picker, Field, FieldItem, DatePicker, InputItem} from 'mand-mobile'
+  import {Picker, Field, FieldItem, DatePicker, InputItem, Button} from 'mand-mobile'
   import simple from 'mand-mobile/components/picker/demo/data/simple'
   import district from 'mand-mobile/components/picker/demo/data/district'
 
@@ -147,6 +150,7 @@
       },
     },
     components: {
+      [Button.name]: Button,
       [InputItem.name]: InputItem,
       [DatePicker.name]: DatePicker,
       [Picker.name]: Picker,
@@ -169,4 +173,6 @@
         right 0
         bottom 0
         z-index 10000
+        .footer
+            margin 20px
 </style>

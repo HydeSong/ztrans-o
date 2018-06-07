@@ -1,6 +1,7 @@
 <template>
     <div class="driver">
         司机主页
+        <router-view></router-view>
     </div>
 </template>
 

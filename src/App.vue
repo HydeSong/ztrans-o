@@ -21,8 +21,11 @@ export default {
   font-size: 28px;
 }
 html, body {
+
+  background-color: #f5f5f9;
+}
+* {
   padding: 0;
   margin: 0;
-  background-color: #f5f5f9;
 }
 </style>
