@@ -12,6 +12,8 @@ import Register from '@/components/Driver/Register'
 import RegisterStep from '@/components/Driver/RegisterStep'
 import Error404 from '@/components/Base/Error404'
 import ErrorNetwork from '@/components/Base/ErrorNetwork'
+import ErrorOp from '@/components/Base/ErrorOp'
+import ErrorNosure from '@/components/Base/ErrorNosure'
 
 Vue.use(Router)
 
@@ -34,6 +36,16 @@ const router = new Router({
       path: '/error-network',
       name: 'error-network',
       component: ErrorNetwork
+    },
+    {
+      path: '/error-op',
+      name: 'error-op',
+      component: ErrorOp
+    },
+    {
+      path: '/error-nosure',
+      name: 'error-nosure',
+      component: ErrorNosure
     },
     {
       path: '/home',
