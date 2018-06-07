@@ -71,6 +71,13 @@
     },
     data () {
       return {
+        addressInfo: {
+          personMobile: '',
+          personName: '',
+          addressDetail: '',
+          goodsTime: '',
+          locationNum: ''
+        },
         relation: '本人',
         isPickerShow: false,
         actionBarData: [{

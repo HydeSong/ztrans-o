@@ -1,6 +1,8 @@
 const state = {
-  creditList: [],
-  loan: {}
+  cityIds: {},
+  openId: '',
+  shipping: {},
+  receiver: {}
 }
 
 export default state

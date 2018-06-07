@@ -60,6 +60,7 @@
                         align="center">
                     <md-input-item
                             ref="input1"
+                            v-model="bill.remark"
                             placeholder="请输入补充信息"
                     ></md-input-item>
                 </md-field-item>
@@ -93,6 +94,7 @@
   import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
   import {setCookie, getCookie} from '@/common/js/cache'
+  import {mapMutations} from 'vuex'
 
   export default {
     name: 'user',
@@ -110,11 +112,33 @@
     },
     data() {
       return {
+        bill: {
+          appointmentDate: "",
+          appointmentNum: 0,
+          carTypeSeries: 0,
+          deliverGoodsTime: "",
+          initDistance: "",
+          initPrice: 0,
+          openId: "1",
+          overstepPrice: 0,
+          receiveAddressDetail: "",
+          receiveGoodsLocationNum: 0,
+          receiveGoodsPersonMobile: "",
+          receiveGoodsPersonName: "",
+          remark: "",
+          routerDetailSeries: 0,
+          routerPriceSeries: 0,
+          sendAddressDetail: "",
+          sendGoodsLocationNum: 0,
+          sendGoodsPersonMobile: "",
+          sendGoodsPersonName: "",
+          wetherTakeover: ""
+        },
         tabs: [],
         tabActiveIndex: 0,
         agreeConf: {
           checked: false,
-          name: 'agree1',
+          name: 'wetherTakeover',
           size: 'lg',
           disabled: false,
           introduction: '未选中状态',
@@ -136,7 +160,7 @@
           titles.push(item.typeName)
         })
         return titles
-      }
+      },
     },
     mounted() {
       window.DropMenuTrigger = () => {
@@ -148,20 +172,21 @@
       console.log('获取openid')
       // this._getCustomerOpenIdByCode({"code": "123456","grantType": "authorization_code"})
       console.log('查询所有路线')
-      this._getAllRouterByCity({"openId": "1"})
+      this.setOpenId('1')
+      this._getAllRouterByCity({openId: this.openId})
     },
     methods: {
+      ...mapMutations({
+        setCityIds: 'SET_CITYIDS',
+        setOpenId: 'SET_OPENID'
+      }),
       selectRoadChange (barItem, listItem) {
         console.log(listItem)
+        this.setCityIds(listItem)
         this._getCarTypeByAllRouter( {
           openId: '1',
           sourceCityId: listItem.sourceCityId,
           destinyCityId: listItem.destinyCityId
-        })
-      },
-      onClick(name) {
-        Dialog.alert({
-          content: `点击了 ${name}`,
         })
       },
       fillShipping () {
@@ -172,6 +197,8 @@
       },
       onChange(name, checked) {
         console.log(`agree name = ${name} is ${checked ? 'checked' : 'unchecked'}`)
+        this.bill.wetherTakeover = checked
+        console.log(this.bill.wetherTakeover)
       },
       getSelectedValue(selector, index) {
         const value = this.$refs[selector].getSelectedValue(index)
@@ -222,7 +249,7 @@
             const code = res.data.code
             switch (code) {
               case 0:
-                setCookie('__user__openid', res.data.openId)
+                this.setOpenId(res.data.openId)
                 break
               case 401:
                 console.log(code)

@@ -1,3 +1,7 @@
-export const creditList = state => state.creditList
+export const cityIds = state => state.cityIds
 
-export const loan = state => state.loan
+export const openId = state => state.openId
+
+export const shipping = state => state.shipping
+
+export const receiver = state => state.receiver

@@ -1,3 +1,7 @@
-export const SET_CREDITLIST = 'SET_CREDITLIST'
+export const SET_CITYIDS = 'SET_CITYIDS'
 
-export const SET_LOAN = 'SET_LOAN'
+export const SET_OPENID = 'SET_OPENID'
+
+export const SET_SHIPPING = 'SET_SHIPPING'
+
+export const SET_RECEIVER = 'SET_RECEIVER'
