@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="app">
     <router-view></router-view>
   </div>
 </template>
@@ -7,7 +7,18 @@
 <script>
 
 export default {
-  name: 'app'
+  name: 'app',
+  mounted () {
+    setTimeout(() => {
+      this.setAppHeight()
+    }, 0)
+  },
+  methods: {
+    setAppHeight () {
+      const height = window.screen.availHeight
+      this.$refs.app.style.height = `${height}px`
+    }
+  }
 }
 </script>
 

@@ -100,7 +100,7 @@
         this.$refs.swiper.goto(2)
       },
       register() {
-        this.$router.push('/driver/register')
+        this.$router.push('/driver/register/1')
       }
     },
   }

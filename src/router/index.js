@@ -9,6 +9,9 @@ import Address from '@/components/User/Address'
 import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
 import Register from '@/components/Driver/Register'
+import RegisterStep from '@/components/Driver/RegisterStep'
+import Error404 from '@/components/Base/Error404'
+import ErrorNetwork from '@/components/Base/ErrorNetwork'
 
 Vue.use(Router)
 
@@ -17,6 +20,20 @@ const router = new Router({
     {
       path: '/',
       redirect: '/home'
+    },
+    {
+      path: '*',
+      redirect: '/404'
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: Error404
+    },
+    {
+      path: '/error-network',
+      name: 'error-network',
+      component: ErrorNetwork
     },
     {
       path: '/home',
@@ -45,7 +62,21 @@ const router = new Router({
         },
         {
           path: 'register',
-          component: Register
+          component: Register,
+          children:  [
+            {
+              path: '1',
+              component: RegisterStep
+            },
+            {
+              path: '2',
+              component: RegisterStep
+            },
+            {
+              path: '3',
+              component: RegisterStep
+            }
+          ]
         }
       ]
     },
