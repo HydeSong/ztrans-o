@@ -178,6 +178,7 @@
           }
           this.setReceiver(addressInfo)
         }
+        this.$router.go(-1)
       },
       _getRouterByCityAreaTown (params) {
         getRouterByCityAreaTown(params).then(res => {

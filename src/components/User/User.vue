@@ -46,10 +46,8 @@
                         customized
                         align="left">
                     <md-agree
-                            v-model="agreeConf.checked"
-                            :disabled="agreeConf.disabled"
-                            :size="agreeConf.size"
-                            @change="onChange(agreeConf.name, agreeConf.checked, $event)"
+                            v-model="bill.wetherTakeover"
+                            size="lg"
                     >
                         需要搬卸
                     </md-agree>
@@ -69,16 +67,16 @@
             <div class="order-footer">
                 <div class="order-footer__amount">
                     <div class="booking-info">
-                        <span>价格：33元(88公里)</span>
-                        <span>超里程费：22.5/公里</span>
+                        <span>价格：{{bill.initPrice}}元({{bill.initDistance}}公里)</span>
+                        <span>超里程费：{{bill.overstepPrice}}元/公里</span>
                     </div>
                     <div class="booking-info">
-                        <span>预约数量：1</span>
-                        <span>预约时间：2018-03-17 10:34</span>
+                        <span>预约数量：{{bill.appointmentNum}}</span>
+                        <span>预约时间：{{bill.appointmentDate}}</span>
                     </div>
                 </div>
                 <split></split>
-                <md-button>约 车</md-button>
+                <md-button @click.native="booking">约 车</md-button>
             </div>
             <router-view></router-view>
         </div>
@@ -113,7 +111,7 @@
     data() {
       return {
         bill: {
-          appointmentDate: "",
+          appointmentDate: "4244",
           appointmentNum: 0,
           carTypeSeries: 0,
           deliverGoodsTime: "",
@@ -180,6 +178,11 @@
         setCityIds: 'SET_CITYIDS',
         setOpenId: 'SET_OPENID'
       }),
+      booking () {
+        console.log('约车')
+        console.log('验证数据 入参')
+        this._createOrder()
+      },
       selectRoadChange (barItem, listItem) {
         console.log(listItem)
         this.setCityIds(listItem)
@@ -195,15 +198,17 @@
       fillReceiver () {
         this.$router.push('/user/address/receiver')
       },
-      onChange(name, checked) {
-        console.log(`agree name = ${name} is ${checked ? 'checked' : 'unchecked'}`)
-        this.bill.wetherTakeover = checked
-        console.log(this.bill.wetherTakeover)
-      },
       getSelectedValue(selector, index) {
         const value = this.$refs[selector].getSelectedValue(index)
         Dialog.alert({
           content: `<pre>${JSON.stringify(value)}</pre>`,
+        })
+      },
+      _createOrder() {
+        let params = this.bill
+        console.log(params)
+        createOrder(params).then(res => {
+          console.log(res)
         })
       },
       _getCarTypeByAllRouter (params) {
