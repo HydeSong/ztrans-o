@@ -22,7 +22,7 @@
         this.$router.push('/user')
       },
       join () {
-        this.$router.push('/driver')
+        this.$router.push('/driver/login')
       },
     }
   }

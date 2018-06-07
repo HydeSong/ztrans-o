@@ -1,6 +1,5 @@
 <template>
     <div class="driver">
-        司机主页
         <router-view></router-view>
     </div>
 </template>
@@ -10,6 +9,5 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .driver
-        background yellow
+
 </style>
