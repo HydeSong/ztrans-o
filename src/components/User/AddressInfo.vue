@@ -96,6 +96,7 @@
     name: 'address-info',
     data () {
       return {
+        routerDeatilSeries: '23423',
         personMobile: '',
         personName: '',
         addressDetail: '',
@@ -149,6 +150,7 @@
         if (this.isShipping) {
           console.log('确认发货信息')
           let addressInfo = {
+            routerDeatilSeries: this.routerDeatilSeries,
             personMobile: this.personMobile,
             personName: this.personName,
             addressDetail: this.addressDetail,
@@ -165,6 +167,7 @@
         } else {
           console.log('确认收货信息')
           let addressInfo = {
+            routerDeatilSeries: this.routerDeatilSeries,
             personMobile: this.personMobile,
             personName: this.personName,
             addressDetail: this.addressDetail,

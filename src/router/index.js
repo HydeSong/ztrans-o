@@ -5,7 +5,7 @@ import Test from '@/components/Test'
 import UI from '@/components/UI'
 import Home from '@/components/Home'
 import User from '@/components/User/User'
-import Address from '@/components/User/Address'
+import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
 import Register from '@/components/Driver/Register'
@@ -58,8 +58,8 @@ const router = new Router({
       component: User,
       children:  [
         {
-          path: 'address/:id',
-          component: Address
+          path: 'address-info/:id',
+          component: AddressInfo
         }
       ]
     },

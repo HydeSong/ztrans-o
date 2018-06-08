@@ -12,6 +12,7 @@
             <md-tabs
                     :titles="tabTitles"
                     :default-index="0"
+                    @change="tabIndexChange"
             >
                 <div v-for="(tab, index) of tabs" :key="index">
                     <div class="vehicle-type">
@@ -84,7 +85,7 @@
 </template>
 
 <script>
-  import {DropMenu, Dialog, Tabs, Field, FieldItem, InputItem, Switch, Agree, Button} from 'mand-mobile'
+  import {DropMenu, Dialog, Tabs, Field, FieldItem, InputItem, Switch, Agree, Button, Toast} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
@@ -92,7 +93,7 @@
   import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
   import {setCookie, getCookie} from '@/common/js/cache'
-  import {mapMutations} from 'vuex'
+  import {mapState, mapMutations} from 'vuex'
 
   export default {
     name: 'user',
@@ -117,7 +118,7 @@
           deliverGoodsTime: "",
           initDistance: "",
           initPrice: 0,
-          openId: "1",
+          openId: "",
           overstepPrice: 0,
           receiveAddressDetail: "",
           receiveGoodsLocationNum: 0,
@@ -152,6 +153,7 @@
       }
     },
     computed: {
+      ...mapState(['shipping', 'receiver']),
       tabTitles () {
         let titles = []
         this.tabs.forEach(item => {
@@ -159,6 +161,9 @@
         })
         return titles
       },
+      carTypeSeries () {
+        return this.tabs[this.tabActiveIndex].series
+      }
     },
     mounted() {
       window.DropMenuTrigger = () => {
@@ -173,6 +178,16 @@
       this.setOpenId('1')
       this._getAllRouterByCity({openId: this.openId})
     },
+    beforeRouteUpdate (to, from, next) {
+      // react to route changes...
+      // don't forget to call next()
+      console.log(to)
+      console.log(from)
+      if (to.path === '/user') {
+        this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.carTypeSeries, openId: "1", routerDetailSeries: this.shipping.routerDetailSeries})
+      }
+      next()
+    },
     methods: {
       ...mapMutations({
         setCityIds: 'SET_CITYIDS',
@@ -182,6 +197,10 @@
         console.log('约车')
         console.log('验证数据 入参')
         this._createOrder()
+      },
+      tabIndexChange (index, preIndex) {
+        console.log(index, preIndex)
+        this.tabActiveIndex = index
       },
       selectRoadChange (barItem, listItem) {
         console.log(listItem)
@@ -193,10 +212,10 @@
         })
       },
       fillShipping () {
-        this.$router.push('/user/address/shipping')
+        this.$router.push('/user/address-info/shipping')
       },
       fillReceiver () {
-        this.$router.push('/user/address/receiver')
+        this.$router.push('/user/address-info/receiver')
       },
       getSelectedValue(selector, index) {
         const value = this.$refs[selector].getSelectedValue(index)
@@ -209,6 +228,69 @@
         console.log(params)
         createOrder(params).then(res => {
           console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                console.log('下单成功')
+                Toast.succeed('下单成功')
+                break
+              case 401:
+                console.log(code)
+                Toast.failed('下单失败')
+                break
+              case 403:
+                console.log(code)
+                Toast.failed('下单失败')
+                break
+              case 404:
+                console.log(code)
+                Toast.failed('下单失败')
+                break
+              case -1:
+                console.log(code)
+                Toast.failed('下单失败')
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      _getRouterPriceByCarTypeAndRouterDetailSeries(params) {
+        getRouterPriceByCarTypeAndRouterDetailSeries(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                this.bill.initDistance = res.data.initDistance
+                this.bill.initPrice = res.data.initPrice
+                this.bill.overstepPrice = res.data.overstepPrice
+                this.bill.routerPriceId = res.data.routerPriceId
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
         })
       },
       _getCarTypeByAllRouter (params) {
