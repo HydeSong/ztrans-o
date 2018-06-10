@@ -6,6 +6,13 @@ import store from './store'
 import VueLazyLoad from 'vue-lazyload'
 import './assets/js/responsive'
 
+// 开发环境的手机调试面板
+import vConsole from 'vconsole'
+const debug = process.env.NODE_ENV !== 'production'
+if (debug) {
+  new vConsole()
+}
+
 if ('ontouchstart' in window) {
   FastClick.attach(document.body)
 }

@@ -10,8 +10,8 @@ const mutations = {
   [types.SET_SHIPPING] (state, shipping) {
     state.shipping = shipping
   },
-  [types.SET_RECEIVER] (state, reveiver) {
-    state.reveiver = reveiver
+  [types.SET_RECEIVER] (state, receiver) {
+    state.receiver = receiver
   }
 }
 

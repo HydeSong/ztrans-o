@@ -28,14 +28,14 @@
             <md-field>
                 <md-field-item
                         name="item0"
-                        title="请输入发货地"
+                        :title="(shipping.addressDetail||shipping.districtDetail)?`${shipping.districtDetail}${shipping.addressDetail}`:'请输入发货地'"
                         arrow="arrow-right"
                         class="shipping-address"
                         @click="fillShipping">
                 </md-field-item>
                 <md-field-item
                         name="item1"
-                        title="请输入目的地"
+                        :title="(receiver.addressDetail||receiver.districtDetail)?`${receiver.districtDetail}${receiver.addressDetail}`:'请输入收货地'"
                         arrow="arrow-right"
                         @click="fillReceiver">
                 </md-field-item>
@@ -58,7 +58,6 @@
                         customized
                         align="center">
                     <md-input-item
-                            ref="input1"
                             v-model="bill.remark"
                             placeholder="请输入补充信息"
                     ></md-input-item>
@@ -93,7 +92,7 @@
   import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
   import {setCookie, getCookie} from '@/common/js/cache'
-  import {mapState, mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: 'user',
@@ -114,7 +113,7 @@
         bill: {
           appointmentDate: "4244",
           appointmentNum: 0,
-          carTypeSeries: 0,
+          carTypeSeries: '',
           deliverGoodsTime: "",
           initDistance: "",
           initPrice: 0,
@@ -131,10 +130,9 @@
           sendGoodsLocationNum: 0,
           sendGoodsPersonMobile: "",
           sendGoodsPersonName: "",
-          wetherTakeover: ""
+          wetherTakeover: false
         },
         tabs: [],
-        tabActiveIndex: 0,
         agreeConf: {
           checked: false,
           name: 'wetherTakeover',
@@ -153,38 +151,49 @@
       }
     },
     computed: {
-      ...mapState(['shipping', 'receiver']),
+      ...mapGetters(['shipping', 'receiver']),
       tabTitles () {
         let titles = []
         this.tabs.forEach(item => {
           titles.push(item.typeName)
         })
         return titles
-      },
-      carTypeSeries () {
-        return this.tabs[this.tabActiveIndex].series
       }
     },
     mounted() {
       window.DropMenuTrigger = () => {
-        this.getSelectedValue('dropMenu0', 0)
+        this.getSelectedValue('selectRoad', 0)
       }
     },
     created () {
       console.log('组件已加载')
       console.log('获取openid')
-      // this._getCustomerOpenIdByCode({"code": "123456","grantType": "authorization_code"})
+      this._getCustomerOpenIdByCode({"code": "12123","grantType": "authorization_code"})
       console.log('查询所有路线')
-      this.setOpenId('1')
+      // this.setOpenId('1')
       this._getAllRouterByCity({openId: this.openId})
     },
     beforeRouteUpdate (to, from, next) {
       // react to route changes...
       // don't forget to call next()
-      console.log(to)
-      console.log(from)
+      // console.log(to)
+      // console.log(from)
+      // console.log(this.shipping)
+      // console.log(this.receiver)
       if (to.path === '/user') {
-        this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.carTypeSeries, openId: "1", routerDetailSeries: this.shipping.routerDetailSeries})
+        this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.carTypeSeries, openId: this.openId, routerDetailSeries: this.shipping.routerDetailSeries})
+        this.bill.deliverGoodsTime = this.shipping.goodsTime
+        this.bill.openId = this.openId
+        this.bill.receiveAddressDetail = this.receiver.addressDetail
+        this.bill.receiveGoodsLocationNum = this.receiver.locationNum
+        this.bill.receiveGoodsPersonMobile = this.receiver.personMobile
+        this.bill.receiveGoodsPersonName = this.receiver.personName
+        this.bill.routerDetailSeries = this.shipping.routerDetailSeries
+        this.bill.routerPriceSeries = this.shipping.routerPriceSeries
+        this.bill.sendAddressDetail = this.shipping.addressDetail
+        this.bill.sendGoodsLocationNum = this.shipping.locationNum
+        this.bill.sendGoodsPersonMobile = this.shipping.personMobile
+        this.bill.sendGoodsPersonName = this.shipping.personName
       }
       next()
     },
@@ -200,13 +209,14 @@
       },
       tabIndexChange (index, preIndex) {
         console.log(index, preIndex)
-        this.tabActiveIndex = index
+        this.bill.carTypeSeries = this.tabs[index].series
+        console.log(this.bill.carTypeSeries)
       },
       selectRoadChange (barItem, listItem) {
         console.log(listItem)
         this.setCityIds(listItem)
         this._getCarTypeByAllRouter( {
-          openId: '1',
+          openId: this.openId,
           sourceCityId: listItem.sourceCityId,
           destinyCityId: listItem.destinyCityId
         })
@@ -367,7 +377,7 @@
             switch (code) {
               case 0:
                 let pathDataOptions = []
-                res.data.wxRouterCityRelationModel.forEach((item, index) => {
+                res.data.wxRouterCityRelationModel.forEach((item) => {
                   pathDataOptions.push({
                     text: `${item.sourceCityName} -> ${item.destinyCityName}`,
                     ...item

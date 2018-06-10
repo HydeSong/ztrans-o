@@ -21,14 +21,15 @@
             <div class="login-form">
                 <md-field :style="{position: 'relative'}">
                     <md-input-item
-                            ref="input1"
+                            ref="phone"
                             type="phone"
                             v-model="phone"
                             placeholder="请输入手机号码"
                     ></md-input-item>
                     <md-input-item
+                            ref="code"
                             type="digit"
-                            v-model="digit"
+                            v-model="code"
                             placeholder="请输入验证码"
                     ></md-input-item>
                     <md-button type="ghost" class="getverify">获取验证码</md-button>
