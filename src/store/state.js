@@ -1,6 +1,7 @@
 const state = {
   cityIds: {},
   openId: '',
+  wxcode: '',
   shipping: {},
   receiver: {}
 }
