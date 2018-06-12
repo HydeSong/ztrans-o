@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { paramsify, signify } from './utils'
 import { CONFIG } from './config'
+import {urlParse} from '@/common/js/utils'
 
 export function getCustomerOpenIdByCode (params) {
   const url = `${CONFIG.HOST}/getCustomerOpenIdByCode`
@@ -27,4 +28,9 @@ export function refreshToken (params) {
     sign: signify(params)
   }
   return axios.get(url, {params: data})
+}
+
+export function getWxCode () {
+  const queryStr = urlParse()
+  return queryStr.code
 }

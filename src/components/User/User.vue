@@ -151,7 +151,7 @@
       }
     },
     computed: {
-      ...mapGetters(['shipping', 'receiver']),
+      ...mapGetters(['shipping', 'receiver', 'wxcode']),
       tabTitles () {
         let titles = []
         this.tabs.forEach(item => {
@@ -168,7 +168,7 @@
     created () {
       console.log('组件已加载')
       console.log('获取openid')
-      this._getCustomerOpenIdByCode({"code": "12123","grantType": "authorization_code"})
+      this._getCustomerOpenIdByCode({code: this.wxcode, grantType: "authorization_code"})
       console.log('查询所有路线')
       // this.setOpenId('1')
       this._getAllRouterByCity({openId: this.openId})

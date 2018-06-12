@@ -38,7 +38,7 @@
                 <split></split>
                 <split></split>
                 <div class="login-btn">
-                    <md-button @click="register">去注册</md-button>
+                    <md-button @click="register" :disabled="disabled">去注册</md-button>
                 </div>
                 <split></split>
                 <p class="discription">点击“去注册”即代表同意《司机协议》</p>
@@ -51,8 +51,6 @@
   import {Button, Field, FieldItem, InputItem, Switch, Swiper, SwiperItem, Codebox} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
-
-  import simple from 'mand-mobile/components/swiper/demo/data/simple'
 
   export default {
     name: 'login',
@@ -79,11 +77,15 @@
         }]
       }
     },
+    computed: {
+      disabled () {
+        return !(this.code && this.phone)
+      }
+    },
     mounted() {
       window.triggerSwiper3 = () => {
         this.goto()
       }
-      console.log(this.simple)
     },
     methods: {
       setValue(id, value) {

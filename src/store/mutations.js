@@ -12,6 +12,9 @@ const mutations = {
   },
   [types.SET_RECEIVER] (state, receiver) {
     state.receiver = receiver
+  },
+  [types.SET_WXCODE] (state, code) {
+    state.code = code
   }
 }
 

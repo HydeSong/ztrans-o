@@ -10,20 +10,32 @@
 <script>
   import {Button} from 'mand-mobile'
   import Split from './Base/Split'
+  import {getWxCode} from '../api/openid'
+  import {mapMutations} from 'vuex'
 
   export default {
-    name: 'App',
+    name: 'home',
     components: {
       [Button.name]: Button,
       Split
     },
+    created () {
+      this._getWxCode()
+    },
     methods: {
+      ...mapMutations({
+        setWxCode: 'SET_WXCODE'
+      }),
       call () {
         this.$router.push('/user')
       },
       join () {
         this.$router.push('/driver/login')
       },
+      _getWxCode () {
+        const wxcode = getWxCode()
+        this.setCode(wxcode)
+      }
     }
   }
 </script>
