@@ -34,7 +34,7 @@
       },
       _getWxCode () {
         const wxcode = getWxCode()
-        this.setCode(wxcode)
+        this.setWxCode(wxcode)
       }
     }
   }

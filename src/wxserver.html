@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>跳转中</title>
+    <script src="https://cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+</head>
+<body>
+<script>
+  function urlParse () {
+    var url = window.location.hash || window.location.href || window.location.search
+    // console.log(url)
+    var obj = {}
+    var reg = /[?&][^?&]+=[^?&]+/g
+    var arr = url.match(reg)
+    if (arr) {
+      arr.forEach((item) => {
+        var tempArr = item.substring(1).split('=')
+        var key = decodeURIComponent(tempArr[0])
+        var value = decodeURIComponent(tempArr[1]).replace('\'', '')
+        obj[key] = value
+      })
+    }
+    return obj
+  };
+
+  function setCookie (name, value, minutes = 60 * 24) {
+    // 默认cookie保留1天
+    var exp = new Date()
+    exp.setTime(exp.getTime() + minutes * 60 * 1000)
+    document.cookie = `${name}=${escape(value)};expires=${exp.toGMTString()};path=/`
+  }
+
+  ;(function($){
+    var queryStr = urlParse()
+    console.log(queryStr)
+    // 货主找车
+    if (queryStr.m == '1') {
+      setCookie('__user__code', queryStr.code)
+      setCookie('__user__state', queryStr.state)
+      location.href = './index.html'
+    } else if (queryStr.m == '2') {
+      // 车主找货
+      setCookie('__driver__code', queryStr.code)
+      setCookie('__driver__state', queryStr.state)
+      location.href = './index.html'
+    }
+  })(Zepto)
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+部署
+
+
+连接服务器 ssh root@47.97.168.223
+password CX3@yatai
+
+切换到目标目录 cd /usr/local/
+
+yarn build && tar cvf cx.tar dist/ && scp root@47.97.168.223:/usr/local/
+
+解压到 cx目录，并重启 tar xvf cx.tar && rm -rf cx && mkdir cx && mv dist/* cx/ && nginx -s reload

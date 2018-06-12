@@ -30,9 +30,10 @@
                             ref="code"
                             type="digit"
                             v-model="code"
+                            maxlength="6"
                             placeholder="请输入验证码"
                     ></md-input-item>
-                    <md-button type="ghost" class="getverify">获取验证码</md-button>
+                    <md-button type="ghost" class="getverify" @click.native="getVerify" :disabled="disabledVerify">{{btnTxt}}</md-button>
                 </md-field>
                 <split></split>
                 <split></split>
@@ -48,9 +49,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Button, Field, FieldItem, InputItem, Switch, Swiper, SwiperItem, Codebox} from 'mand-mobile'
+  import {Toast, Button, Field, FieldItem, InputItem, Switch, Swiper, SwiperItem, Codebox} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
+  import {getMobileCode} from '@/api/sms'
 
   export default {
     name: 'login',
@@ -70,6 +72,10 @@
       return {
         code: '',
         phone: '',
+        timeout: 60,
+        timer: null,
+        disabledVerify: false,
+        btnTxt: '获取验证码',
         banners: [{
           img: require('../../assets/images/index_banner.png')
         }, {
@@ -87,7 +93,32 @@
         this.goto()
       }
     },
+    beforeDestroy () {
+      clearInterval(this.timer)
+    },
     methods: {
+      getVerify () {
+        if (!this.phone) {
+          Toast.failed('请输入手机号！')
+          return
+        }
+        this.timer = setInterval(() => {
+          if (this.timeout > 0) {
+            this.disabledVerify = true
+            this.btnTxt = `${this.timeout}s后重新获取`
+            this.timeout--
+            console.log(this.timeout)
+          } else {
+            clearInterval(this.timer)
+            this.disabledVerify = false
+            this.btnTxt = `获取验证码`
+            this.timeout = 60
+          }
+        }, 1000)
+        getMobileCode({mobilePhone: this.phone}).then(res => {
+          console.log(res)
+        })
+      },
       setValue(id, value) {
         document.querySelector(id) && (document.querySelector(id).innerHTML = value)
       },
