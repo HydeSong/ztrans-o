@@ -135,6 +135,9 @@
       },
       register() {
         this.$router.push('/driver/register/1')
+      },
+      login() {
+        console.log('login')
       }
     },
   }
