@@ -49,10 +49,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Toast, Button, Field, FieldItem, InputItem, Switch, Swiper, SwiperItem, Codebox} from 'mand-mobile'
+  import {Toast, Button, Field, FieldItem, InputItem, Swiper, SwiperItem, Codebox} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
   import {getMobileCode} from '@/api/sms'
+  import {getDriverOpenIdByCode} from '@/api/openid'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: 'login',
@@ -64,7 +66,6 @@
       [Field.name]: Field,
       [FieldItem.name]: FieldItem,
       [InputItem.name]: InputItem,
-      [Switch.name]: Switch,
       Split,
       NavBar
     },
@@ -84,11 +85,15 @@
       }
     },
     computed: {
+      ...mapGetters(['wxcode', 'openId']),
       disabled () {
         return !(this.code && this.phone)
       }
     },
-    mounted() {
+    created () {
+      this._getDriverOpenIdByCode({code: this.wxcode, grantType: "authorization_code"})
+    },
+    mounted () {
       window.triggerSwiper3 = () => {
         this.goto()
       }
@@ -97,6 +102,37 @@
       clearInterval(this.timer)
     },
     methods: {
+      _getDriverOpenIdByCode (params) {
+        console.log(params)
+        getDriverOpenIdByCode(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                this.setOpenId(res.data.openId)
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       getVerify () {
         if (!this.phone) {
           Toast.failed('请输入手机号！')

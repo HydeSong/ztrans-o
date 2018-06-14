@@ -41,10 +41,9 @@
         const wxcode = queryStr.code
         const state = queryStr.state
         this.setWxCode(wxcode)
-        console.log(queryStr)
-        if (state === 1) {
+        if (state === '1') {
           this.call()
-        } else if (state === 2) {
+        } else if (state === '2') {
           this.join()
         }
       }
