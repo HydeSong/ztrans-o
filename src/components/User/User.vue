@@ -168,10 +168,6 @@
       console.log('组件已加载')
       console.log('获取openid')
       this._getCustomerOpenIdByCode({code: this.wxcode, grantType: "authorization_code"})
-      console.log('查询所有路线')
-      console.log(`code->${this.wxcode}`)
-      console.log(`openId->${this.openId}`)
-      this.openId && this._getAllRouterByCity({openId: this.openId})
     },
     beforeRouteUpdate (to, from, next) {
       if (to.path === '/user') {
@@ -342,6 +338,10 @@
             switch (code) {
               case 0:
                 this.setOpenId(res.data.openId)
+                console.log('查询所有路线')
+                console.log(`code->${this.wxcode}`)
+                console.log(`openId->${this.openId}`)
+                this.openId && this._getAllRouterByCity({openId: this.openId})
                 break
               case 401:
                 console.log(code)
