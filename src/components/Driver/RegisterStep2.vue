@@ -2,131 +2,37 @@
     <div class="register-step2">
         <split></split>
         <md-field title="资质上传">
-            <ul class="image-reader-list">
-                <li
-                    class="image-reader-item"
-                    v-for="(img, index) in imageList['reader0']"
-                    :key="index"
-                    :style="{
-                      'backgroundImage': `url(${img})`,
-                      'backgroundPosition': 'center center',
-                      'backgroundRepeat': 'no-repeat',
-                      'backgroundSize': 'cover'
-                    }">
-                    <md-icon
-                            class="image-reader-item-del"
-                            name="circle-cross"
-                            color="#666"
-                            @click.native="onDeleteImage('reader0', index)">
-                    </md-icon>
-                </li>
-                <li class="image-reader-item add">
-                    <md-image-reader
-                            name="reader0"
-                            @select="onReaderSelect"
-                            @complete="onReaderComplete"
-                            @error="onReaderError"
-                            is-multiple
-                    ></md-image-reader>
-                    <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
-                    <p>上传身份证</p>
-                </li>
-            </ul>
-            <ul class="image-reader-list">
-                <li
-                        class="image-reader-item"
-                        v-for="(img, index) in imageList['reader0']"
-                        :key="index"
-                        :style="{
-                      'backgroundImage': `url(${img})`,
-                      'backgroundPosition': 'center center',
-                      'backgroundRepeat': 'no-repeat',
-                      'backgroundSize': 'cover'
-                    }">
-                    <md-icon
-                            class="image-reader-item-del"
-                            name="circle-cross"
-                            color="#666"
-                            @click.native="onDeleteImage('reader0', index)">
-                    </md-icon>
-                </li>
-                <li class="image-reader-item add">
-                    <md-image-reader
-                            name="reader0"
-                            @select="onReaderSelect"
-                            @complete="onReaderComplete"
-                            @error="onReaderError"
-                            is-multiple
-                    ></md-image-reader>
-                    <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
-                    <p>上传行驶证</p>
-                </li>
-            </ul>
-            <ul class="image-reader-list">
-                <li
-                        class="image-reader-item"
-                        v-for="(img, index) in imageList['reader0']"
-                        :key="index"
-                        :style="{
-                      'backgroundImage': `url(${img})`,
-                      'backgroundPosition': 'center center',
-                      'backgroundRepeat': 'no-repeat',
-                      'backgroundSize': 'cover'
-                    }">
-                    <md-icon
-                            class="image-reader-item-del"
-                            name="circle-cross"
-                            color="#666"
-                            @click.native="onDeleteImage('reader0', index)">
-                    </md-icon>
-                </li>
-                <li class="image-reader-item add">
-                    <md-image-reader
-                            name="reader0"
-                            @select="onReaderSelect"
-                            @complete="onReaderComplete"
-                            @error="onReaderError"
-                            is-multiple
-                    ></md-image-reader>
-                    <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
-                    <p>上传驾驶证</p>
-                </li>
-            </ul>
-            <ul class="image-reader-list">
-                <li
-                        class="image-reader-item"
-                        v-for="(img, index) in imageList['reader0']"
-                        :key="index"
-                        :style="{
-                      'backgroundImage': `url(${img})`,
-                      'backgroundPosition': 'center center',
-                      'backgroundRepeat': 'no-repeat',
-                      'backgroundSize': 'cover'
-                    }">
-                    <md-icon
-                            class="image-reader-item-del"
-                            name="circle-cross"
-                            color="#666"
-                            @click.native="onDeleteImage('reader0', index)">
-                    </md-icon>
-                </li>
-                <li class="image-reader-item add">
-                    <md-image-reader
-                            name="reader0"
-                            @select="onReaderSelect"
-                            @complete="onReaderComplete"
-                            @error="onReaderError"
-                            is-multiple
-                    ></md-image-reader>
-                    <md-icon name="hollow-plus" size="md" color="#CCC"></md-icon>
-                    <p>上传人车合照</p>
-                </li>
-            </ul>
+            <div class="upload-qualification">
+                <div class="upload-qualification-item">
+                    <input type="file" />
+                    <span class="btn-upload-identity-card">点击上传身份证</span>
+                </div>
+                <div class="upload-qualification-item">
+                    <input type="file" />
+                    <span class="btn-upload-driving-licence1">点击上传行驶证</span>
+                </div>
+                <div class="upload-qualification-item">
+                    <input type="file" />
+                    <span class="btn-upload-driving-licence2">点击上传驾驶证</span>
+                </div>
+                <div class="upload-qualification-item">
+                    <input type="file" />
+                    <span class="btn-upload-group-photo">点击上传人车合照</span>
+                </div>
+            </div>
+            <split></split>
+            <split></split>
         </md-field>
         <split></split>
         <split></split>
         <div class="login-btn">
-            <md-button @click.native="next">下一步</md-button>
+            <md-button @click.native="next">提交认证</md-button>
+            <split></split>
+            <ol class="register-step2-tips">
+                <li>1. 您所提供的所有信息仅用于核实您的身份，不会向任何第三方泄露，请放心上传</li>
+                <li>2. 完善真实有效的信息才可认证通过</li>
+                <li>3. 遇到问题，请拨打客服电话400-400-2088</li>
+            </ol>
         </div>
     </div>
 </template>
@@ -210,4 +116,48 @@
                     z-index 3
                     background #EEE
                     border-radius radius-circle
+    .upload-qualification
+        display -ms-flexbox
+        display flex
+        -ms-flex-align center
+        align-items center
+        -ms-flex-pack center
+        justify-content center
+        -ms-flex-wrap wrap
+        flex-wrap wrap
+    .upload-qualification-item
+        width 50%
+        padding 16px*2 0
+        border-bottom 1px solid #ececec
+        -webkit-box-sizing border-box
+        box-sizing border-box
+    .upload-qualification-item:nth-child(2n)
+        border-left 1px solid #ececec
+    .upload-qualification-item:nth-child(3),.upload-qualification-item:nth-child(4)
+        border-bottom 0
+    .upload-qualification-item input
+        display none
+    .upload-qualification-item span
+        display block
+        width 100%
+        padding-top 60px*2
+        text-align center
+        color #363636
+    .btn-upload-identity-card
+        background url('../../assets/images/icon-user.png') no-repeat center 10px*2
+    .btn-upload-driving-licence1
+        background url('../../assets/images/icon-car.png') no-repeat center 10px*2
+    .btn-upload-driving-licence2
+        background url('../../assets/images/icon-steering-wheel.png') no-repeat center 10px*2
+    .btn-upload-group-photo
+        background url('../../assets/images/icon-photo.png') no-repeat center 10px*2
+
+    .register-step2-tips
+        list-style decimal
+        text-align left
+        margin 12px 0 0
+        padding-left 20px
+        font-size .875em
+        line-height 1.5em
+        color #a1a1a1
 </style>

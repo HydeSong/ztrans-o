@@ -41,9 +41,9 @@
             name: '查看结果',
           }
         ],
-        currentStep: 0,
+        currentStep: 0
       }
-    },
+    }
   }
 </script>
 

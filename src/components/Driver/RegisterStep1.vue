@@ -45,13 +45,30 @@
         <div class="login-btn">
             <md-button @click.native="next">下一步</md-button>
         </div>
+        <md-picker
+                ref="picker0"
+                v-model="isOrderCityShow"
+                :data="pickerData0"
+                @confirm="onPickerConfirm(0)"
+                title="选择接单城市"
+        ></md-picker>
+        <md-picker
+                ref="picker1"
+                v-model="isCarInfoShow"
+                :data="pickerData1"
+                :cols="3"
+                is-cascade
+                title="选择车辆信息"
+                @confirm="onPickerConfirm(1)"
+        ></md-picker>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {Picker, Button, Field, FieldItem, InputItem, Dialog} from 'mand-mobile'
+  import {Picker, Button, Field, FieldItem, InputItem} from 'mand-mobile'
   import Split from '../Base/Split'
   import simple from 'mand-mobile/components/picker/demo/data/simple'
+  import district from 'mand-mobile/components/picker/demo/data/district'
 
   export default {
     name: 'register-step1',
@@ -65,7 +82,8 @@
         isCarInfoShow: false,
         carInfo: '',
         license: '',
-        pickerData0: simple
+        pickerData0: simple,
+        pickerData1: district
       }
     },
     components: {
@@ -79,6 +97,15 @@
     methods: {
       next () {
         this.$router.push('/driver/register/2')
+      },
+      onPickerConfirm(index) {
+        const values = this.$refs[`picker${index}`].getColumnValues()
+
+        let res = ''
+        values.forEach(value => {
+          value && (res += `${value.text || value.label} `)
+        })
+        this[`pickerValue${index}`] = res
       }
     },
   }
