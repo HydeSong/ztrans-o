@@ -4,8 +4,8 @@
  * @return Object {id:12345,a:b}
  */
 
-export function urlParse () {
-  let url = window.location.hash || window.location.href || window.location.search
+export function urlParse (window) {
+  let url = window.location.search
   // console.log(url)
   let obj = {}
   let reg = /[?&][^?&]+=[^?&]+/g

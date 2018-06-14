@@ -91,7 +91,6 @@
   import {createOrder} from '@/api/order'
   import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
-  import {setCookie, getCookie} from '@/common/js/cache'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -151,7 +150,7 @@
       }
     },
     computed: {
-      ...mapGetters(['shipping', 'receiver', 'wxcode']),
+      ...mapGetters(['shipping', 'receiver', 'wxcode', 'openId']),
       tabTitles () {
         let titles = []
         this.tabs.forEach(item => {
@@ -170,16 +169,11 @@
       console.log('获取openid')
       this._getCustomerOpenIdByCode({code: this.wxcode, grantType: "authorization_code"})
       console.log('查询所有路线')
-      // this.setOpenId('1')
-      this._getAllRouterByCity({openId: this.openId})
+      console.log(`code->${this.wxcode}`)
+      console.log(`openId->${this.openId}`)
+      this.openId && this._getAllRouterByCity({openId: this.openId})
     },
     beforeRouteUpdate (to, from, next) {
-      // react to route changes...
-      // don't forget to call next()
-      // console.log(to)
-      // console.log(from)
-      // console.log(this.shipping)
-      // console.log(this.receiver)
       if (to.path === '/user') {
         this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.carTypeSeries, openId: this.openId, routerDetailSeries: this.shipping.routerDetailSeries})
         this.bill.deliverGoodsTime = this.shipping.goodsTime
@@ -340,6 +334,7 @@
         })
       },
       _getCustomerOpenIdByCode (params) {
+        console.log(params)
         getCustomerOpenIdByCode(params).then(res => {
           console.log(res)
           if (res.status === 200) {

@@ -10,7 +10,7 @@
 <script>
   import {Button} from 'mand-mobile'
   import Split from './Base/Split'
-  import {getWxCode} from '../api/openid'
+  import {urlParse} from '@/common/js/utils'
   import {mapMutations} from 'vuex'
 
   export default {
@@ -19,8 +19,12 @@
       [Button.name]: Button,
       Split
     },
-    created () {
-      this._getWxCode()
+    mounted () {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this._getWxCode()
+        }, 1000)
+      })
     },
     methods: {
       ...mapMutations({
@@ -33,8 +37,15 @@
         this.$router.push('/driver/login')
       },
       _getWxCode () {
-        const wxcode = getWxCode()
+        const queryStr = urlParse(window)
+        const wxcode = queryStr.code
+        const state = queryStr.state
         this.setWxCode(wxcode)
+        if (state === '1') {
+          this.call()
+        } else if (state === '2') {
+          this.join()
+        }
       }
     }
   }
