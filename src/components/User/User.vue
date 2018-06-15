@@ -89,7 +89,7 @@
   import NavBar from '../Base/NavBar'
 
   import {createOrder} from '@/api/order'
-  import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
+  import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries, getCityByOpenId} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
   import {mapGetters, mapMutations} from 'vuex'
 
@@ -165,9 +165,8 @@
       }
     },
     created () {
-      console.log('组件已加载')
-      console.log('获取openid')
-      this._getCustomerOpenIdByCode({code: this.wxcode, grantType: "authorization_code"})
+      this.openId && this._getCityByOpenId({openId: this.openId})
+      this.openId && this._getAllRouterByCity({openId: this.openId})
     },
     beforeRouteUpdate (to, from, next) {
       if (to.path === '/user') {
@@ -329,19 +328,22 @@
           console.log(err)
         })
       },
-      _getCustomerOpenIdByCode (params) {
-        console.log(params)
-        getCustomerOpenIdByCode(params).then(res => {
+      _getAllRouterByCity (params) {
+        getAllRouterByCity(params).then(res => {
           console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
               case 0:
-                this.setOpenId(res.data.openId)
-                console.log('查询所有路线')
-                console.log(`code->${this.wxcode}`)
-                console.log(`openId->${this.openId}`)
-                this.openId && this._getAllRouterByCity({openId: this.openId})
+                let pathDataOptions = []
+                res.data.wxRouterCityRelationModel.forEach((item) => {
+                  pathDataOptions.push({
+                    text: `${item.sourceCityName} -> ${item.destinyCityName}`,
+                    ...item
+                  })
+                })
+                this.pathData[0].options = pathDataOptions
+                console.log(this.pathData)
                 break
               case 401:
                 console.log(code)
@@ -364,22 +366,22 @@
           console.log(err)
         })
       },
-      _getAllRouterByCity (params) {
-        getAllRouterByCity(params).then(res => {
+      _getCityByOpenId (params) {
+        getCityByOpenId(params).then(res => {
           console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
               case 0:
-                let pathDataOptions = []
-                res.data.wxRouterCityRelationModel.forEach((item) => {
-                  pathDataOptions.push({
-                    text: `${item.sourceCityName} -> ${item.destinyCityName}`,
-                    ...item
-                  })
-                })
-                this.pathData[0].options = pathDataOptions
-                console.log(this.pathData)
+                // let pathDataOptions = []
+                // res.data.wxRouterCityRelationModel.forEach((item) => {
+                //   pathDataOptions.push({
+                //     text: `${item.sourceCityName} -> ${item.destinyCityName}`,
+                //     ...item
+                //   })
+                // })
+                // this.pathData[0].options = pathDataOptions
+                // console.log(this.pathData)
                 break
               case 401:
                 console.log(code)

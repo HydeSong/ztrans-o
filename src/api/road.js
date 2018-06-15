@@ -37,3 +37,12 @@ export function getCarTypeByAllRouter (params) {
   }
   return axios.get(url, {params: data})
 }
+
+export function getCityByOpenId (params) {
+  const url = `${CONFIG.HOST}/getCityByOpenId`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
