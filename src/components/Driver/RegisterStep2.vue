@@ -126,12 +126,12 @@
         <split></split>
         <split></split>
         <div class="login-btn">
-            <md-button @click.native="next">提交认证</md-button>
+            <md-button @click.native="next" :disabled="disabled">提交认证</md-button>
             <split></split>
             <ol class="register-step2-tips">
                 <li>1. 您所提供的所有信息仅用于核实您的身份，不会向任何第三方泄露，请放心上传</li>
                 <li>2. 完善真实有效的信息才可认证通过</li>
-                <li>3. 遇到问题，请拨打客服电话400-400-2088</li>
+                <li>3. 遇到问题，请拨打客服电话 <a href="tel:400-400-2088">400-400-2088</a></li>
             </ol>
         </div>
         <md-image-viewer
@@ -144,9 +144,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Icon, ImageReader, ImageViewer, Picker, Button, Field, FieldItem, InputItem, Toast} from 'mand-mobile'
+  import {Icon, ImageReader, ImageViewer, Button, Toast} from 'mand-mobile'
   import Split from '../Base/Split'
-  import {uploadPicture} from '@/api/picture'
+  import {uploadPicture, getPicture} from '@/api/picture'
 
   export default {
     name: 'register-step1',
@@ -167,10 +167,6 @@
       [Icon.name]: Icon,
       [ImageReader.name]: ImageReader,
       [Button.name]: Button,
-      [Picker.name]: Picker,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      [InputItem.name]: InputItem,
       Split
     },
     computed: {
@@ -186,7 +182,21 @@
         drivingPicture && imageView.push(drivingPicture)
         persomCarPicture && imageView.push(persomCarPicture)
         return imageView
+      },
+      disabled () {
+        const identityCard = this.imageList.identityCard[0]
+        const drivingLicense = this.imageList.drivingLicense[0]
+        const drivingPicture = this.imageList.drivingPicture[0]
+        const persomCarPicture = this.imageList.persomCarPicture[0]
+
+        return !(identityCard && drivingLicense && drivingPicture && persomCarPicture)
       }
+    },
+    created () {
+      this._getPicture({
+        "customerNumId": 1,
+        "url": "https://thumbnail0.baidupcs.com/thumbnail/614354b2b221f60253cdc419897ef439?fid=52103718-250528-382619696300180&time=1528210800&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-IELOJ5aTTxpIUqF1Ahi6Fgzqgdo%3D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=3617468684702518365&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video"
+      })
     },
     methods: {
       showViewer(index) {
@@ -201,11 +211,31 @@
       },
       onReaderComplete(name, {dataUrl, blob, file}) {
         const demoImageList = this.imageList[name] || []
-
-        console.log('[Mand Mobile] ImageReader Complete:', 'File Name ' + file.name)
-        this._uploadPicture({file, customerNumId: '1', pictureCode: '3'})
         demoImageList.push(dataUrl)
         this.$set(this.imageList, name, demoImageList)
+
+        // console.log('[Mand Mobile] ImageReader Complete:', 'File Name ' + file.name)
+        let pictureCode = ''
+        switch (name) {
+          case 'drivingLicense':
+            pictureCode = '0'
+            break
+          case 'drivingPicture':
+            pictureCode = '1'
+            break
+          case 'persomCarPicture':
+            pictureCode = '2'
+            break
+          case 'identityCard':
+            pictureCode = '3'
+            break
+          default:
+            pictureCode = ''
+            break
+        }
+        let customerNumId = '1'
+        // 把图片上传到服务器
+        this._uploadPicture({file, customerNumId, pictureCode})
 
         Toast.hide()
       },
@@ -218,13 +248,14 @@
         this.$set(this.imageList, name, demoImageList)
       },
       _uploadPicture (params) {
+        Toast.loading('上传中...')
         uploadPicture(params).then(res => {
           console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
               case 0:
-
+                Toast.succeed('上传成功')
                 break
               case 201:
                 console.log(code)
@@ -242,6 +273,38 @@
                 console.log(code)
                 break
               case -1006:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      _getPicture (params) {
+        getPicture(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                //const demoImageList = this.imageList[name] || []
+                //demoImageList.push(dataUrl)
+                //this.$set(this.imageList, name, demoImageList)
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
                 console.log(code)
                 break
               default:

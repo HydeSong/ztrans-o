@@ -13,3 +13,12 @@ export function uploadPicture (params) {
   }
   return axios.post(url, data)
 }
+
+export function getPicture (params) {
+  const url = `${CONFIG.HOST}/getPicture`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
