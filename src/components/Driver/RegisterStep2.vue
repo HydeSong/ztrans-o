@@ -4,20 +4,120 @@
         <md-field title="资质上传">
             <div class="upload-qualification">
                 <div class="upload-qualification-item">
-                    <input type="file" />
-                    <span class="btn-upload-identity-card">点击上传身份证</span>
+                    <div
+                        class="image-reader-item"
+                        v-for="(img, index) in imageList['identityCard']"
+                        @click="showViewer(0, $event)"
+                        :key="index"
+                        :style="{
+                          'backgroundImage': `url(${img})`,
+                          'backgroundPosition': 'center center',
+                          'backgroundRepeat': 'no-repeat',
+                          'backgroundSize': 'cover'
+                        }">
+                        <md-icon
+                                class="image-reader-item-del"
+                                name="circle-cross"
+                                color="#fc9153"
+                                @click.native.stop="onDeleteImage('identityCard', index)">
+                        </md-icon>
+                    </div>
+                    <div v-show="imageList['identityCard'].length === 0">
+                        <md-image-reader
+                                name="identityCard"
+                                @select="onReaderSelect"
+                                @complete="onReaderComplete"
+                                @error="onReaderError"
+                        ></md-image-reader>
+                        <span class="btn-upload-identity-card">点击上传身份证</span>
+                    </div>
                 </div>
                 <div class="upload-qualification-item">
-                    <input type="file" />
-                    <span class="btn-upload-driving-licence1">点击上传行驶证</span>
+                    <div
+                        class="image-reader-item"
+                        v-for="(img, index) in imageList['drivingLicense']"
+                        @click="showViewer(1, $event)"
+                        :key="index"
+                        :style="{
+                          'backgroundImage': `url(${img})`,
+                          'backgroundPosition': 'center center',
+                          'backgroundRepeat': 'no-repeat',
+                          'backgroundSize': 'cover'
+                        }">
+                        <md-icon
+                                class="image-reader-item-del"
+                                name="circle-cross"
+                                color="#fc9153"
+                                @click.native.stop="onDeleteImage('drivingLicense', index)">
+                        </md-icon>
+                    </div>
+                    <div v-show="imageList['drivingLicense'].length === 0">
+                        <md-image-reader
+                                name="drivingLicense"
+                                @select="onReaderSelect"
+                                @complete="onReaderComplete"
+                                @error="onReaderError"
+                        ></md-image-reader>
+                        <span class="btn-upload-driving-licence1">点击上传行驶证</span>
+                    </div>
                 </div>
                 <div class="upload-qualification-item">
-                    <input type="file" />
-                    <span class="btn-upload-driving-licence2">点击上传驾驶证</span>
+                    <div
+                        class="image-reader-item"
+                        v-for="(img, index) in imageList['drivingPicture']"
+                        @click="showViewer(2, $event)"
+                        :key="index"
+                        :style="{
+                          'backgroundImage': `url(${img})`,
+                          'backgroundPosition': 'center center',
+                          'backgroundRepeat': 'no-repeat',
+                          'backgroundSize': 'cover'
+                        }">
+                        <md-icon
+                                class="image-reader-item-del"
+                                name="circle-cross"
+                                color="#fc9153"
+                                @click.native.stop="onDeleteImage('drivingPicture', index)">
+                        </md-icon>
+                    </div>
+                    <div v-show="imageList['drivingPicture'].length === 0">
+                        <md-image-reader
+                                name="drivingPicture"
+                                @select="onReaderSelect"
+                                @complete="onReaderComplete"
+                                @error="onReaderError"
+                        ></md-image-reader>
+                        <span class="btn-upload-driving-licence2">点击上传驾驶证</span>
+                    </div>
                 </div>
                 <div class="upload-qualification-item">
-                    <input type="file" />
-                    <span class="btn-upload-group-photo">点击上传人车合照</span>
+                    <div
+                        class="image-reader-item"
+                        v-for="(img, index) in imageList['persomCarPicture']"
+                        @click="showViewer(3, $event)"
+                        :key="index"
+                        :style="{
+                          'backgroundImage': `url(${img})`,
+                          'backgroundPosition': 'center center',
+                          'backgroundRepeat': 'no-repeat',
+                          'backgroundSize': 'cover'
+                        }">
+                        <md-icon
+                                class="image-reader-item-del"
+                                name="circle-cross"
+                                color="#fc9153"
+                                @click.native.stop="onDeleteImage('persomCarPicture', index)">
+                        </md-icon>
+                    </div>
+                    <div v-show="imageList['persomCarPicture'].length === 0">
+                        <md-image-reader
+                                name="persomCarPicture"
+                                @select="onReaderSelect"
+                                @complete="onReaderComplete"
+                                @error="onReaderError"
+                        ></md-image-reader>
+                        <span class="btn-upload-group-photo">点击上传人车合照</span>
+                    </div>
                 </div>
             </div>
             <split></split>
@@ -34,26 +134,36 @@
                 <li>3. 遇到问题，请拨打客服电话400-400-2088</li>
             </ol>
         </div>
+        <md-image-viewer
+                v-model="isViewerShow"
+                :list="imageView"
+                :has-dots="true"
+                :initial-index="viewerIndex">
+        </md-image-viewer>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import {Icon, ImageReader, Picker, Button, Field, FieldItem, InputItem, Dialog} from 'mand-mobile'
+  import {Icon, ImageReader, ImageViewer, Picker, Button, Field, FieldItem, InputItem, Toast} from 'mand-mobile'
   import Split from '../Base/Split'
+  import {uploadPicture} from '@/api/picture'
 
   export default {
     name: 'register-step1',
     data () {
       return {
+        isViewerShow: false,
+        viewerIndex: 0,
         imageList: {
-          reader0: [
-            '//img-hxy021.didistatic.com/static/strategymis/insurancePlatform_spu/uploads/27fb7f097ca218d743f816836bc7ea4a',
-          ],
-          reader1: [],
-        }
+          identityCard: [],
+          drivingLicense: [],
+          drivingPicture: [],
+          persomCarPicture: [],
+        },
       }
     },
     components: {
+      [ImageViewer.name]: ImageViewer,
       [Icon.name]: Icon,
       [ImageReader.name]: ImageReader,
       [Button.name]: Button,
@@ -63,9 +173,85 @@
       [InputItem.name]: InputItem,
       Split
     },
+    computed: {
+      imageView () {
+        let imageView = []
+        const identityCard = this.imageList.identityCard[0]
+        const drivingLicense = this.imageList.drivingLicense[0]
+        const drivingPicture = this.imageList.drivingPicture[0]
+        const persomCarPicture = this.imageList.persomCarPicture[0]
+
+        identityCard && imageView.push(identityCard)
+        drivingLicense && imageView.push(drivingLicense)
+        drivingPicture && imageView.push(drivingPicture)
+        persomCarPicture && imageView.push(persomCarPicture)
+        return imageView
+      }
+    },
     methods: {
+      showViewer(index) {
+        this.viewerIndex = index
+        this.isViewerShow = true
+      },
       next () {
-        this.$router.push('/driver/register/3')
+        this.$emit('next', 2)
+      },
+      onReaderSelect() {
+        Toast.loading('图片读取中...')
+      },
+      onReaderComplete(name, {dataUrl, blob, file}) {
+        const demoImageList = this.imageList[name] || []
+
+        console.log('[Mand Mobile] ImageReader Complete:', 'File Name ' + file.name)
+        this._uploadPicture({file, customerNumId: '1', pictureCode: '3'})
+        demoImageList.push(dataUrl)
+        this.$set(this.imageList, name, demoImageList)
+
+        Toast.hide()
+      },
+      onReaderError(name, {msg}) {
+        Toast.failed(msg)
+      },
+      onDeleteImage(name, index) {
+        const demoImageList = this.imageList[name] || []
+        demoImageList.splice(index, 1)
+        this.$set(this.imageList, name, demoImageList)
+      },
+      _uploadPicture (params) {
+        uploadPicture(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+
+                break
+              case 201:
+                console.log(code)
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              case -1006:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       }
     },
   }
@@ -75,47 +261,6 @@
     .register-step2
         .login-btn
             padding 0 20px
-        .image-reader-list
-            float left
-            width 100%
-            .image-reader-item
-                position relative
-                float left
-                width 23.5%
-                padding-bottom 23.5%
-                margin-bottom 2%
-                margin-right 2%
-                background color-bg-base
-                box-sizing border-box
-                list-style none
-                border-radius radius-normal
-                hairline(all, color-border-base)
-                background-size cover
-                &:nth-of-type(4n)
-                    margin-right 0
-                &.add
-                    .md-icon
-                        position absolute
-                        top 40%
-                        left 50%
-                        transform translate(-50%, -50%)
-                        opacity .5
-                    p
-                        position absolute
-                        top 50%
-                        left 0
-                        width 100%
-                        margin-top 15px
-                        font-size font-minor-normal
-                        color color-text-disabled
-                        text-align center
-                .image-reader-item-del
-                    position absolute
-                    top 5px
-                    right 5px
-                    z-index 3
-                    background #EEE
-                    border-radius radius-circle
     .upload-qualification
         display -ms-flexbox
         display flex
@@ -127,10 +272,29 @@
         flex-wrap wrap
     .upload-qualification-item
         width 50%
-        padding 16px*2 0
+        height 224px
         border-bottom 1px solid #ececec
         -webkit-box-sizing border-box
         box-sizing border-box
+        position relative
+        display flex
+        justify-content center
+        align-items center
+        .md-image-reader
+            width 100%
+            height 100%
+            position absolute
+            top 0
+            left 0
+            display flex
+            justify-content center
+            align-items center
+        .image-reader-item
+            width 100%
+            height 100%
+            display flex
+            justify-content flex-end
+            align-items flex-start
     .upload-qualification-item:nth-child(2n)
         border-left 1px solid #ececec
     .upload-qualification-item:nth-child(3),.upload-qualification-item:nth-child(4)

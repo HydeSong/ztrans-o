@@ -3,7 +3,9 @@ const state = {
   openId: '',
   wxcode: '',
   shipping: {},
-  receiver: {}
+  receiver: {},
+  step1Data: {},
+  step2Data: {}
 }
 
 export default state

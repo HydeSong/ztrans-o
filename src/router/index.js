@@ -9,9 +9,6 @@ import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
 import Register from '@/components/Driver/Register'
-import RegisterStep1 from '@/components/Driver/RegisterStep1'
-import RegisterStep2 from '@/components/Driver/RegisterStep2'
-import RegisterStep3 from '@/components/Driver/RegisterStep3'
 import Error404 from '@/components/Base/Error404'
 import ErrorNetwork from '@/components/Base/ErrorNetwork'
 import ErrorOp from '@/components/Base/ErrorOp'
@@ -76,21 +73,7 @@ const router = new Router({
         },
         {
           path: 'register',
-          component: Register,
-          children:  [
-            {
-              path: '1',
-              component: RegisterStep1
-            },
-            {
-              path: '2',
-              component: RegisterStep2
-            },
-            {
-              path: '3',
-              component: RegisterStep3
-            }
-          ]
+          component: Register
         }
       ]
     },

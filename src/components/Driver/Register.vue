@@ -11,7 +11,9 @@
                         :current="currentStep">
                 </md-steps>
             </div>
-            <router-view></router-view>
+            <step1 v-show="currentStep === 0" @next="next"></step1>
+            <step2 v-show="currentStep === 1" @next="next"></step2>
+            <step3 v-show="currentStep >= 2" @next="next"></step3>
         </div>
     </div>
 </template>
@@ -20,13 +22,19 @@
   import {Steps} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
+  import Step1 from '@/components/Driver/RegisterStep1'
+  import Step2 from '@/components/Driver/RegisterStep2'
+  import Step3 from '@/components/Driver/RegisterStep3'
 
   export default {
     name: 'register',
     components: {
       [Steps.name]: Steps,
       Split,
-      NavBar
+      NavBar,
+      Step1,
+      Step2,
+      Step3
     },
     data() {
       return {
@@ -41,7 +49,12 @@
             name: '查看结果',
           }
         ],
-        currentStep: 0
+        currentStep: 1
+      }
+    },
+    methods: {
+      next (step) {
+        this.currentStep = step
       }
     }
   }

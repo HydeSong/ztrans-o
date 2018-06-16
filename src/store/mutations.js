@@ -15,6 +15,12 @@ const mutations = {
   },
   [types.SET_WXCODE] (state, wxcode) {
     state.wxcode = wxcode
+  },
+  [types.SET_STEP1DATA] (state, data) {
+    state.step1Data = data
+  },
+  [types.SET_STEP2DATA] (state, data) {
+    state.step2Data = data
   }
 }
 

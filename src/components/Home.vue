@@ -67,6 +67,7 @@
             switch (code) {
               case 0:
                 this.setOpenId(res.data.openId)
+                // this.setOpenId('oV8CKwoxrmesNacHdWyyiDyRr_tk')
                 this.call()
                 break
               case 401:
@@ -127,5 +128,6 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   .home
+    text-align center
     padding 30px
 </style>

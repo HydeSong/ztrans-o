@@ -72,6 +72,7 @@
       return {
         code: '',
         phone: '',
+        mobileCode: '',
         timeout: 60,
         timer: null,
         disabledVerify: false,
@@ -86,7 +87,10 @@
     computed: {
       ...mapGetters(['wxcode', 'openId']),
       disabled () {
-        return !(this.code && this.phone)
+        console.log(this.code)
+        console.log(this.mobileCode)
+        console.log(this.code === this.mobileCode)
+        return !(this.code && this.phone && (this.code == this.mobileCode))
       }
     },
     mounted () {
@@ -118,6 +122,31 @@
         }, 1000)
         getMobileCode({mobilePhone: this.phone}).then(res => {
           console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                this.mobileCode = res.data.mobileCode
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
         })
       },
       setValue(id, value) {
@@ -135,7 +164,7 @@
         this.$refs.swiper.goto(2)
       },
       register() {
-        this.$router.push('/driver/register/1')
+        this.$router.push('/driver/register')
       },
       login() {
         console.log('login')
@@ -145,6 +174,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+    .login
+        text-align center
     .banner
         height 350px
         .banner-item

@@ -4,6 +4,7 @@
             <md-drop-menu
                     ref="selectRoad"
                     :data="pathData"
+                    :default-value="defaultPath"
                     @change="selectRoadChange"
             ></md-drop-menu>
         </nav-bar>
@@ -147,6 +148,7 @@
             options: [],
           },
         ],
+        defaultPath: []
       }
     },
     computed: {
@@ -165,8 +167,9 @@
       }
     },
     created () {
-      this.openId && this._getCityByOpenId({openId: this.openId})
-      this.openId && this._getAllRouterByCity({openId: this.openId})
+      console.log(this.openId)
+      this._getCityByOpenId({openId: this.openId})
+      this._getAllRouterByCity({openId: this.openId})
     },
     beforeRouteUpdate (to, from, next) {
       if (to.path === '/user') {
@@ -204,7 +207,7 @@
       selectRoadChange (barItem, listItem) {
         console.log(listItem)
         this.setCityIds(listItem)
-        this._getCarTypeByAllRouter( {
+        this._getCarTypeByAllRouter({
           openId: this.openId,
           sourceCityId: listItem.sourceCityId,
           destinyCityId: listItem.destinyCityId
@@ -373,15 +376,20 @@
             const code = res.data.code
             switch (code) {
               case 0:
-                // let pathDataOptions = []
-                // res.data.wxRouterCityRelationModel.forEach((item) => {
-                //   pathDataOptions.push({
-                //     text: `${item.sourceCityName} -> ${item.destinyCityName}`,
-                //     ...item
-                //   })
-                // })
-                // this.pathData[0].options = pathDataOptions
-                // console.log(this.pathData)
+                let defaultPath = []
+                let item = res.data.wxRouterCityRelationModel
+                // 默认路线
+                defaultPath.push(`${item.sourceCityName} -> ${item.destinyCityName}`)
+                this.defaultPath = defaultPath
+                this.pathData[0].text = `${item.sourceCityName} -> ${item.destinyCityName}`
+                this.setCityIds(item)
+                // 默认车型
+                this._getCarTypeByAllRouter({
+                  openId: this.openId,
+                  sourceCityId: item.sourceCityId,
+                  destinyCityId: item.destinyCityId
+                })
+                console.log(this.defaultPath)
                 break
               case 401:
                 console.log(code)
@@ -394,6 +402,10 @@
                 break
               case -1:
                 console.log(code)
+                break
+              case -5046:
+                console.log(code)
+                console.log('没有默认路线')
                 break
               default:
                 console.log(code)
