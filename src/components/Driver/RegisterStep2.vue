@@ -144,7 +144,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Icon, ImageReader, ImageViewer, Button, Toast} from 'mand-mobile'
+  import {Icon, ImageReader, ImageViewer, Button, Toast, Field, FieldItem} from 'mand-mobile'
   import Split from '../Base/Split'
   import {uploadPicture, getPicture} from '@/api/picture'
 
@@ -163,6 +163,8 @@
       }
     },
     components: {
+      [Field.name]: Field,
+      [FieldItem.name]: FieldItem,
       [ImageViewer.name]: ImageViewer,
       [Icon.name]: Icon,
       [ImageReader.name]: ImageReader,
