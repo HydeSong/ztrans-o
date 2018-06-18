@@ -61,15 +61,27 @@
                 break
               case 401:
                 console.log(code)
+                Toast.succeed('注册失败')
+                this.text = '账号注册失败'
+                this.subtext = '请重新填写信息'
                 break
               case 403:
                 console.log(code)
+                Toast.succeed('注册失败')
+                this.text = '账号注册失败'
+                this.subtext = '请重新填写信息'
                 break
               case 404:
                 console.log(code)
+                Toast.succeed('注册失败')
+                this.text = '账号注册失败'
+                this.subtext = '请重新填写信息'
                 break
               case -1:
                 console.log(code)
+                Toast.succeed('注册失败')
+                this.text = '账号注册失败'
+                this.subtext = '请重新填写信息'
                 break
               default:
                 console.log(code)
