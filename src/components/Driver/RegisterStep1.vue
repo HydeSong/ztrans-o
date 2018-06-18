@@ -3,12 +3,12 @@
         <split></split>
         <md-field title="个人信息">
             <md-input-item
-                    v-model="name"
+                    v-model="driverName"
                     title="姓名"
                     placeholder="请输入您的真实姓名"
             ></md-input-item>
             <md-input-item
-                    v-model="ID"
+                    v-model="driverIdentityId"
                     title="身份证"
                     placeholder="请输入您的身份证号码"
             ></md-input-item>
@@ -20,7 +20,8 @@
                     @click.native="isOrderCityShow = true">
             </md-field-item>
             <md-input-item
-                    v-model="inviteMobile"
+                    v-model="mobilePhone"
+                    type="phone"
                     title="邀请人手机号"
                     placeholder="选填，提交后不可更改"
             ></md-input-item>
@@ -35,7 +36,7 @@
                     @click.native="isCarInfoShow = true">
                 </md-field-item>
             <md-input-item
-                    v-model="license"
+                    v-model="carPlateNumber"
                     title="车牌号码"
                     placeholder="例：沪A88888"
             ></md-input-item>
@@ -46,19 +47,19 @@
             <md-button @click.native="next" :disabled="disabled">下一步</md-button>
         </div>
         <md-picker
-                ref="picker0"
+                ref="billCity"
                 v-model="isOrderCityShow"
                 :data="billCityData"
-                @confirm="onPickerConfirm(0)"
+                @confirm="onPickerConfirm('billCity')"
                 title="选择接单城市"
         ></md-picker>
         <md-picker
-                ref="picker1"
+                ref="carInfo"
                 v-model="isCarInfoShow"
                 :data="carInfoData"
                 :cols="3"
                 title="选择车辆信息"
-                @confirm="onPickerConfirm(1)"
+                @confirm="onPickerConfirm('carInfo')"
         ></md-picker>
     </div>
 </template>
@@ -74,16 +75,20 @@
     name: 'register-step1',
     data () {
       return {
-        isOrderCityShow: false,
+        carBrandId: 0,
+        carColourId: 0,
+        carPlateNumber: '',
+        carTypeId: 0,
+        driverIdentityId: '',
+        driverName: '',
+        driverWorkCity:[],
+        mobilePhone: '',
         billCity: '',
-        name: '',
-        ID: '',
-        inviteMobile: '',
-        isCarInfoShow: false,
         carInfo: '',
-        license: '',
         billCityData: [],
-        carInfoData: []
+        carInfoData: [],
+        isOrderCityShow: false,
+        isCarInfoShow: false,
       }
     },
     components: {
@@ -97,11 +102,11 @@
     computed: {
       ...mapGetters(['openId']),
       disabled () {
-        return !(this.name && this.ID && this.inviteMobile && this.carInfo && this.license && this.billCity)
+        return !(this.driverName && this.driverIdentityId && this.mobilePhone && this.carInfo && this.carPlateNumber && this.billCity)
       }
     },
     created () {
-      this._getCarBandList({customerNumId: 1})
+      this._getCarBrandList({customerNumId: 1})
       this._getCarTypeList({customerNumId: 1})
       this._getCarColourList({customerNumId: 1})
       this._getAllRouterByCity({openId: this.openId})
@@ -110,22 +115,22 @@
       ...mapMutations({
         setStep1Data: 'SET_STEP1DATA'
       }),
-      _getCarBandList (params) {
+      _getCarBrandList (params) {
         getCarBandList(params).then(res => {
           console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
               case 0:
-                let carBands = []
-                res.data.carBands.forEach((item) => {
-                  carBands.push({
-                    text: item.bandName,
-                    value: item.bandId,
+                let carBrands = []
+                res.data.carBrands.forEach((item) => {
+                  carBrands.push({
+                    text: item.brandName,
+                    value: item.brandId,
                     ...item
                   })
                 })
-                this.carInfoData.push(carBands)
+                this.carInfoData.push(carBrands)
                 break
               case 401:
                 console.log(code)
@@ -265,30 +270,44 @@
       next () {
         this.$emit('next', 1)
         let step1Data = {
-          carBrandId: 0,
-          carColourId: 0,
-          carPlateNumber: this.license,
-          carTypeId: 0,
-          driverIdentityId: this.ID,
-          driverName: this.name,
-          driverWorkCity: [
-            {
-              destinyCityId: 0,
-              sourceCityId: 0
-            }
-          ],
-          mobilePhone: this.inviteMobile,
+          carBrandId: this.carBrandId,
+          carColourId: this.carColourId,
+          carPlateNumber: this.carPlateNumber,
+          carTypeId: this.carTypeId,
+          driverIdentityId: this.driverIdentityId,
+          driverName: this.driverName,
+          driverWorkCity: this.driverWorkCity,
+          mobilePhone: this.mobilePhone,
         }
         this.setStep1Data(step1Data)
       },
-      onPickerConfirm(index) {
-        const values = this.$refs[`picker${index}`].getColumnValues()
+      onPickerConfirm(name) {
+        const values = this.$refs[name].getColumnValues()
 
         let res = ''
         values.forEach(value => {
           value && (res += `${value.text || value.label} `)
+          console.log(value)
+          if (name === 'billCity') {
+            this.driverWorkCity.push({
+              destinyCityId: value.destinyCityId,
+              sourceCityId: value.sourceCityId
+            })
+          } else if (name === 'carInfo') {
+            if (value.typeId) {
+              this.carTypeId = value.typeId
+            }
+
+            if (value.brandId) {
+              this.carBrandId = value.brandId
+            }
+
+            if (value.colourId) {
+              this.carColourId = value.colourId
+            }
+          }
         })
-        this[`pickerValue${index}`] = res
+        this[name] = res
       }
     },
   }

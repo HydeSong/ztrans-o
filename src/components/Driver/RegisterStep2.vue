@@ -146,7 +146,8 @@
 <script type="text/ecmascript-6">
   import {Icon, ImageReader, ImageViewer, Button, Toast, Field, FieldItem} from 'mand-mobile'
   import Split from '../Base/Split'
-  import {uploadPicture, getPicture} from '@/api/picture'
+  import {uploadPicture, getPicture, deletePicture} from '@/api/picture'
+  import {mapMutations} from 'vuex'
 
   export default {
     name: 'register-step1',
@@ -155,6 +156,12 @@
         isViewerShow: false,
         viewerIndex: 0,
         imageList: {
+          identityCard: [],
+          drivingLicense: [],
+          drivingPicture: [],
+          persomCarPicture: [],
+        },
+        imgUlrs: {
           identityCard: [],
           drivingLicense: [],
           drivingPicture: [],
@@ -190,33 +197,44 @@
         const drivingLicense = this.imageList.drivingLicense[0]
         const drivingPicture = this.imageList.drivingPicture[0]
         const persomCarPicture = this.imageList.persomCarPicture[0]
-
         return !(identityCard && drivingLicense && drivingPicture && persomCarPicture)
       }
     },
     created () {
-      this._getPicture({
-        "customerNumId": 1,
-        "url": "https://thumbnail0.baidupcs.com/thumbnail/614354b2b221f60253cdc419897ef439?fid=52103718-250528-382619696300180&time=1528210800&rt=sh&sign=FDTAER-DCb740ccc5511e5e8fedcff06b081203-IELOJ5aTTxpIUqF1Ahi6Fgzqgdo%3D&expires=8h&chkv=0&chkbd=0&chkpc=&dp-logid=3617468684702518365&dp-callid=0&size=c710_u400&quality=100&vuk=-&ft=video"
-      })
+      // this._getPicture({
+      //   "customerNumId": 1,
+      //   "url": "/tmp/tomcat-docbase.5708326160788120757.8080/driverIdentityPicture/1805030019058.087ce5d"
+      // })
     },
     methods: {
+      ...mapMutations({
+        setStep2Data: 'SET_STEP2DATA'
+      }),
       showViewer(index) {
         this.viewerIndex = index
         this.isViewerShow = true
       },
       next () {
         this.$emit('next', 2)
+        this.setStep2Data({
+          drivingLicense: this.imgUlrs.drivingLicense[0],
+          drivingPicture: this.imgUlrs.drivingPicture[0],
+          identityCard: this.imgUlrs.identityCard[0],
+          persomCarPicture: this.imgUlrs.persomCarPicture[0]
+        })
       },
       onReaderSelect() {
         Toast.loading('图片读取中...')
       },
       onReaderComplete(name, {dataUrl, blob, file}) {
+        if (file.size > 1 * 1024 * 1024) {
+          Toast.failed('文件不能大于1M')
+          return
+        }
         const demoImageList = this.imageList[name] || []
         demoImageList.push(dataUrl)
         this.$set(this.imageList, name, demoImageList)
 
-        // console.log('[Mand Mobile] ImageReader Complete:', 'File Name ' + file.name)
         let pictureCode = ''
         switch (name) {
           case 'drivingLicense':
@@ -237,7 +255,8 @@
         }
         let customerNumId = '1'
         // 把图片上传到服务器
-        this._uploadPicture({file, customerNumId, pictureCode})
+        const params = {customerNumId, pictureCode}
+        this._uploadPicture(params, file, name)
 
         Toast.hide()
       },
@@ -248,16 +267,61 @@
         const demoImageList = this.imageList[name] || []
         demoImageList.splice(index, 1)
         this.$set(this.imageList, name, demoImageList)
+
+        const imgUlrList = this.imgUlrs[name] || []
+        // 从服务器上删除
+        this._deletePicture ({customerNumId: 1, url: imgUlrList[index]}, name)
       },
-      _uploadPicture (params) {
-        Toast.loading('上传中...')
-        uploadPicture(params).then(res => {
+      _deletePicture (params, name) {
+        deletePicture(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                Toast.succeed('删除成功')
+                const imgUlrList = this.imgUlrs[name] || []
+                imgUlrList.splice(0, 1)
+                this.$set(this.imgUlrs, name, imgUlrList)
+                break
+              case 201:
+                console.log(code)
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              case -1006:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      _uploadPicture (params, file, name) {
+        uploadPicture(params, file).then(res => {
           console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
               case 0:
                 Toast.succeed('上传成功')
+                const imgUlrList = this.imgUlrs[name] || []
+                imgUlrList.push(res.data.url)
+                this.$set(this.imgUlrs, name, imgUlrList)
                 break
               case 201:
                 console.log(code)
@@ -290,12 +354,14 @@
         getPicture(params).then(res => {
           console.log(res)
           if (res.status === 200) {
+            // this.test = res.data
             const code = res.data.code
             switch (code) {
               case 0:
-                //const demoImageList = this.imageList[name] || []
-                //demoImageList.push(dataUrl)
-                //this.$set(this.imageList, name, demoImageList)
+                // const demoImageList = this.imageList[name] || []
+                // demoImageList.push(dataUrl)
+                // this.$set(this.imageList, name, demoImageList)
+                this.test = res.data
                 break
               case 401:
                 console.log(code)
@@ -317,7 +383,7 @@
         }).catch(err => {
           console.log(err)
         })
-      }
+      },
     },
   }
 </script>

@@ -63,6 +63,15 @@
                             placeholder="请输入补充信息"
                     ></md-input-item>
                 </md-field-item>
+                <md-field-item
+                        name="item3"
+                        customized
+                        align="center">
+                    <md-input-item
+                            v-model="bill.remark"
+                            placeholder="请输入货物描述"
+                    ></md-input-item>
+                </md-field-item>
             </md-field>
             <split></split>
             <div class="order-footer">

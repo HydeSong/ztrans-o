@@ -11,9 +11,9 @@
                         :current="currentStep">
                 </md-steps>
             </div>
-            <step1 v-show="currentStep === 0" @next="next"></step1>
-            <step2 v-show="currentStep === 1" @next="next"></step2>
-            <step3 v-show="currentStep >= 2" @next="next"></step3>
+            <step1 v-if="currentStep === 0" @next="next"></step1>
+            <step2 v-if="currentStep === 1" @next="next"></step2>
+            <step3 v-if="currentStep >= 2" @next="next"></step3>
         </div>
     </div>
 </template>
@@ -49,7 +49,7 @@
             name: '查看结果',
           }
         ],
-        currentStep: 1
+        currentStep: 0
       }
     },
     methods: {
