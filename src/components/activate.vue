@@ -1,7 +1,7 @@
 <template>
-    <div class="login">
+    <div class="activate">
         <nav-bar>
-            司机加盟
+            账号激活
         </nav-bar>
         <div class="content">
             <div class="banner">
@@ -39,10 +39,10 @@
                 <split></split>
                 <split></split>
                 <div class="login-btn">
-                    <md-button @click="register" :disabled="disabled">去注册</md-button>
+                    <md-button @click="activate" :disabled="disabled">激活</md-button>
                 </div>
                 <split></split>
-                <p class="discription">点击“去注册”即代表同意《司机协议》</p>
+                <p class="discription">账号在系统中未激活，请点击“激活”</p>
             </div>
         </div>
     </div>
@@ -50,13 +50,14 @@
 
 <script type="text/ecmascript-6">
   import {Toast, Button, Field, FieldItem, InputItem, Swiper, SwiperItem, Codebox} from 'mand-mobile'
-  import Split from '../Base/Split'
-  import NavBar from '../Base/NavBar'
+  import Split from './Base/Split'
+  import NavBar from './Base/NavBar'
   import {getMobileCode} from '@/api/sms'
+  import {registContact} from '@/api/activate'
   import {mapGetters} from 'vuex'
 
   export default {
-    name: 'login',
+    name: 'activate',
     components: {
       [Codebox.name]: Codebox,
       [Button.name]: Button,
@@ -78,14 +79,14 @@
         disabledVerify: false,
         btnTxt: '获取验证码',
         banners: [{
-          img: require('../../assets/images/index_banner.png')
+          img: require('../assets/images/index_banner.png')
         }, {
-          img: require('../../assets/images/index_banner.png')
+          img: require('../assets/images/index_banner.png')
         }]
       }
     },
     computed: {
-      ...mapGetters(['wxcode', 'openId']),
+      ...mapGetters(['openId']),
       disabled () {
         return !(this.code && this.phone && (this.code == this.mobileCode))
       }
@@ -99,6 +100,38 @@
       clearInterval(this.timer)
     },
     methods: {
+      _registContact (params) {
+        registContact(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                Toast.succeed('激活成功')
+                let from = this.$route.query.from
+                this.$router.push(from)
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       getVerify () {
         if (!this.phone) {
           Toast.failed('请输入手机号！')
@@ -160,8 +193,8 @@
       goto() {
         this.$refs.swiper.goto(2)
       },
-      register() {
-        this.$router.push('/driver/register')
+      activate() {
+        this._registContact({mobilePhone: this.phone,openId: this.openId})
       },
       login() {
         console.log('login')
@@ -171,7 +204,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .login
+    .activate
         text-align center
     .banner
         height 350px
