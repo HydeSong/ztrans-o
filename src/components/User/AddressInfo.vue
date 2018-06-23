@@ -98,7 +98,6 @@
                 title="选择发货时间"
                 :default-date="currentDate"
                 :minDate="currentDate"
-                is-twelve-hours
                 @change="onDatePickerChange"
                 @confirm="onDatePickerConfirm"
         ></md-date-picker>

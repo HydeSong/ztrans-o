@@ -28,16 +28,17 @@
             <split></split>
             <md-field>
                 <md-field-item
-                        name="item0"
+                        name="shipping-address"
                         :title="(shipping.addressDetail||shipping.districtDetail)?`${shipping.districtDetail}${shipping.addressDetail}`:'请输入发货地'"
                         arrow="arrow-right"
-                        class="shipping-address"
+                        :class="[(shipping.addressDetail||shipping.districtDetail)?'':'saddress']"
                         @click="fillShipping">
                 </md-field-item>
                 <md-field-item
-                        name="item1"
+                        name="receiver-address"
                         :title="(receiver.addressDetail||receiver.districtDetail)?`${receiver.districtDetail}${receiver.addressDetail}`:'请输入收货地'"
                         arrow="arrow-right"
+                        :class="[(receiver.addressDetail||receiver.districtDetail)?'':'saddress']"
                         @click="fillReceiver">
                 </md-field-item>
             </md-field>
@@ -77,12 +78,12 @@
             <div class="order-footer">
                 <div class="order-footer__amount">
                     <div class="booking-info">
-                        <span>价格：{{bill.initPrice}}元({{bill.initDistance}}公里)</span>
-                        <span>超里程费：{{bill.overstepPrice}}元/公里</span>
+                        <span>价格：{{bill.initPrice || '--'}}元({{bill.initDistance || '--'}}公里)</span>
+                        <span>超里程费：{{bill.overstepPrice || '--'}}元/公里</span>
                     </div>
                     <div class="booking-info">
-                        <span>预约数量：{{bill.appointmentNum}}</span>
-                        <span>预约时间：{{bill.appointmentDate}}</span>
+                        <span>预约数量：{{bill.appointmentNum || '--'}}</span>
+                        <span>预约时间：{{bill.appointmentDate || '--:--:--'}}</span>
                     </div>
                 </div>
                 <split></split>
@@ -120,7 +121,7 @@
     data() {
       return {
         bill: {
-          appointmentDate: "4244",
+          appointmentDate: "",
           appointmentNum: 0,
           carTypeSeries: '',
           deliverGoodsTime: "",
@@ -432,6 +433,8 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
     .md-tabs{
         min-height: 440px!important
+        background: #fff url("../../assets/images/default.png") center center no-repeat!important
+        background-size 26%!important
     }
     .vehicle-type{
         background-color: #fff;
@@ -550,5 +553,9 @@
         color: #fff;
         background-color: rgba(16, 142, 233, .5);
         border-radius: 0 5px*2 5px*2 0;
+    }
+
+    .saddress {
+        color: #fc9153
     }
 </style>
