@@ -14,6 +14,7 @@
   import {urlParse} from '@/common/js/utils'
   import {mapMutations} from 'vuex'
   import {getCustomerOpenIdByCode, getDriverOpenIdByCode} from '@/api/openid'
+  import {setCookie} from '@/common/js/cache'
 
   export default {
     name: 'home',
@@ -67,7 +68,7 @@
             switch (code) {
               case 0:
                 this.setOpenId(res.data.openId)
-                // this.setOpenId('oV8CKwoxrmesNacHdWyyiDyRr_tk')
+                setCookie('__user__openid', res.data.openId)
                 this.call()
                 break
               case 401:
@@ -99,6 +100,7 @@
             switch (code) {
               case 0:
                 this.setOpenId(res.data.openId)
+                setCookie('__user__openid', res.data.openId)
                 this.join()
                 break
               case 401:

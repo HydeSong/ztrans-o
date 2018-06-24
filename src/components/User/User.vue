@@ -69,7 +69,7 @@
                         customized
                         align="center">
                     <md-input-item
-                            v-model="bill.remark"
+                            v-model="bill.goodsRemark"
                             placeholder="请输入货物描述"
                     ></md-input-item>
                 </md-field-item>
@@ -102,6 +102,7 @@
   import {createOrder} from '@/api/order'
   import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries, getCityByOpenId} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
+  import {getCookie} from '@/common/js/cache'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -122,7 +123,7 @@
       return {
         bill: {
           appointmentDate: "",
-          appointmentNum: 0,
+          appointmentNum: 1,
           carTypeSeries: '',
           deliverGoodsTime: "",
           initDistance: "",
@@ -140,7 +141,8 @@
           sendGoodsLocationNum: 0,
           sendGoodsPersonMobile: "",
           sendGoodsPersonName: "",
-          wetherTakeover: false
+          wetherTakeover: false,
+          goodsRemark: ''
         },
         tabs: [],
         agreeConf: {
@@ -177,25 +179,24 @@
       }
     },
     created () {
-      console.log(this.openId)
-      this._getCityByOpenId({openId: this.openId})
-      this._getAllRouterByCity({openId: this.openId})
+      this._getCityByOpenId({openId: this.openId || getCookie('__user__openid')})
+      this._getAllRouterByCity({openId: this.openId || getCookie('__user__openid')})
     },
     beforeRouteUpdate (to, from, next) {
       if (to.path === '/user') {
-        this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.carTypeSeries, openId: this.openId, routerDetailSeries: this.shipping.routerDetailSeries})
+        this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
         this.bill.deliverGoodsTime = this.shipping.goodsTime
-        this.bill.openId = this.openId
+        this.bill.openId = this.openId || getCookie('__user__openid')
         this.bill.receiveAddressDetail = this.receiver.addressDetail
         this.bill.receiveGoodsLocationNum = this.receiver.locationNum
         this.bill.receiveGoodsPersonMobile = this.receiver.personMobile
         this.bill.receiveGoodsPersonName = this.receiver.personName
         this.bill.routerDetailSeries = this.shipping.routerDetailSeries
-        this.bill.routerPriceSeries = this.shipping.routerPriceSeries
         this.bill.sendAddressDetail = this.shipping.addressDetail
         this.bill.sendGoodsLocationNum = this.shipping.locationNum
         this.bill.sendGoodsPersonMobile = this.shipping.personMobile
         this.bill.sendGoodsPersonName = this.shipping.personName
+        this.bill.appointmentDate = this.shipping.goodsTime
       }
       next()
     },
@@ -205,14 +206,18 @@
         setOpenId: 'SET_OPENID'
       }),
       booking () {
-        console.log('约车')
-        console.log('验证数据 入参')
+        // console.log('约车')
+        // console.log('验证数据 入参')
         this._createOrder()
       },
       tabIndexChange (index, preIndex) {
-        console.log(index, preIndex)
+        // console.log(index, preIndex)
         this.bill.carTypeSeries = this.tabs[index].series
-        console.log(this.bill.carTypeSeries)
+        // console.log(this.bill.carTypeSeries)
+        // 切换车型时查询价格
+        if (this.bill.carTypeSeries && this.shipping.routerDetailSeries) {
+          this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
+        }
       },
       selectRoadChange (barItem, listItem) {
         console.log(listItem)
@@ -222,6 +227,10 @@
           sourceCityId: listItem.sourceCityId,
           destinyCityId: listItem.destinyCityId
         })
+        // 切换路线时查询价格
+        if (this.bill.carTypeSeries && this.shipping.routerDetailSeries) {
+          this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
+        }
       },
       fillShipping () {
         this.$router.push('/user/address-info/shipping')
@@ -283,21 +292,27 @@
                 this.bill.initPrice = res.data.initPrice
                 this.bill.overstepPrice = res.data.overstepPrice
                 this.bill.routerPriceId = res.data.routerPriceId
+                this.bill.routerPriceSeries = res.data.routerPriceId
                 break
               case 401:
                 console.log(code)
+                Toast.failed(res.data.message)
                 break
               case 403:
                 console.log(code)
+                Toast.failed(res.data.message)
                 break
               case 404:
                 console.log(code)
+                Toast.failed(res.data.message)
                 break
               case -1:
                 console.log(code)
+                Toast.failed(res.data.message)
                 break
               default:
                 console.log(code)
+                Toast.failed(res.data.message)
                 break
             }
           }
