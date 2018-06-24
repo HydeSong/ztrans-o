@@ -37,10 +37,10 @@
                         @click.native="isDatePickerShow = true">
                 </md-field-item>
                 <md-input-item
-                        title="收货点个数"
+                        title="发货点个数"
                         type="digit"
                         v-model="locationNum"
-                        placeholder="请输入收货点个数"
+                        placeholder="请输入发货点个数"
                 ></md-input-item>
             </md-field>
         </div>
@@ -94,11 +94,10 @@
                 ref="datePicker"
                 v-model="isDatePickerShow"
                 type="datetime"
-                today-text="(今天)"
+                today-text="&(今天)"
                 title="选择发货时间"
                 :default-date="currentDate"
                 :minDate="currentDate"
-                @change="onDatePickerChange"
                 @confirm="onDatePickerConfirm"
         ></md-date-picker>
     </div>
@@ -120,14 +119,14 @@
         raddressDetail: '',
         rpersonMobile: '',
         rpersonName: '',
-        rlocationNum: '',
+        rlocationNum: '1',
         routerDetailSeries: '',
         routerType: '',
         personMobile: '',
         personName: '',
         addressDetail: '',
         goodsTime: '',
-        locationNum: '',
+        locationNum: '1',
         sourceCityId: 0,
         sourceCityName:'',
         sourceCityAreaId:0,
@@ -239,6 +238,10 @@
                       }]
                     })
                   })
+                  // 省市区/县默认值
+                  this.pickerValue1 = `${wxSourceRouterCityAreaTownModel[0].sourceCityName}${wxSourceRouterCityAreaTownModel[0].sourceCityAreaName}${wxSourceRouterCityAreaTownModel[0].sourceTownName}`
+                  this.routerDetailSeries = wxSourceRouterCityAreaTownModel[0].routerDeatilSeries
+                  this.routerType = wxSourceRouterCityAreaTownModel[0].routerType
                 } else {
                   const wxDestionRouterCityAreaTownModel = res.data.wxDestionRouterCityAreaTownModel
                   wxDestionRouterCityAreaTownModel.forEach((item) => {
@@ -257,6 +260,10 @@
                       }]
                     })
                   })
+                  // 省市区/县默认值
+                  this.pickerValue1 = `${wxDestionRouterCityAreaTownModel[0].destinyCityName}${wxDestionRouterCityAreaTownModel[0].destinyCityAreaName}${wxDestionRouterCityAreaTownModel[0].destinyTownName}`
+                  this.rrouterDetailSeries = wxDestionRouterCityAreaTownModel[0].routerDeatilSeries
+                  this.rrouterType = wxDestionRouterCityAreaTownModel[0].routerType
                 }
                 this.district = district
                 console.log(this.district)
@@ -301,13 +308,8 @@
         console.log(activeValue)
         console.log(res)
       },
-      onDatePickerChange(columnIndex, itemIndex, value) {
-        console.log(`[Mand Mobile] DatePicker Change\ncolumnIndex: ${columnIndex},\nitemIndex:${itemIndex},\nvalue: ${JSON.stringify(value)}`)
-      },
-      onDatePickerConfirm(columnsValue) {
-        console.log(`[Mand Mobile] DatePicker Confirm\nvalue: ${JSON.stringify(columnsValue)}`)
-        this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy/MM/dd hh:mm')
-        console.log(this.goodsTime)
+      onDatePickerConfirm() {
+        this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
       },
     },
     components: {
