@@ -1,9 +1,6 @@
 
 <template>
   <div class="home">
-    <!--<md-button @click="call">叫车服务</md-button>-->
-    <!--<split></split>-->
-    <!--<md-button @click="join">司机加盟</md-button>-->
     跳转中
   </div>
 </template>
@@ -45,7 +42,10 @@
         this.$router.push('/user')
       },
       join () {
-        this.$router.push('/driver/login')
+        this.$router.push('/driver')
+      },
+      activate (from) {
+        this.$router.push(`/activate?from=${from}`)
       },
       _goto (queryStr) {
         const state = queryStr.state
@@ -69,7 +69,11 @@
               case 0:
                 this.setOpenId(res.data.openId)
                 setCookie('__user__openid', res.data.openId)
-                this.call()
+                if (res.data.wetherRegister === 1) {
+                  this.call()
+                } else if (res.data.wetherRegister === 0) {
+                  this.activate('driver')
+                }
                 break
               case 401:
                 console.log(code)
@@ -101,7 +105,11 @@
               case 0:
                 this.setOpenId(res.data.openId)
                 setCookie('__user__openid', res.data.openId)
-                this.join()
+                if (res.data.wetherRegister === 1) {
+                  this.join()
+                } else if (res.data.wetherRegister === 0) {
+                  this.activate('driver')
+                }
                 break
               case 401:
                 console.log(code)

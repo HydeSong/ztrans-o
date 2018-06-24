@@ -94,7 +94,7 @@
                 ref="datePicker"
                 v-model="isDatePickerShow"
                 type="datetime"
-                today-text="&(今天)"
+                today-text="(今天)"
                 title="选择发货时间"
                 :default-date="currentDate"
                 :minDate="currentDate"

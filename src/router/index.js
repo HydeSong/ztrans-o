@@ -9,6 +9,7 @@ import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
 import Register from '@/components/Driver/Register'
+import Activate from '@/components/Activate'
 import Error404 from '@/components/Base/Error404'
 import ErrorNetwork from '@/components/Base/ErrorNetwork'
 import ErrorOp from '@/components/Base/ErrorOp'
@@ -52,6 +53,11 @@ const router = new Router({
       component: Home
     },
     {
+      path: '/activate',
+      name: 'activate',
+      component: Activate
+    },
+    {
       path: '/user',
       name: 'user',
       component: User,
@@ -61,6 +67,10 @@ const router = new Router({
           component: AddressInfo
         }
       ]
+    },
+    {
+      path: '/driver',
+      redirect: '/driver/login'
     },
     {
       path: '/driver',

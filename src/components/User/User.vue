@@ -103,6 +103,7 @@
   import {getAllRouterByCity, getCarTypeByAllRouter, getRouterPriceByCarTypeAndRouterDetailSeries, getCityByOpenId} from '@/api/road'
   import {getCustomerOpenIdByCode} from '@/api/openid'
   import {getCookie} from '@/common/js/cache'
+  import {getPicture} from '@/api/picture'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -160,8 +161,7 @@
             options: [],
           },
         ],
-        defaultPath: []
-      }
+        defaultPath: []}
     },
     computed: {
       ...mapGetters(['shipping', 'receiver', 'wxcode', 'openId']),
@@ -415,6 +415,40 @@
                   destinyCityId: item.destinyCityId
                 })
                 console.log(this.defaultPath)
+                break
+              case 401:
+                console.log(code)
+                break
+              case 403:
+                console.log(code)
+                break
+              case 404:
+                console.log(code)
+                break
+              case -1:
+                console.log(code)
+                break
+              case -5046:
+                console.log(code)
+                console.log('没有默认路线')
+                break
+              default:
+                console.log(code)
+                break
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      _getPicture (params) {
+        getPicture(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            const code = res.data.code
+            switch (code) {
+              case 0:
+                console.log(res.data)
                 break
               case 401:
                 console.log(code)
