@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <split></split>
-                <md-button @click.native="booking">约 车</md-button>
+                <md-button @click.native="booking" :disabled="!isPriceShow">约 车</md-button>
             </div>
             <router-view></router-view>
         </div>
@@ -153,15 +153,15 @@
           disabled: false,
           introduction: '未选中状态',
         },
-        switchActive: false,
-        isContentShow: false,
+        isPriceShow: false,
         pathData: [
           {
             text: '请选择路线',
             options: [],
           },
         ],
-        defaultPath: []}
+        defaultPath: []
+      }
     },
     computed: {
       ...mapGetters(['shipping', 'receiver', 'wxcode', 'openId']),
@@ -288,6 +288,7 @@
             const code = res.data.code
             switch (code) {
               case 0:
+                this.isPriceShow = true
                 this.bill.initDistance = res.data.initDistance
                 this.bill.initPrice = res.data.initPrice
                 this.bill.overstepPrice = res.data.overstepPrice
@@ -296,22 +297,52 @@
                 break
               case 401:
                 console.log(code)
+                this.isPriceShow = false
+                this.bill.initDistance = 0
+                this.bill.initPrice = 0
+                this.bill.overstepPrice = 0
+                this.bill.routerPriceId = 0
+                this.bill.routerPriceSeries = 0
                 Toast.failed(res.data.message)
                 break
               case 403:
                 console.log(code)
+                this.isPriceShow = false
+                this.bill.initDistance = 0
+                this.bill.initPrice = 0
+                this.bill.overstepPrice = 0
+                this.bill.routerPriceId = 0
+                this.bill.routerPriceSeries = 0
                 Toast.failed(res.data.message)
                 break
               case 404:
                 console.log(code)
+                this.isPriceShow = false
+                this.bill.initDistance = 0
+                this.bill.initPrice = 0
+                this.bill.overstepPrice = 0
+                this.bill.routerPriceId = 0
+                this.bill.routerPriceSeries = 0
                 Toast.failed(res.data.message)
                 break
               case -1:
                 console.log(code)
+                this.isPriceShow = false
+                this.bill.initDistance = 0
+                this.bill.initPrice = 0
+                this.bill.overstepPrice = 0
+                this.bill.routerPriceId = 0
+                this.bill.routerPriceSeries = 0
                 Toast.failed(res.data.message)
                 break
               default:
                 console.log(code)
+                this.isPriceShow = false
+                this.bill.initDistance = 0
+                this.bill.initPrice = 0
+                this.bill.overstepPrice = 0
+                this.bill.routerPriceId = 0
+                this.bill.routerPriceSeries = 0
                 Toast.failed(res.data.message)
                 break
             }
