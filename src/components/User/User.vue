@@ -49,7 +49,7 @@
                         customized
                         align="left">
                     <md-agree
-                            v-model="bill.wetherTakeover"
+                            v-model="wetherTakeover"
                             size="lg"
                     >
                         需要搬卸
@@ -142,9 +142,10 @@
           sendGoodsLocationNum: 0,
           sendGoodsPersonMobile: "",
           sendGoodsPersonName: "",
-          wetherTakeover: false,
+          // wetherTakeover: false,
           goodsRemark: ''
         },
+        wetherTakeover: false,
         tabs: [],
         agreeConf: {
           checked: false,
@@ -161,6 +162,13 @@
           },
         ],
         defaultPath: []
+      }
+    },
+    watch: {
+      wetherTakeover (val) {
+        let ret = val ? 'Y' : 'N'
+        console.log(ret)
+        this.bill.wetherTakeover = ret
       }
     },
     computed: {
