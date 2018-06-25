@@ -97,7 +97,6 @@
                 today-text="&(今天)"
                 title="选择发货时间"
                 :default-date="currentDate"
-                :minDate="currentDate"
                 @confirm="onDatePickerConfirm"
         ></md-date-picker>
     </div>
