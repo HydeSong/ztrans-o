@@ -72,7 +72,7 @@
                 if (res.data.wetherRegister === 1) {
                   this.call()
                 } else if (res.data.wetherRegister === 0) {
-                  this.activate('driver')
+                  this.activate('user')
                 }
                 break
               case 401:
