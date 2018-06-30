@@ -175,7 +175,6 @@
           console.log('确认发货信息')
           let addressInfo = {
             routerDetailSeries: this.routerDetailSeries,
-            routerType: this.routerType,
             personMobile: this.personMobile,
             personName: this.personName,
             addressDetail: this.addressDetail,
@@ -194,7 +193,6 @@
           console.log('确认收货信息')
           let addressInfo = {
             routerDetailSeries: this.rrouterDetailSeries,
-            routerType: this.rrouterType,
             personMobile: this.rpersonMobile,
             personName: this.rpersonName,
             addressDetail: this.raddressDetail,
@@ -213,59 +211,29 @@
       },
       _getRouterByCityAreaTown (params) {
         getRouterByCityAreaTown(params).then(res => {
-          console.log(JSON.stringify(res))
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
               case 0:
-                let district = [[]]
+                let district = []
                 if (this.isShipping) {
-                  const wxSourceRouterCityAreaTownModel = res.data.wxSourceRouterCityAreaTownModel
-                  wxSourceRouterCityAreaTownModel.forEach((item) => {
-                    district[0].push({
-                      value: item.sourceCityId,
-                      label: item.sourceCityName,
-                      children: [{
-                        value: item.sourceCityAreaId,
-                        label: item.sourceCityAreaName,
-                        children: [{
-                          value: item.sourceTownId,
-                          label: item.sourceTownName,
-                          routerDetailSeries: item.routerDeatilSeries,
-                          routerType: item.routerType,
-                        }]
-                      }]
-                    })
-                  })
+                  const sourceRouterCityAreaTownModel = res.data.sourceRouterCityAreaTownModel
+                  district.push(sourceRouterCityAreaTownModel)
                   // 省市区/县默认值
-                  this.pickerValue1 = `${wxSourceRouterCityAreaTownModel[0].sourceCityName}${wxSourceRouterCityAreaTownModel[0].sourceCityAreaName}${wxSourceRouterCityAreaTownModel[0].sourceTownName}`
-                  this.routerDetailSeries = wxSourceRouterCityAreaTownModel[0].routerDeatilSeries
-                  this.routerType = wxSourceRouterCityAreaTownModel[0].routerType
+                  const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
+                  this.pickerValue1 = defaultValue
+                  this.routerDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
                 } else {
-                  const wxDestionRouterCityAreaTownModel = res.data.wxDestionRouterCityAreaTownModel
-                  wxDestionRouterCityAreaTownModel.forEach((item) => {
-                    district[0].push({
-                      value: item.destinyCityId,
-                      label: item.destinyCityName,
-                      children: [{
-                        value: item.destinyCityAreaId,
-                        label: item.destinyCityAreaName,
-                        children: [{
-                          value: item.destinyTownId,
-                          label: item.destinyTownName,
-                          routerDetailSeries: item.routerDeatilSeries,
-                          routerType: item.routerType,
-                        }]
-                      }]
-                    })
-                  })
+                  const destionRouterCityAreaTownModel = res.data.destionRouterCityAreaTownModel
+                  district.push(destionRouterCityAreaTownModel)
                   // 省市区/县默认值
-                  this.pickerValue1 = `${wxDestionRouterCityAreaTownModel[0].destinyCityName}${wxDestionRouterCityAreaTownModel[0].destinyCityAreaName}${wxDestionRouterCityAreaTownModel[0].destinyTownName}`
-                  this.rrouterDetailSeries = wxDestionRouterCityAreaTownModel[0].routerDeatilSeries
-                  this.rrouterType = wxDestionRouterCityAreaTownModel[0].routerType
+                  const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
+                  this.pickerValue1 = defaultValue
+                  this.rrouterDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
                 }
                 this.district = district
-                console.log(this.district)
+                // console.log(this.district)
                 break
               case 401:
                 console.log(code)
@@ -303,9 +271,6 @@
           this.rrouterDetailSeries = activeValue.children[0].routerDetailSeries
           this.rrouterType = activeValue.children[0].routerType
         }
-        console.log(values)
-        console.log(activeValue)
-        console.log(res)
       },
       onDatePickerConfirm() {
         this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
