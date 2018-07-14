@@ -253,9 +253,9 @@
       },
       _createOrder() {
         let params = this.bill
-        console.log(params)
+        // console.log(params)
         createOrder(params).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
@@ -290,7 +290,7 @@
       },
       _getRouterPriceByCarTypeAndRouterDetailSeries(params) {
         getRouterPriceByCarTypeAndRouterDetailSeries(params).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
@@ -360,7 +360,7 @@
       },
       _getCarTypeByAllRouter (params) {
         getCarTypeByAllRouter(params).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
@@ -396,7 +396,7 @@
       },
       _getAllRouterByCity (params) {
         getAllRouterByCity(params).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
@@ -409,7 +409,7 @@
                   })
                 })
                 this.pathData[0].options = pathDataOptions
-                console.log(this.pathData)
+                // console.log(this.pathData)
                 break
               case 401:
                 console.log(code)
@@ -434,7 +434,7 @@
       },
       _getCityByOpenId (params) {
         getCityByOpenId(params).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
@@ -452,7 +452,7 @@
                   sourceCityId: item.sourceCityId,
                   destinyCityId: item.destinyCityId
                 })
-                console.log(this.defaultPath)
+                // console.log(this.defaultPath)
                 break
               case 401:
                 console.log(code)
@@ -481,7 +481,7 @@
       },
       _getPicture (params) {
         getPicture(params).then(res => {
-          console.log(res)
+          // console.log(res)
           if (res.status === 200) {
             const code = res.data.code
             switch (code) {
