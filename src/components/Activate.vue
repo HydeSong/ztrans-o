@@ -39,7 +39,7 @@
                 <split></split>
                 <split></split>
                 <div class="login-btn">
-                    <md-button @click="Activate" :disabled="disabled">激活</md-button>
+                    <md-button @click="activate" :disabled="disabled">激活</md-button>
                 </div>
                 <split></split>
                 <p class="discription">账号在系统中未激活，请点击“激活”</p>
@@ -54,6 +54,7 @@
   import NavBar from './Base/NavBar'
   import {getMobileCode} from '@/api/sms'
   import {registContact} from '@/api/activate'
+  import {getCookie} from '@/common/js/cache'
   import {mapGetters} from 'vuex'
 
   export default {
@@ -101,6 +102,7 @@
     },
     methods: {
       _registContact (params) {
+        console.log(params)
         registContact(params).then(res => {
           console.log(res)
           if (res.status === 200) {
@@ -194,7 +196,7 @@
         this.$refs.swiper.goto(2)
       },
       activate() {
-        this._registContact({mobilePhone: this.phone,openId: this.openId})
+        this._registContact({mobilePhone: this.phone, openId: this.openId || getCookie('__user__openid')})
       },
       login() {
         console.log('login')

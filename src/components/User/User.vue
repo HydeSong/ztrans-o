@@ -167,7 +167,6 @@
     watch: {
       wetherTakeover (val) {
         let ret = val ? 'Y' : 'N'
-        console.log(ret)
         this.bill.wetherTakeover = ret
       }
     },
