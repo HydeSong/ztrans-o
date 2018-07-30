@@ -52,7 +52,7 @@
   import {Toast, Button, Field, FieldItem, InputItem, Swiper, SwiperItem, Codebox} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
-  import {getContactMobileCode} from '@/api/sms'
+  import {getMobileCode} from '@/api/sms'
   import {mapGetters} from 'vuex'
 
   export default {
@@ -117,7 +117,7 @@
             this.timeout = 60
           }
         }, 1000)
-        getContactMobileCode({mobilePhone: this.phone}).then(res => {
+        getMobileCode({mobilePhone: this.phone}).then(res => {
           console.log(res)
           if (res.status === 200) {
             const code = res.data.code
