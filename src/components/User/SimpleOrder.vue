@@ -149,17 +149,17 @@
     methods: {
       booking() {
         const params = {
-          appointmentDate: this.bill.appointmentDate,
-          carTypeSeries: this.bill.carTypeSeries,
+          openId: this.openId || getCookie('__user__openid'),
           contactName: this.customerInfo.contactName,
           customerMasterId: this.customerInfo.customerMasterId,
+          mobilePhone: this.customerInfo.mobilePhone || getCookie('__user__customermasterid'),
+          appointmentDate: this.bill.appointmentDate,
+          routerDetailSeries: this.bill.routerDetailSeries,
+          remark: this.bill.remark,
+          carTypeSeries: this.bill.carTypeSeries,
           initDistance: this.bill.initDistance,
           initPrice: this.bill.initPrice,
-          mobilePhone: this.customerInfo.mobilePhone,
-          openId: this.openId || getCookie('__user__openid'),
           overstepPrice: this.bill.overstepPrice,
-          remark: this.bill.remark,
-          routerDetailSeries: this.bill.routerDetailSeries,
           routerPriceSeries: this.bill.routerPriceSeries
         }
         console.log(params)
@@ -285,9 +285,13 @@
 
         let res = ''
         values.forEach(value => {
-          value && (res += `${value.text || value.label} `)
+          value && (res = value)
         })
-        this.bill.carTypeSeries = res
+        this.bill.carTypeSeries = res.carTypeSeries
+        this.bill.initDistance = res.initDistance
+        this.bill.initPrice = res.initPrice
+        this.bill.overstepPrice = res.overstepPrice
+        this.bill.routerPriceSeries = res.routerPriceSeries
       },
     }
   }
