@@ -10,4 +10,3 @@ export function createOrder (params) {
   }
   return axios.get(url, {params: data})
 }
-

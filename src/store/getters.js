@@ -11,3 +11,5 @@ export const wxcode = state => state.wxcode
 export const step1Data = state => state.step1Data
 
 export const step2Data = state => state.step2Data
+
+export const customerInfo = state => state.customerInfo
