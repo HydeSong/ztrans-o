@@ -93,9 +93,6 @@
       }
     },
     mounted () {
-      ...mapMutations({
-        setCustomerInfo: 'SET_CUSTOMERINFO'
-      }),
       window.triggerSwiper3 = () => {
         this.goto()
       }
@@ -104,6 +101,9 @@
       clearInterval(this.timer)
     },
     methods: {
+      ...mapMutations({
+        setCustomerInfo: 'SET_CUSTOMERINFO'
+      }),
       _registContact (params) {
         // console.log(params)
         registContact(params).then(res => {
