@@ -11,3 +11,6 @@ export const SET_WXCODE = 'SET_WXCODE'
 export const SET_STEP1DATA = 'SET_STEP1DATA'
 
 export const SET_STEP2DATA = 'SET_STEP2DATA'
+
+export const SET_CUSTOMERINFO = 'SET_CUSTOMERINFO'
+

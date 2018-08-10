@@ -21,6 +21,9 @@ const mutations = {
   },
   [types.SET_STEP2DATA] (state, data) {
     state.step2Data = data
+  },
+  [types.SET_CUSTOMERINFO] (state, data) {
+    state.customerInfo = data
   }
 }
 

@@ -55,7 +55,7 @@
   import {getContactMobileCode} from '@/api/sms'
   import {registContact} from '@/api/activate'
   import {getCookie} from '@/common/js/cache'
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: 'activate',
@@ -93,6 +93,9 @@
       }
     },
     mounted () {
+      ...mapMutations({
+        setCustomerInfo: 'SET_CUSTOMERINFO'
+      }),
       window.triggerSwiper3 = () => {
         this.goto()
       }
@@ -102,7 +105,7 @@
     },
     methods: {
       _registContact (params) {
-        console.log(params)
+        // console.log(params)
         registContact(params).then(res => {
           console.log(res)
           if (res.status === 200) {
@@ -112,6 +115,13 @@
                 Toast.succeed('激活成功')
                 let from = this.$route.query.from
                 this.$router.push(from)
+                // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
+                const {contactName, customerMasterId, mobilePhone} = res.data
+                this.setCustomerInfo({
+                  contactName,
+                  customerMasterId,
+                  mobilePhone
+                })
                 break
               case 401:
                 console.log(code)

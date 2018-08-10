@@ -5,6 +5,7 @@ import Test from '@/components/Test'
 import UI from '@/components/UI'
 import Home from '@/components/Home'
 import User from '@/components/User/User'
+import SimpleOrder from '@/components/User/SimpleOrder'
 import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
@@ -56,6 +57,11 @@ const router = new Router({
       path: '/activate',
       name: 'activate',
       component: Activate
+    },
+    {
+      path: '/simple-order',
+      name: 'simple-order',
+      component: SimpleOrder
     },
     {
       path: '/user',
