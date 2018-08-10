@@ -10,3 +10,12 @@ export function getMobileCode (params, sign) {
   }
   return axios.get(url, {params: data})
 }
+
+export function getContactMobileCode (params, sign) {
+  const url = `${CONFIG.HOST}/getContactMobileCode`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
