@@ -143,7 +143,8 @@
           sendGoodsPersonMobile: "",
           sendGoodsPersonName: "",
           // wetherTakeover: false,
-          goodsRemark: ''
+          goodsRemark: '',
+          wetherSpecialCustomerPrice: ''
         },
         wetherTakeover: false,
         tabs: [],
@@ -301,6 +302,7 @@
                 this.bill.overstepPrice = res.data.overstepPrice
                 this.bill.routerPriceId = res.data.routerPriceId
                 this.bill.routerPriceSeries = res.data.routerPriceId
+                this.bill.wetherSpecialCustomerPrice = res.data.wetherSpecialCustomerPrice
                 break
               case 401:
                 console.log(code)
