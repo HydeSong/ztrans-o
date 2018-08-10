@@ -278,7 +278,7 @@
         values.forEach(value => {
           value && (res += `${value.text || value.label} `)
         })
-        this.routerAlia = res
+        this.bill.routerDetailSeries = res
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
