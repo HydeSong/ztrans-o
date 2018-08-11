@@ -47,7 +47,7 @@
                 </div>
                 <split></split>
                 <split></split>
-                <md-button @click.native="booking">确认下单</md-button>
+                <md-button @click.native="booking" :disabled="isBillOk">确认下单</md-button>
             </div>
         </div>
         <md-picker
@@ -133,7 +133,7 @@
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
       isBillOk() {
-        return this.routerName && this.carTypeName && this.bill.appointmentDate
+        return !this.routerName && !this.carTypeName && !this.bill.appointmentDate
       }
     },
     watch: {
