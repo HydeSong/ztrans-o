@@ -133,7 +133,7 @@
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
       isBillOk() {
-        return !this.routerName && !this.carTypeName && !this.bill.appointmentDate
+        return !(this.routerName && this.carTypeName && this.bill.appointmentDate)
       }
     },
     watch: {
