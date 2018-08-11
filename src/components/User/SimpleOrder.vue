@@ -18,7 +18,7 @@
                         title="车型"
                         arrow="arrow-right"
                         align="right"
-                        :value="bill.carTypeSeries"
+                        :value="carTypeName"
                         @click.native="isPickerShow2 = true">
                 </md-field-item>
                 <md-field-item
@@ -105,6 +105,7 @@
         isDatePickerShow: false,
         currentDate: new Date(),
         routerName: '',
+        carTypeName: '',
         bill: {
           appointmentDate: "",
           carTypeSeries: '',
@@ -298,6 +299,7 @@
           value && (res = value)
         })
         console.log(res)
+        this.carTypeName = res.typeName
         this.bill.carTypeSeries = res.carTypeSeries
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice
