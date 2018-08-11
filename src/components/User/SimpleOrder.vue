@@ -301,6 +301,8 @@
         console.log(res)
         this.carTypeName = res.typeName
         this.bill.carTypeSeries = res.series
+        console.log(res.series)
+        console.log(this.bill.carTypeSeries)
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice
