@@ -125,18 +125,23 @@
                 break
               case 401:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 403:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 404:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case -1:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               default:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
             }
           }
@@ -170,20 +175,29 @@
               case 0:
                 this.mobileCode = res.data.mobileCode
                 break
+              case -5052:
+                console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
+                break
               case 401:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 403:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 404:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case -1:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               default:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
             }
           }

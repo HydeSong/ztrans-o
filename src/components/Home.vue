@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import {Button} from 'mand-mobile'
+  import {Button, Toast} from 'mand-mobile'
   import Split from './Base/Split'
   import {urlParse} from '@/common/js/utils'
   import {mapMutations} from 'vuex'
@@ -97,18 +97,23 @@
                 break
               case 401:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 403:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 404:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case -1:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               default:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
             }
           }
@@ -133,18 +138,23 @@
                 break
               case 401:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 403:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case 404:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               case -1:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
               default:
                 console.log(code)
+                Toast.failed(`${code}:${res.data.message}`)
                 break
             }
           }
