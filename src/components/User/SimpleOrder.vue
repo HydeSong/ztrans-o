@@ -10,7 +10,7 @@
                         title="线路别名(编号)"
                         arrow="arrow-right"
                         align="right"
-                        :value="bill.routerDetailSeries"
+                        :value="routerName"
                         @click.native="isPickerShow1 = true">
                 </md-field-item>
                 <md-field-item
@@ -104,6 +104,7 @@
         isPickerShow2: false,
         isDatePickerShow: false,
         currentDate: new Date(),
+        routerName: '',
         bill: {
           appointmentDate: "",
           carTypeSeries: '',
@@ -135,19 +136,16 @@
       }
     },
     watch: {
-      'bill.routerDetailSeries' (val) {
-        console.log(val)
+      'routerName' () {
         Toast.loading('正在查询')
-        if (val) {
-            this._getPriceAndCarByCustomerIdAndRouterSeries({
-              customerMasterId: this.customerInfo.customerMasterId,
-              openId: this.openId || getCookie('__user__openid'),
-              routerDetailSeries: val
-            })
-          setTimeout(() => {
-            Toast.hide()
-          }, 3000)
-        }
+        this._getPriceAndCarByCustomerIdAndRouterSeries({
+          customerMasterId: this.customerInfo.customerMasterId,
+          openId: this.openId || getCookie('__user__openid'),
+          routerDetailSeries: this.bill.routerDetailSeries
+        })
+        setTimeout(() => {
+          Toast.hide()
+        }, 3000)
       }
     },
     methods: {
@@ -280,11 +278,17 @@
         const values = this.$refs.pickerRouter.getColumnValues()
         console.log(values)
         let res = ''
+        let val = ''
         values.forEach(value => {
-          value && (res += `${value.text || value.label} `)
+          if(value) {
+            res += `${value.text || value.label} `
+            val = value
+          }
         })
         console.log(res)
-        this.bill.routerDetailSeries = res
+        console.log(val)
+        this.routerName = res
+        this.bill.routerDetailSeries = val.series
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
