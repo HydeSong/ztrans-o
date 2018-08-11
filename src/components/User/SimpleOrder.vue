@@ -124,7 +124,7 @@
     },
     created() {
       this._getRouterAliaByCustomerMasterId({
-        customerMasterId: this.customerInfo.customerMasterId || getCookie('__user__customermasterid'),
+        customerMasterId: this.customerInfo.customerMasterId,
         openId: this.openId || getCookie('__user__openid')
       })
     },
@@ -137,9 +137,10 @@
     watch: {
       'bill.routerDetailSeries' (val) {
         console.log(val)
+        Toast.loading('正在查询')
         if (val) {
             this._getPriceAndCarByCustomerIdAndRouterSeries({
-              customerMasterId: this.customerInfo.customerMasterId || getCookie('__user__customermasterid'),
+              customerMasterId: this.customerInfo.customerMasterId,
               openId: this.openId || getCookie('__user__openid'),
               routerDetailSeries: val
             })
@@ -152,7 +153,7 @@
           openId: this.openId || getCookie('__user__openid'),
           contactName: this.customerInfo.contactName,
           customerMasterId: this.customerInfo.customerMasterId,
-          mobilePhone: this.customerInfo.mobilePhone || getCookie('__user__customermasterid'),
+          mobilePhone: this.customerInfo.mobilePhone,
           appointmentDate: this.bill.appointmentDate,
           routerDetailSeries: this.bill.routerDetailSeries,
           remark: this.bill.remark,
@@ -206,6 +207,7 @@
             const code = res.data.code
             switch (code) {
               case 0:
+                Toast.hide()
                 const carAndPriceModels = res.data.carAndPriceModels
                 const cp = carAndPriceModels.map((value) => {
                   return {'text': value.typeName, 'value': value.series, ...value}
@@ -282,11 +284,12 @@
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
-
+        console.log(values)
         let res = ''
         values.forEach(value => {
           value && (res = value)
         })
+        console.log(res)
         this.bill.carTypeSeries = res.carTypeSeries
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice

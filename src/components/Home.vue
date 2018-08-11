@@ -36,10 +36,14 @@
     methods: {
       ...mapMutations({
         setWxCode: 'SET_WXCODE',
-        setOpenId: 'SET_OPENID'
+        setOpenId: 'SET_OPENID',
+        setCustomerInfo: 'SET_CUSTOMERINFO'
       }),
       call () {
         this.$router.push('/user')
+      },
+      simpleOrder () {
+        this.$router.push('/simple-order')
       },
       join () {
         this.$router.push('/driver')
@@ -69,8 +73,24 @@
               case 0:
                 this.setOpenId(res.data.openId)
                 setCookie('__user__openid', res.data.openId)
+                // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
+                const {contactName, customerMasterId, mobilePhone} = res.data
+                this.setCustomerInfo({
+                  contactName,
+                  customerMasterId,
+                  mobilePhone
+                })
+                setCookie('__user__customerinfo', JSON.stringify({
+                  contactName,
+                  customerMasterId,
+                  mobilePhone
+                }))
                 if (res.data.wetherRegister === 1) {
-                  this.call()
+                  if (res.data.wetherSpecialCustomer === 0) {
+                    this.simpleOrder()
+                  } else {
+                    this.call()
+                  }
                 } else if (res.data.wetherRegister === 0) {
                   this.activate('user')
                 }

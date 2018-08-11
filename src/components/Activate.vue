@@ -112,9 +112,6 @@
             const code = res.data.code
             switch (code) {
               case 0:
-                Toast.succeed('激活成功')
-                let from = this.$route.query.from
-                this.$router.push(from)
                 // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
                 const {contactName, customerMasterId, mobilePhone} = res.data
                 this.setCustomerInfo({
@@ -122,6 +119,9 @@
                   customerMasterId,
                   mobilePhone
                 })
+                Toast.succeed('激活成功')
+                let from = this.$route.query.from
+                this.$router.push(from)
                 break
               case 401:
                 console.log(code)
