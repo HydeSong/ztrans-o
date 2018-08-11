@@ -275,11 +275,12 @@
       },
       onPickerRouterConfirm() {
         const values = this.$refs.pickerRouter.getColumnValues()
-
+        console.log(values)
         let res = ''
         values.forEach(value => {
           value && (res += `${value.text || value.label} `)
         })
+        console.log(res)
         this.bill.routerDetailSeries = res
       },
       onPickerCarTypeConfirm() {
