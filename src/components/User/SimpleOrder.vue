@@ -133,7 +133,7 @@
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
       isBillOk() {
-        return this.bill.routerDetailSeries && this.bill.carTypeSeries && this.bill.appointmentDate
+        return this.routerName && this.carTypeName && this.bill.appointmentDate
       }
     },
     watch: {
@@ -304,7 +304,7 @@
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice
-        this.bill.routerPriceSeries = res.routerPriceSeries
+        this.bill.routerPriceSeries = res.routerPriceId
       },
     }
   }
