@@ -165,7 +165,7 @@
           overstepPrice: this.bill.overstepPrice,
           routerPriceSeries: this.bill.routerPriceSeries
         }
-        console.log(params)
+        // console.log(params)
         this._createSpecialCustomerOrder(params)
       },
       _createSpecialCustomerOrder(params) {
@@ -214,7 +214,7 @@
                 const cp = carAndPriceModels.map((value) => {
                   return {'text': value.typeName, 'value': value.series, ...value}
                 })
-                console.log('cp', cp)
+                // console.log('cp', cp)
                 this.pickerData2 = [cp]
                 break
               case 401:
@@ -248,7 +248,7 @@
                 const ra = routerAliaModels.map((value) => {
                   return {'text': value.routerAlia, 'value': value.series, ...value}
                 })
-                console.log('ra', ra)
+                // console.log('ra', ra)
                 this.pickerData1 = [ra]
                 break
               case 401:
@@ -277,7 +277,7 @@
       },
       onPickerRouterConfirm() {
         const values = this.$refs.pickerRouter.getColumnValues()
-        console.log(values)
+        // console.log(values)
         let res = ''
         let val = ''
         values.forEach(value => {
@@ -286,23 +286,21 @@
             val = value
           }
         })
-        console.log(res)
-        console.log(val)
+        // console.log(res)
+        // console.log(val)
         this.routerName = res
         this.bill.routerDetailSeries = val.series
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
-        console.log(values)
+        // console.log(values)
         let res = ''
         values.forEach(value => {
           value && (res = value)
         })
-        console.log(res)
+        // console.log(res)
         this.carTypeName = res.typeName
         this.bill.carTypeSeries = res.series
-        console.log(res.series)
-        console.log(this.bill.carTypeSeries)
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice
