@@ -144,6 +144,9 @@
               openId: this.openId || getCookie('__user__openid'),
               routerDetailSeries: val
             })
+          setTimeout(() => {
+            Toast.hide()
+          }, 3000)
         }
       }
     },
