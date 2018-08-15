@@ -7,8 +7,10 @@
             <split></split>
             <md-tabs
                 :titles="titles"
+                upside-down
                 noslide>
             </md-tabs>
+            <split></split>
             <md-field>
                 <md-field-item
                         title="线路别名(编号)"
@@ -301,6 +303,13 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+    .content {
+        height 100%
+    }
+    .md-tabs .md-tab-content-wrapper {
+        height: 0!important;
+        min-height: 0!important;
+    }
     .order-footer {
         margin: 16px*2 10px*2;
     }
