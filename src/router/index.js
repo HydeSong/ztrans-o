@@ -11,6 +11,8 @@ import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
 import Register from '@/components/Driver/Register'
 import Activate from '@/components/Activate'
+import Order from '@/components/Order/Order'
+import OrderList from '@/components/Order/OrderList'
 import Error404 from '@/components/Base/Error404'
 import ErrorNetwork from '@/components/Base/ErrorNetwork'
 import ErrorOp from '@/components/Base/ErrorOp'
@@ -92,6 +94,16 @@ const router = new Router({
           component: Register
         }
       ]
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: Order
+    },
+    {
+      path: '/order-list',
+      name: 'order-list',
+      component: OrderList
     },
     {
       path: '/test',
