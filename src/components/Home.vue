@@ -74,17 +74,8 @@
                 this.setOpenId(res.data.openId)
                 setCookie('__user__openid', res.data.openId)
                 // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
-                const {contactName, customerMasterId, mobilePhone} = res.data
-                this.setCustomerInfo({
-                  contactName,
-                  customerMasterId,
-                  mobilePhone
-                })
-                setCookie('__user__customerinfo', JSON.stringify({
-                  contactName,
-                  customerMasterId,
-                  mobilePhone
-                }))
+                this.setCustomerInfo(res.data)
+                setCookie('__user__customerinfo', JSON.stringify(res.data))
                 if (res.data.wetherRegister === 1) {
                   if (res.data.wetherSpecialCustomer === 0) {
                     this.simpleOrder()
