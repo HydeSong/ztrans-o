@@ -69,9 +69,9 @@
     },
     computed: {
       ...mapGetters(['openId', 'customerOrders']),
-      title() {
-        const orderStatus = this.$router.query.orderStatus
-        return orderStatus === 0 ? '未完成订单' : '已完成订单'
+      title () {
+        const orderStatus = this.$route.query.orderStatus
+        return orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
     methods: {
