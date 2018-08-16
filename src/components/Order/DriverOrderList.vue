@@ -27,8 +27,8 @@
                     <li>备注：{{item.remark}}</li>
                 </ul>
                 <div class="actions-wrapper">
-                    <md-button type="link">确认接单</md-button>
-                    <md-button type="link">完成送货</md-button>
+                    <md-button type="link" @click.native="onComfirmOrder(item)">确认接单</md-button>
+                    <md-button type="link" @click.native="onCompleteOrder(item)">完成送货</md-button>
                 </div>
                 </p>
             </div>
@@ -52,6 +52,7 @@
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
+  import {updateDriverOrder} from '@/api/order'
   import {getCookie} from '@/common/js/cache'
   import {mapGetters} from 'vuex'
 
@@ -89,6 +90,30 @@
           this.$refs.scrollView.finishLoadMore()
         }, 1000)
       },
+      _updateDriverOrder (params) {
+        Toast.loading('正在提交')
+        updateDriverOrder(params).then(res => {
+          if (res.code === 0) {
+            Toast.succeed('成功')
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      onComfirmOrder (item) {
+        this._updateDriverOrder({
+          openId: this.openId || getCookie('__user__openid'),
+          orderStatus: 2,
+          series: item.series
+        })
+      },
+      onCompleteOrder (item) {
+        this._updateDriverOrder({
+          openId: this.openId || getCookie('__user__openid'),
+          orderStatus: 5,
+          series: item.series
+        })
+      }
     },
   }
 

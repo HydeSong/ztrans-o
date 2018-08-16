@@ -28,3 +28,13 @@ export function getDriverOrder (params) {
   }
   return axios.get(url, {params: data})
 }
+
+export function updateDriverOrder (params) {
+  const url = `${CONFIG.HOST}/updateDriverOrder`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
+
