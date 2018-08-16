@@ -122,8 +122,10 @@
         setCustomerOrders: 'SET_CUSTOMERORDERS'
       }),
       _getCustomerOrder (params) {
+        Toast.loading('正在查询')
         getCustomerOrder(params).then(res => {
           if (res.code === 0) {
+            Toast.hide()
             const customerOrders = res.data.customerOrders
             this.setCustomerOrders(customerOrders)
             this.$router.push('/order-list')

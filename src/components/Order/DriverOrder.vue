@@ -13,13 +13,6 @@
             <split></split>
             <md-field>
                 <md-field-item
-                        title="线路别名(编号)"
-                        arrow="arrow-right"
-                        align="right"
-                        :value="routerDetailAliaSearchKey"
-                        @click.native="isPickerShow1 = true">
-                </md-field-item>
-                <md-field-item
                         name="name"
                         title="开始时间"
                         arrow="arrow-right"
@@ -40,13 +33,6 @@
                 <md-button @click.native="onSearch" :disabled="isBillOk">查询</md-button>
             </div>
         </div>
-        <md-picker
-                ref="pickerRouter"
-                v-model="isPickerShow1"
-                :data="pickerData1"
-                @confirm="onPickerRouterConfirm"
-                title="选择线路别名"
-        ></md-picker>
         <md-date-picker
                 ref="datePicker1"
                 v-model="isDatePickerShow1"
@@ -73,7 +59,6 @@
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
-  import {getRouterAliaByCustomerMasterId} from '@/api/simple-order'
   import {getDriverOrder} from '@/api/order'
   import {getCookie} from '@/common/js/cache'
   import {mapGetters, mapMutations} from 'vuex'
@@ -93,23 +78,15 @@
     data() {
       return {
         title: '司机订单管理',
-        isPickerShow1: false,
         isDatePickerShow1: false,
         isDatePickerShow2: false,
         pickerData1: [],
         currentDate: new Date(),
         titles: ['未完成订单', '已完成订单'],
         orderStatus: '',
-        routerDetailAliaSearchKey: '',
         startTime: '',
         endTime: '',
       }
-    },
-    created() {
-      this._getRouterAliaByCustomerMasterId({
-        customerMasterId: this.customerInfo.customerMasterId,
-        openId: this.openId || getCookie('__user__openid')
-      })
     },
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
@@ -122,25 +99,13 @@
         setDriverOrders: 'SET_DRIVERORDERS'
       }),
       _getDriverOrder (params) {
+        Toast.loading('正在查询')
         getDriverOrder(params).then(res => {
           if (res.code === 0) {
+            Toast.hide()
             const driverOrders = res.data.driverOrder
             this.setDriverOrders(driverOrders)
             this.$router.push('/driver-order-list')
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      _getRouterAliaByCustomerMasterId(params) {
-        getRouterAliaByCustomerMasterId(params).then(res => {
-          if (res.code === 0) {
-            const routerAliaModels = res.data.routerAliaModels
-            const ra = routerAliaModels.map((value) => {
-              return {'text': value.routerAlia, 'value': value.series, ...value}
-            })
-            // console.log('ra', ra)
-            this.pickerData1 = [ra]
           }
         }).catch(err => {
           console.log(err)
@@ -152,14 +117,6 @@
       onDatePickerConfirm2() {
         this.endTime = this.$refs.datePicker2.getFormatDate('yyyy-MM-dd hh:mm:00')
       },
-      onPickerRouterConfirm() {
-        const values = this.$refs.pickerRouter.getColumnValues()
-        let res = ''
-        values.forEach(value => {
-          res += `${value.text || value.label} `
-        })
-        this.routerDetailAliaSearchKey = res
-      },
       onIndexTabChange (index) {
         this.orderStatus = index
       },
@@ -168,7 +125,7 @@
         const params = {
           openId: this.openId || getCookie('__user__openid'),
           orderStatus: this.orderStatus,
-          routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
+          routerDetailAliaSearchKey: '',
           startTime: this.startTime,
           endTime: this.endTime,
         }
