@@ -63,13 +63,16 @@
     },
     data() {
       return {
-        title: '未完成订单',
         list: 10,
         isFinished: false
       }
     },
     computed: {
-      ...mapGetters(['openId', 'customerOrders'])
+      ...mapGetters(['openId', 'customerOrders']),
+      title() {
+        const orderStatus = this.$router.query.orderStatus
+        return orderStatus === 0 ? '未完成订单' : '已完成订单'
+      }
     },
     methods: {
       $_onEndReached() {

@@ -128,7 +128,7 @@
             Toast.hide()
             const customerOrders = res.data.customerOrders
             this.setCustomerOrders(customerOrders)
-            this.$router.push('/order-list')
+            this.$router.push(`/user-order-list?orderStatus=${this.orderStatus}`)
           }
         }).catch(err => {
           console.log(err)
