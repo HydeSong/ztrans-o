@@ -26,10 +26,6 @@
                         <li>预约时间：{{item.appointmentDate}}</li>
                         <li>备注：{{item.remark}}</li>
                     </ul>
-                    <div class="actions-wrapper">
-                        <md-button type="link">确认接单</md-button>
-                        <md-button type="link">完成送货</md-button>
-                    </div>
                 </p>
             </div>
             <md-scroll-view-more
@@ -37,11 +33,18 @@
                     :is-finished="isFinished">
             </md-scroll-view-more>
         </md-scroll-view>
+        <md-result-page
+                v-if="customerOrders.length === 0"
+                class="customized"
+                img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
+                text="没有订单"
+                subtext="要不然刷新试试？">
+        </md-result-page>
     </div>
 </template>
 
 <script>
-  import {ScrollView, ScrollViewMore, Button} from 'mand-mobile'
+  import {ScrollView, ScrollViewMore, Button, ResultPage} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
@@ -54,6 +57,7 @@
       [ScrollView.name]: ScrollView,
       [ScrollViewMore.name]: ScrollViewMore,
       [Button.name]: Button,
+      [ResultPage.name]: ResultPage,
       Split,
       NavBar,
     },
@@ -61,50 +65,7 @@
       return {
         title: '未完成订单',
         list: 10,
-        isFinished: false,
-        customerOrders: [{
-          appointmentDate: '2018.07.31 10:19',
-          carPlateNumber: '沪BBBBBBB',
-          carTypeName: '大卡车',
-          driverMobile: '18702181631',
-          driverName: '宋海峰' ,
-          initDistance: '110',
-          initPrice: '110',
-          orderStatusDate: '2018.07.31 10:19',
-          orderStatusName: '正在运输',
-          overstepPrice: '10',
-          remark: '不错不错 赚钱了赚钱了',
-          routerAlia: '上海->昆山',
-          series: '189891891891891189'
-        },{
-          appointmentDate: '2018.07.31 10:19',
-          carPlateNumber: '2018.07.31 10:19',
-          carTypeName: '大卡车',
-          driverMobile: '18702181631',
-          driverName: '宋海峰' ,
-          initDistance: '110',
-          initPrice: '110',
-          orderStatusDate: '2018.07.31 10:19',
-          orderStatusName: '正在运输',
-          overstepPrice: '10',
-          remark: '不错不错 赚钱了赚钱了',
-          routerAlia: '上海->昆山',
-          series: '189891891891891189'
-        },{
-          appointmentDate: '2018.07.31 10:19',
-          carPlateNumber: '2018.07.31 10:19',
-          carTypeName: '大卡车',
-          driverMobile: '18702181631',
-          driverName: '宋海峰' ,
-          initDistance: '110',
-          initPrice: '110',
-          orderStatusDate: '2018.07.31 10:19',
-          orderStatusName: '正在运输',
-          overstepPrice: '10',
-          remark: '不错不错 赚钱了赚钱了',
-          routerAlia: '上海->昆山',
-          series: '189891891891891189'
-        }]
+        isFinished: false
       }
     },
     computed: {
@@ -148,4 +109,8 @@
             text-indent 2em
         .actions-wrapper
             display flex
+    .md-result-page.customized
+        img
+            width auto
+            height 131px
 </style>

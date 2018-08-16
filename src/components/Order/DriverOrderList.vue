@@ -1,47 +1,79 @@
 <template>
-    <div class="order-list">
+    <div class="user-order-list">
         <nav-bar>
             {{title}}
         </nav-bar>
-        <div class="content">
-            <md-scroll-view
-                    ref="scrollView"
-                    :scrolling-x="false"
-                    @endReached="$_onEndReached">
-                <div
-                        v-for="i in list"
-                        :key="i"
-                        class="scroll-view-list">
-                    <p class="scroll-view-item">{{i}}</p>
+        <md-scroll-view
+                ref="scrollView"
+                :scrolling-x="false"
+                @endReached="$_onEndReached">
+            <div
+                    v-for="(item, index) in driverOrders"
+                    :key="index"
+                    class="scroll-view-list">
+                <p class="scroll-view-item">
+                <ul>
+                    <li>订单号：{{item.series}}</li>
+                    <li>司机报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
+                    <li>订单状态：{{item.orderStatusName}}</li>
+                    <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
+                    <li>超里程价：{{item.overstepPrice}}元/公里</li>
+                    <li>车牌号：{{item.carPlateNumber}}</li>
+                    <li>车型：{{item.carTypeName}}</li>
+                    <li>司机姓名：{{item.driverName}}</li>
+                    <li>司机手机：{{item.driverMobile}}</li>
+                    <li>线路别名：{{item.routerAlia}}</li>
+                    <li>预约时间：{{item.appointmentDate}}</li>
+                    <li>备注：{{item.remark}}</li>
+                </ul>
+                <div class="actions-wrapper">
+                    <md-button type="link">确认接单</md-button>
+                    <md-button type="link">完成送货</md-button>
                 </div>
-                <md-scroll-view-more
-                        slot="more"
-                        :is-finished="isFinished">
-                </md-scroll-view-more>
-            </md-scroll-view>
-        </div>
+                </p>
+            </div>
+            <md-scroll-view-more
+                    slot="more"
+                    :is-finished="isFinished">
+            </md-scroll-view-more>
+        </md-scroll-view>
+        <md-result-page
+                v-if="driverOrders.length === 0"
+                class="customized"
+                img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
+                text="没有订单"
+                subtext="要不然刷新试试？">
+        </md-result-page>
     </div>
 </template>
 
 <script>
-  import {ScrollView, ScrollViewMore} from 'mand-mobile'
+  import {ScrollView, ScrollViewMore, Button, ResultPage} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
+  import {getCookie} from '@/common/js/cache'
+  import {mapGetters} from 'vuex'
+
   export default {
-    name: 'driver-order-list',
+    name: 'user-order-list',
     components: {
       [ScrollView.name]: ScrollView,
       [ScrollViewMore.name]: ScrollViewMore,
+      [Button.name]: Button,
+      [ResultPage.name]: ResultPage,
       Split,
-      NavBar
+      NavBar,
     },
     data() {
       return {
         title: '未完成订单',
         list: 10,
-        isFinished: false,
+        isFinished: false
       }
+    },
+    computed: {
+      ...mapGetters(['openId', 'driverOrders'])
     },
     methods: {
       $_onEndReached() {
@@ -63,12 +95,22 @@
 </script>
 
 <style lang="stylus">
-    .order-list
-        height 100%
+    .user-order-list
+        .md-scroll-view
+            background transparent
+        .scroll-view-list
+            padding 0 20px
+            margin 30px 0 30px
         .scroll-view-item
-            padding 30px 0
-            text-align center
-            font-size 32px
-            font-family DINAlternate-Bold
-            border-bottom .5px solid #efefef
+            width 100%
+            padding 60px 0 60px
+            color #333
+            font-size 24px
+            text-align left
+            background #fff
+            box-sizing border-box
+            line-height 1.5
+            text-indent 2em
+        .actions-wrapper
+            display flex
 </style>
