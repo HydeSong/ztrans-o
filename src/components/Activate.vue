@@ -108,42 +108,12 @@
         // console.log(params)
         registContact(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
-                const {contactName, customerMasterId, mobilePhone} = res.data
-                this.setCustomerInfo({
-                  contactName,
-                  customerMasterId,
-                  mobilePhone
-                })
-                Toast.succeed('激活成功')
-                let from = this.$route.query.from
-                this.$router.push(from)
-                break
-              case 401:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 403:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 404:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case -1:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              default:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-            }
+          if (res.code === 0) {
+            // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
+            this.setCustomerInfo(res)
+            Toast.succeed('激活成功')
+            let from = this.$route.query.from
+            this.$router.push(from)
           }
         }).catch(err => {
           console.log(err)
@@ -169,37 +139,8 @@
         }, 1000)
         getContactMobileCode({mobilePhone: this.phone}).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                this.mobileCode = res.data.mobileCode
-                break
-              case -5052:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 401:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 403:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 404:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case -1:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              default:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-            }
+          if (res.code === 0) {
+            this.mobileCode = res.mobileCode
           }
         }).catch(err => {
           console.log(err)

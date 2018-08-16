@@ -118,36 +118,16 @@
       _getCarBrandList (params) {
         getCarBandList(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let carBrands = []
-                res.data.carBrands.forEach((item) => {
-                  carBrands.push({
-                    text: item.brandName,
-                    value: item.brandId,
-                    ...item
-                  })
-                })
-                this.carInfoData.push(carBrands)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let carBrands = []
+            res.carBrands.forEach((item) => {
+              carBrands.push({
+                text: item.brandName,
+                value: item.brandId,
+                ...item
+              })
+            })
+            this.carInfoData.push(carBrands)
           }
         }).catch(err => {
           console.log(err)
@@ -156,36 +136,16 @@
       _getCarColourList (params) {
         getCarColourList(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let carColours = []
-                res.data.carColours.forEach((item) => {
-                  carColours.push({
-                    text: item.colourName,
-                    value: item.colourId,
-                    ...item
-                  })
-                })
-                this.carInfoData.push(carColours)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let carColours = []
+            res.carColours.forEach((item) => {
+              carColours.push({
+                text: item.colourName,
+                value: item.colourId,
+                ...item
+              })
+            })
+            this.carInfoData.push(carColours)
           }
         }).catch(err => {
           console.log(err)
@@ -194,36 +154,16 @@
       _getCarTypeList (params) {
         getCarTypeList(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let carTypes = []
-                res.data.carTypes.forEach((item) => {
-                  carTypes.push({
-                    text: item.typeName,
-                    value: item.typeId,
-                    ...item
-                  })
-                })
-                this.carInfoData.push(carTypes)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let carTypes = []
+            res.carTypes.forEach((item) => {
+              carTypes.push({
+                text: item.typeName,
+                value: item.typeId,
+                ...item
+              })
+            })
+            this.carInfoData.push(carTypes)
           }
         }).catch(err => {
           console.log(err)
@@ -232,36 +172,16 @@
       _getAllRouterByCity (params) {
         getAllRouterByCity(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let billCityData = []
-                res.data.wxRouterCityRelationModel.forEach((item, index) => {
-                  billCityData.push({
-                    text: `${item.sourceCityName} -> ${item.destinyCityName}`,
-                    value: index + 1,
-                    ...item
-                  })
-                })
-                this.billCityData.push(billCityData)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let billCityData = []
+            res.wxRouterCityRelationModel.forEach((item, index) => {
+              billCityData.push({
+                text: `${item.sourceCityName} -> ${item.destinyCityName}`,
+                value: index + 1,
+                ...item
+              })
+            })
+            this.billCityData.push(billCityData)
           }
         }).catch(err => {
           console.log(err)

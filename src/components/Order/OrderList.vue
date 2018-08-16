@@ -1,33 +1,35 @@
 <template>
-    <div class="md-example-child md-example-child-scroll-view md-example-child-scroll-view-2">
+    <div class="order-list">
         <nav-bar>
             {{title}}
         </nav-bar>
-        <md-scroll-view
-            ref="scrollView"
-            :scrolling-x="false"
-            @endReached="$_onEndReached">
-            <div
-                v-for="i in list"
-                :key="i"
-                class="scroll-view-list">
-                <p class="scroll-view-item">{{i}}</p>
-            </div>
-            <md-scroll-view-more
-                slot="more"
-                :is-finished="isFinished">
-            </md-scroll-view-more>
-        </md-scroll-view>
+        <div class="content">
+            <md-scroll-view
+                    ref="scrollView"
+                    :scrolling-x="false"
+                    @endReached="$_onEndReached">
+                <div
+                        v-for="i in list"
+                        :key="i"
+                        class="scroll-view-list">
+                    <p class="scroll-view-item">{{i}}</p>
+                </div>
+                <md-scroll-view-more
+                        slot="more"
+                        :is-finished="isFinished">
+                </md-scroll-view-more>
+            </md-scroll-view>
+        </div>
     </div>
 </template>
 
 <script>
-  import {ScrollView, ScrollViewMore, Tabs} from 'mand-mobile'
+  import {ScrollView, ScrollViewMore} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
   export default {
-    name: 'scroll-view-demo-2',
+    name: 'order-list',
     components: {
       [ScrollView.name]: ScrollView,
       [ScrollViewMore.name]: ScrollViewMore,
@@ -61,8 +63,8 @@
 </script>
 
 <style lang="stylus">
-    .md-example-child-scroll-view-2
-        height 800px
+    .order-list
+        height 100%
         .scroll-view-item
             padding 30px 0
             text-align center

@@ -275,37 +275,11 @@
       _deletePicture (params, name) {
         deletePicture(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                Toast.succeed('删除成功')
-                const imgUlrList = this.imgUlrs[name] || []
-                imgUlrList.splice(0, 1)
-                this.$set(this.imgUlrs, name, imgUlrList)
-                break
-              case 201:
-                console.log(code)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              case -1006:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            Toast.succeed('删除成功')
+            const imgUlrList = this.imgUlrs[name] || []
+            imgUlrList.splice(0, 1)
+            this.$set(this.imgUlrs, name, imgUlrList)
           }
         }).catch(err => {
           console.log(err)
@@ -314,37 +288,11 @@
       _uploadPicture (params, file, name) {
         uploadPicture(params, file).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                Toast.succeed('上传成功')
-                const imgUlrList = this.imgUlrs[name] || []
-                imgUlrList.push(res.data.url)
-                this.$set(this.imgUlrs, name, imgUlrList)
-                break
-              case 201:
-                console.log(code)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              case -1006:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            Toast.succeed('上传成功')
+            const imgUlrList = this.imgUlrs[name] || []
+            imgUlrList.push(res.data.url)
+            this.$set(this.imgUlrs, name, imgUlrList)
           }
         }).catch(err => {
           console.log(err)
@@ -353,32 +301,8 @@
       _getPicture (params) {
         getPicture(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            // this.test = res.data
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                // const demoImageList = this.imageList[name] || []
-                // demoImageList.push(dataUrl)
-                // this.$set(this.imageList, name, demoImageList)
-                this.test = res.data
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            this.test = res
           }
         }).catch(err => {
           console.log(err)

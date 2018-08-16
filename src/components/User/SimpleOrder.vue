@@ -171,33 +171,9 @@
       _createSpecialCustomerOrder(params) {
         createSpecialCustomerOrder(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                console.log('下单成功')
-                Toast.succeed('下单成功')
-                break
-              case 401:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              case 403:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              case 404:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              case -1:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            console.log('下单成功')
+            Toast.succeed('下单成功')
           }
         }).catch(err => {
           console.log(err)
@@ -205,34 +181,14 @@
       },
       _getPriceAndCarByCustomerIdAndRouterSeries(params) {
         getPriceAndCarByCustomerIdAndRouterSeries(params).then(res => {
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                Toast.hide()
-                const carAndPriceModels = res.data.carAndPriceModels
-                const cp = carAndPriceModels.map((value) => {
-                  return {'text': value.typeName, 'value': value.series, ...value}
-                })
-                // console.log('cp', cp)
-                this.pickerData2 = [cp]
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            Toast.hide()
+            const carAndPriceModels = res.carAndPriceModels
+            const cp = carAndPriceModels.map((value) => {
+              return {'text': value.typeName, 'value': value.series, ...value}
+            })
+            // console.log('cp', cp)
+            this.pickerData2 = [cp]
           }
         }).catch(err => {
           console.log(err)
@@ -240,33 +196,13 @@
       },
       _getRouterAliaByCustomerMasterId(params) {
         getRouterAliaByCustomerMasterId(params).then(res => {
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                const routerAliaModels = res.data.routerAliaModels
-                const ra = routerAliaModels.map((value) => {
-                  return {'text': value.routerAlia, 'value': value.series, ...value}
-                })
-                // console.log('ra', ra)
-                this.pickerData1 = [ra]
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            const routerAliaModels = res.routerAliaModels
+            const ra = routerAliaModels.map((value) => {
+              return {'text': value.routerAlia, 'value': value.series, ...value}
+            })
+            // console.log('ra', ra)
+            this.pickerData1 = [ra]
           }
         }).catch(err => {
           console.log(err)

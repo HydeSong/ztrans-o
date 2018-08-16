@@ -111,6 +111,16 @@
 
   export default {
     name: 'address-info',
+    components: {
+      [Button.name]: Button,
+      [InputItem.name]: InputItem,
+      [DatePicker.name]: DatePicker,
+      [Picker.name]: Picker,
+      [Field.name]: Field,
+      [FieldItem.name]: FieldItem,
+      Split,
+      NavBar
+    },
     data () {
       return {
         rrouterDetailSeries: '',
@@ -212,45 +222,24 @@
       _getRouterByCityAreaTown (params) {
         getRouterByCityAreaTown(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let district = []
-                if (this.isShipping) {
-                  const sourceRouterCityAreaTownModel = res.data.sourceRouterCityAreaTownModel
-                  district.push(sourceRouterCityAreaTownModel)
-                  // 省市区/县默认值
-                  const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
-                  this.pickerValue1 = defaultValue
-                  this.routerDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
-                } else {
-                  const destionRouterCityAreaTownModel = res.data.destionRouterCityAreaTownModel
-                  district.push(destionRouterCityAreaTownModel)
-                  // 省市区/县默认值
-                  const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
-                  this.pickerValue1 = defaultValue
-                  this.rrouterDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
-                }
-                this.district = district
-                // console.log(this.district)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
+          if (res.code === 0) {
+            let district = []
+            if (this.isShipping) {
+              const sourceRouterCityAreaTownModel = res.data.sourceRouterCityAreaTownModel
+              district.push(sourceRouterCityAreaTownModel)
+              // 省市区/县默认值
+              const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
+              this.pickerValue1 = defaultValue
+              this.routerDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
+            } else {
+              const destionRouterCityAreaTownModel = res.data.destionRouterCityAreaTownModel
+              district.push(destionRouterCityAreaTownModel)
+              // 省市区/县默认值
+              const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
+              this.pickerValue1 = defaultValue
+              this.rrouterDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
             }
+            this.district = district
           }
         }).catch(err => {
           console.log(err)
@@ -276,16 +265,6 @@
         this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
       },
     },
-    components: {
-      [Button.name]: Button,
-      [InputItem.name]: InputItem,
-      [DatePicker.name]: DatePicker,
-      [Picker.name]: Picker,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      Split,
-      NavBar
-    }
   }
 </script>
 

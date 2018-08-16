@@ -50,46 +50,15 @@
       _registDriver (params) {
         registDriver(params).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                Toast.succeed('注册成功')
-                this.text = '账号注册成功'
-                this.subtext = '我们准备了赚钱小技巧，请登录司机端查看'
-                this.$emit('next', 3)
-                break
-              case 401:
-                console.log(code)
-                Toast.succeed('注册失败')
-                this.text = '账号注册失败'
-                this.subtext = '请重新填写信息'
-                break
-              case 403:
-                console.log(code)
-                Toast.succeed('注册失败')
-                this.text = '账号注册失败'
-                this.subtext = '请重新填写信息'
-                break
-              case 404:
-                console.log(code)
-                Toast.succeed('注册失败')
-                this.text = '账号注册失败'
-                this.subtext = '请重新填写信息'
-                break
-              case -1:
-                console.log(code)
-                Toast.succeed('注册失败')
-                this.text = '账号注册失败'
-                this.subtext = '请重新填写信息'
-                break
-              default:
-                console.log(code)
-                Toast.succeed('注册失败')
-                this.text = '账号注册失败'
-                this.subtext = '请重新填写信息'
-                break
-            }
+          if (res.code === 0) {
+            Toast.succeed('注册成功')
+            this.text = '账号注册成功'
+            this.subtext = '我们准备了赚钱小技巧，请登录司机端查看'
+            this.$emit('next', 3)
+          } else {
+            Toast.succeed('注册失败')
+            this.text = '账号注册失败'
+            this.subtext = '请重新填写信息'
           }
         }).catch(err => {
           console.log(err)

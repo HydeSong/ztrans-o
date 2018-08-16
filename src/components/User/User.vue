@@ -257,33 +257,9 @@
         // console.log(params)
         createOrder(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                console.log('下单成功')
-                Toast.succeed('下单成功')
-                break
-              case 401:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              case 403:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              case 404:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              case -1:
-                console.log(code)
-                Toast.failed('下单失败')
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            console.log('下单成功')
+            Toast.succeed('下单成功')
           }
         }).catch(err => {
           console.log(err)
@@ -292,69 +268,21 @@
       _getRouterPriceByCarTypeAndRouterDetailSeries(params) {
         getRouterPriceByCarTypeAndRouterDetailSeries(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                this.isPriceShow = true
-                this.bill.initDistance = res.data.initDistance
-                this.bill.initPrice = res.data.initPrice
-                this.bill.overstepPrice = res.data.overstepPrice
-                this.bill.routerPriceId = res.data.routerPriceId
-                this.bill.routerPriceSeries = res.data.routerPriceId
-                this.bill.wetherSpecialCustomerPrice = res.data.wetherSpecialCustomerPrice
-                break
-              case 401:
-                console.log(code)
-                this.isPriceShow = false
-                this.bill.initDistance = 0
-                this.bill.initPrice = 0
-                this.bill.overstepPrice = 0
-                this.bill.routerPriceId = 0
-                this.bill.routerPriceSeries = 0
-                Toast.failed(res.data.message)
-                break
-              case 403:
-                console.log(code)
-                this.isPriceShow = false
-                this.bill.initDistance = 0
-                this.bill.initPrice = 0
-                this.bill.overstepPrice = 0
-                this.bill.routerPriceId = 0
-                this.bill.routerPriceSeries = 0
-                Toast.failed(res.data.message)
-                break
-              case 404:
-                console.log(code)
-                this.isPriceShow = false
-                this.bill.initDistance = 0
-                this.bill.initPrice = 0
-                this.bill.overstepPrice = 0
-                this.bill.routerPriceId = 0
-                this.bill.routerPriceSeries = 0
-                Toast.failed(res.data.message)
-                break
-              case -1:
-                console.log(code)
-                this.isPriceShow = false
-                this.bill.initDistance = 0
-                this.bill.initPrice = 0
-                this.bill.overstepPrice = 0
-                this.bill.routerPriceId = 0
-                this.bill.routerPriceSeries = 0
-                Toast.failed(res.data.message)
-                break
-              default:
-                console.log(code)
-                this.isPriceShow = false
-                this.bill.initDistance = 0
-                this.bill.initPrice = 0
-                this.bill.overstepPrice = 0
-                this.bill.routerPriceId = 0
-                this.bill.routerPriceSeries = 0
-                Toast.failed(res.data.message)
-                break
-            }
+          if (res.code === 0) {
+            this.isPriceShow = true
+            this.bill.initDistance = res.initDistance
+            this.bill.initPrice = res.initPrice
+            this.bill.overstepPrice = res.overstepPrice
+            this.bill.routerPriceId = res.routerPriceId
+            this.bill.routerPriceSeries = res.routerPriceId
+            this.bill.wetherSpecialCustomerPrice = res.wetherSpecialCustomerPrice
+          } else {
+            this.isPriceShow = false
+            this.bill.initDistance = 0
+            this.bill.initPrice = 0
+            this.bill.overstepPrice = 0
+            this.bill.routerPriceId = 0
+            this.bill.routerPriceSeries = 0
           }
         }).catch(err => {
           console.log(err)
@@ -363,34 +291,13 @@
       _getCarTypeByAllRouter (params) {
         getCarTypeByAllRouter(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let baseCarTypes = []
-                res.data.baseCarTypes.forEach((item) => {
-                  item.title = item.typeName
-                  baseCarTypes.push(item)
-                })
-                this.tabs = baseCarTypes
-                console.log(this.tabs)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let baseCarTypes = []
+            res.baseCarTypes.forEach((item) => {
+              item.title = item.typeName
+              baseCarTypes.push(item)
+            })
+            this.tabs = baseCarTypes
           }
         }).catch(err => {
           console.log(err)
@@ -399,36 +306,15 @@
       _getAllRouterByCity (params) {
         getAllRouterByCity(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let pathDataOptions = []
-                res.data.wxRouterCityRelationModel.forEach((item) => {
-                  pathDataOptions.push({
-                    text: `${item.sourceCityName} -> ${item.destinyCityName}`,
-                    ...item
-                  })
-                })
-                this.pathData[0].options = pathDataOptions
-                // console.log(this.pathData)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let pathDataOptions = []
+            res.wxRouterCityRelationModel.forEach((item) => {
+              pathDataOptions.push({
+                text: `${item.sourceCityName} -> ${item.destinyCityName}`,
+                ...item
+              })
+            })
+            this.pathData[0].options = pathDataOptions
           }
         }).catch(err => {
           console.log(err)
@@ -437,45 +323,20 @@
       _getCityByOpenId (params) {
         getCityByOpenId(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                let defaultPath = []
-                let item = res.data.wxRouterCityRelationModel
-                // 默认路线
-                defaultPath.push(`${item.sourceCityName} -> ${item.destinyCityName}`)
-                this.defaultPath = defaultPath
-                this.pathData[0].text = `${item.sourceCityName} -> ${item.destinyCityName}`
-                this.setCityIds(item)
-                // 默认车型
-                this._getCarTypeByAllRouter({
-                  openId: this.openId,
-                  sourceCityId: item.sourceCityId,
-                  destinyCityId: item.destinyCityId
-                })
-                // console.log(this.defaultPath)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              case -5046:
-                console.log(code)
-                console.log('没有默认路线')
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            let defaultPath = []
+            let item = res.wxRouterCityRelationModel
+            // 默认路线
+            defaultPath.push(`${item.sourceCityName} -> ${item.destinyCityName}`)
+            this.defaultPath = defaultPath
+            this.pathData[0].text = `${item.sourceCityName} -> ${item.destinyCityName}`
+            this.setCityIds(item)
+            // 默认车型
+            this._getCarTypeByAllRouter({
+              openId: this.openId,
+              sourceCityId: item.sourceCityId,
+              destinyCityId: item.destinyCityId
+            })
           }
         }).catch(err => {
           console.log(err)
@@ -484,32 +345,8 @@
       _getPicture (params) {
         getPicture(params).then(res => {
           // console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                console.log(res.data)
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              case -5046:
-                console.log(code)
-                console.log('没有默认路线')
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            console.log(res.data)
           }
         }).catch(err => {
           console.log(err)

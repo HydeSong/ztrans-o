@@ -66,55 +66,21 @@
       },
       _getCustomerOpenIdByCode (params) {
         getCustomerOpenIdByCode(params).then(res => {
-          console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                this.setOpenId(res.data.openId)
-                setCookie('__user__openid', res.data.openId)
-                // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
-                const {contactName, customerMasterId, mobilePhone} = res.data
-                this.setCustomerInfo({
-                  contactName,
-                  customerMasterId,
-                  mobilePhone
-                })
-                setCookie('__user__customerinfo', JSON.stringify({
-                  contactName,
-                  customerMasterId,
-                  mobilePhone
-                }))
-                if (res.data.wetherRegister === 1) {
-                  if (res.data.wetherSpecialCustomer === 0) {
-                    this.simpleOrder()
-                  } else {
-                    this.call()
-                  }
-                } else if (res.data.wetherRegister === 0) {
-                  this.activate('user')
-                }
-                break
-              case 401:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 403:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 404:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case -1:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              default:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
+          // console.log(res)
+          if (res.code === 0) {
+            this.setOpenId(res.openId)
+            setCookie('__user__openid', res.openId)
+            // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
+            this.setCustomerInfo(res)
+            setCookie('__user__customerinfo', JSON.stringify(res))
+            if (res.wetherRegister === 1) {
+              if (res.wetherSpecialCustomer === 0) {
+                this.simpleOrder()
+              } else {
+                this.call()
+              }
+            } else if (res.wetherRegister === 0) {
+              this.activate('user')
             }
           }
         }).catch(err => {
@@ -123,39 +89,14 @@
       },
       _getDriverOpenIdByCode (params) {
         getDriverOpenIdByCode(params).then(res => {
-          console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                this.setOpenId(res.data.openId)
-                setCookie('__user__openid', res.data.openId)
-                if (res.data.wetherRegister === 1) {
-                  this.join()
-                } else if (res.data.wetherRegister === 0) {
-                  this.activate('driver')
-                }
-                break
-              case 401:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 403:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case 404:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              case -1:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
-              default:
-                console.log(code)
-                Toast.failed(`${code}:${res.data.message}`)
-                break
+          // console.log(res)
+          if (res.code === 0) {
+            this.setOpenId(res.openId)
+            setCookie('__user__openid', res.openId)
+            if (res.wetherRegister === 1) {
+              this.join()
+            } else if (res.wetherRegister === 0) {
+              this.activate('driver')
             }
           }
         }).catch(err => {

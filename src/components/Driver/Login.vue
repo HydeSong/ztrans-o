@@ -119,28 +119,8 @@
         }, 1000)
         getMobileCode({mobilePhone: this.phone}).then(res => {
           console.log(res)
-          if (res.status === 200) {
-            const code = res.data.code
-            switch (code) {
-              case 0:
-                this.mobileCode = res.data.mobileCode
-                break
-              case 401:
-                console.log(code)
-                break
-              case 403:
-                console.log(code)
-                break
-              case 404:
-                console.log(code)
-                break
-              case -1:
-                console.log(code)
-                break
-              default:
-                console.log(code)
-                break
-            }
+          if (res.code === 0) {
+            this.mobileCode = res.mobileCode
           }
         }).catch(err => {
           console.log(err)

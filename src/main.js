@@ -25,6 +25,9 @@ Vue.use(VueLazyLoad, {
 Vue.config.productionTip = false
 // const isProd = process.env.NODE_ENV === 'production'
 
+// 异步请求库
+import '@/plugin/axios'
+
 new Vue({
   store,
   router,

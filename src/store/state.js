@@ -6,7 +6,8 @@ const state = {
   shipping: {},
   receiver: {},
   step1Data: {},
-  step2Data: {}
+  step2Data: {},
+  customerOrders: []
 }
 
 export default state

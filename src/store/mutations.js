@@ -24,6 +24,9 @@ const mutations = {
   },
   [types.SET_CUSTOMERINFO] (state, data) {
     state.customerInfo = data
+  },
+  [types.SET_CUSTOMERORDERS] (state, data) {
+    state.customerOrders = data
   }
 }
 
