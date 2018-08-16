@@ -13,38 +13,6 @@ axios.interceptors.response.use(res => {
       case 0:
         result = res.data
         break
-      case 401:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case 403:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case 404:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case -1:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case -5001:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case -5003:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case -5004:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
-      case -5005:
-        console.log(code)
-        Toast.failed(`${code}:${res.data.message}`)
-        break
       default:
         console.log(code)
         Toast.failed(`${code}:${res.data.message}`)
