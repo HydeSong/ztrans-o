@@ -79,7 +79,7 @@
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
-    name: 'simple-order',
+    name: 'user-order',
     components: {
       [Button.name]: Button,
       [DatePicker.name]: DatePicker,
@@ -94,11 +94,9 @@
       return {
         title: '客户订单管理',
         isPickerShow1: false,
-        isPickerShow2: false,
         isDatePickerShow1: false,
         isDatePickerShow2: false,
         pickerData1: [],
-        pickerData2: [],
         currentDate: new Date(),
         titles: ['未完成订单', '已完成订单'],
         orderStatus: '',

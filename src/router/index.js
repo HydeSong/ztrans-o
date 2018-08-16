@@ -5,14 +5,16 @@ import Test from '@/components/Test'
 import UI from '@/components/UI'
 import Home from '@/components/Home'
 import User from '@/components/User/User'
-import SimpleOrder from '@/components/User/SimpleOrder'
 import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
 import Login from '@/components/Driver/Login'
 import Register from '@/components/Driver/Register'
 import Activate from '@/components/Activate'
-import Order from '@/components/Order/Order'
-import OrderList from '@/components/Order/OrderList'
+import UserOrder from '@/components/Order/UserOrder'
+import UserOrderList from '@/components/Order/UserOrderList'
+import DriverOrder from '@/components/Order/DriverOrder'
+import DriverOrderList from '@/components/Order/DriverOrderList'
+import SimpleOrder from '@/components/Order/SimpleOrder'
 import Error404 from '@/components/Base/Error404'
 import ErrorNetwork from '@/components/Base/ErrorNetwork'
 import ErrorOp from '@/components/Base/ErrorOp'
@@ -96,14 +98,24 @@ const router = new Router({
       ]
     },
     {
-      path: '/order',
-      name: 'order',
-      component: Order
+      path: '/user-order',
+      name: 'user-order',
+      component: UserOrder
     },
     {
-      path: '/order-list',
-      name: 'order-list',
-      component: OrderList
+      path: '/user-order-list',
+      name: 'user-order-list',
+      component: UserOrderList
+    },
+    {
+      path: '/driver-order',
+      name: 'driver-order',
+      component: DriverOrder
+    },
+    {
+      path: '/driver-order-list',
+      name: 'driver-order-list',
+      component: DriverOrderList
     },
     {
       path: '/test',

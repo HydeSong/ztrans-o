@@ -29,7 +29,7 @@
   import NavBar from '../Base/NavBar'
 
   export default {
-    name: 'order-list',
+    name: 'driver-order-list',
     components: {
       [ScrollView.name]: ScrollView,
       [ScrollViewMore.name]: ScrollViewMore,

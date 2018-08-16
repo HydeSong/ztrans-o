@@ -19,3 +19,12 @@ export function getCustomerOrder (params) {
   }
   return axios.get(url, {params: data})
 }
+
+export function getDriverOrder (params) {
+  const url = `${CONFIG.HOST}/getDriverOrder`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}

@@ -7,7 +7,8 @@ const state = {
   receiver: {},
   step1Data: {},
   step2Data: {},
-  customerOrders: []
+  customerOrders: [],
+  driverOrders: []
 }
 
 export default state

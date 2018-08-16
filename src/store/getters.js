@@ -15,3 +15,5 @@ export const step2Data = state => state.step2Data
 export const customerInfo = state => state.customerInfo
 
 export const customerOrders = state => state.customerOrders
+
+export const driverOrders = state => state.driverOrders

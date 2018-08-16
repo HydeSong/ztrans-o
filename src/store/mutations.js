@@ -27,6 +27,9 @@ const mutations = {
   },
   [types.SET_CUSTOMERORDERS] (state, data) {
     state.customerOrders = data
+  },
+  [types.SET_DRIVERORDERS] (state, data) {
+    state.driverOrders = data
   }
 }
 
