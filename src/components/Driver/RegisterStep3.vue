@@ -55,6 +55,7 @@
             this.text = '账号注册成功'
             this.subtext = '我们准备了赚钱小技巧，请登录司机端查看'
             this.$emit('next', 3)
+            this.$router.push('/driver/profile')
           } else {
             Toast.succeed('注册失败')
             this.text = '账号注册失败'

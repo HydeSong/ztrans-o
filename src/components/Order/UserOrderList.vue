@@ -48,8 +48,9 @@
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
+  import {getCustomerOrder} from '@/api/order'
   import {getCookie} from '@/common/js/cache'
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: 'user-order-list',
@@ -63,30 +64,56 @@
     },
     data() {
       return {
-        list: 10,
+        current: 1,
+        orderStatus: this.$route.query.orderStatus,
+        routerDetailAliaSearchKey: this.$route.query.routerDetailAliaSearchKey,
+        startTime: this.$route.query.startTime,
+        endTime: this.$route.query.endTime,
         isFinished: false
       }
     },
     computed: {
       ...mapGetters(['openId', 'customerOrders']),
       title () {
-        const orderStatus = this.$route.query.orderStatus
-        return orderStatus == 0 ? '未完成订单' : '已完成订单'
+        return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
     methods: {
+      ...mapMutations({
+        setCustomerOrders: 'SET_CUSTOMERORDERS'
+      }),
+      _getCustomerOrder (params) {
+        console.log(params)
+        getCustomerOrder(params).then(res => {
+          if (res.code === 0) {
+            const customerOrders = res.customerOrders
+            const total = res.total
+            this.setCustomerOrders(customerOrders)
+            if (customerOrders.length >= total) {
+              this.isFinished = true
+            }
+            this.$refs.scrollView.finishLoadMore()
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       $_onEndReached() {
         if (this.isFinished) {
           return
         }
         // async data
-        setTimeout(() => {
-          this.list += 5
-          if (this.list >= 20) {
-            this.isFinished = true
-          }
-          this.$refs.scrollView.finishLoadMore()
-        }, 1000)
+        this.current++
+        const params = {
+          openId: this.openId || getCookie('__user__openid'),
+          orderStatus: this.orderStatus,
+          routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
+          startTime: this.startTime,
+          endTime: this.endTime,
+          current: this.current,
+          pageSize: 10
+        }
+        this._getCustomerOrder(params)
       },
     },
   }
@@ -95,8 +122,10 @@
 
 <style lang="stylus">
     .user-order-list
+        padding 0 0 200px
         .md-scroll-view
             background transparent
+            height 100%
         .scroll-view-list
             padding 0 20px
             margin 30px 0 30px

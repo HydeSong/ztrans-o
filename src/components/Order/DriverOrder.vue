@@ -30,7 +30,7 @@
                 </md-field-item>
             </md-field>
             <div class="order-footer">
-                <md-button @click.native="onSearch" :disabled="isBillOk">查询</md-button>
+                <md-button @click.native="onSearch">查询</md-button>
             </div>
         </div>
         <md-date-picker
@@ -38,7 +38,7 @@
                 v-model="isDatePickerShow1"
                 type="datetime"
                 today-text="&(今天)"
-                title="选择预约时间"
+                title="选择开始时间"
                 :default-date="currentDate"
                 @confirm="onDatePickerConfirm1"
         ></md-date-picker>
@@ -47,7 +47,7 @@
                 v-model="isDatePickerShow2"
                 type="datetime"
                 today-text="&(今天)"
-                title="选择预约时间"
+                title="选择结束时间"
                 :default-date="currentDate"
                 @confirm="onDatePickerConfirm2"
         ></md-date-picker>
@@ -83,16 +83,13 @@
         pickerData1: [],
         currentDate: new Date(),
         titles: ['未完成订单', '已完成订单'],
-        orderStatus: '',
+        orderStatus: 1,
         startTime: '',
         endTime: '',
       }
     },
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
-      isBillOk() {
-        return !(this.startTime && this.endTime)
-      }
     },
     methods: {
       ...mapMutations({
@@ -105,7 +102,7 @@
             Toast.hide()
             const driverOrders = res.driverOrder
             this.setDriverOrders(driverOrders)
-            this.$router.push(`/driver-order-list?orderStatus=${this.orderStatus}`)
+            this.$router.push(`/driver-order-list?orderStatus=${this.orderStatus}&startTime=${this.startTime}&endTime=${this.endTime}`)
           }
         }).catch(err => {
           console.log(err)
@@ -128,6 +125,8 @@
           routerDetailAliaSearchKey: '',
           startTime: this.startTime,
           endTime: this.endTime,
+          current: 1,
+          pageSize: 10
         }
         this._getDriverOrder(params)
       }

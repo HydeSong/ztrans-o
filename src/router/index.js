@@ -7,13 +7,14 @@ import Home from '@/components/Home'
 import User from '@/components/User/User'
 import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
-import Login from '@/components/Driver/Login'
-import Register from '@/components/Driver/Register'
+import DriverLogin from '@/components/Driver/Login'
+import DriverRegister from '@/components/Driver/Register'
+import DriverProfile from '@/components/Driver/Profile'
+import DriverOrder from '@/components/Order/DriverOrder'
+import DriverOrderList from '@/components/Order/DriverOrderList'
 import Activate from '@/components/Activate'
 import UserOrder from '@/components/Order/UserOrder'
 import UserOrderList from '@/components/Order/UserOrderList'
-import DriverOrder from '@/components/Order/DriverOrder'
-import DriverOrderList from '@/components/Order/DriverOrderList'
 import SimpleOrder from '@/components/Order/SimpleOrder'
 import Error404 from '@/components/Base/Error404'
 import ErrorNetwork from '@/components/Base/ErrorNetwork'
@@ -80,7 +81,7 @@ const router = new Router({
     },
     {
       path: '/driver',
-      redirect: '/driver/login'
+      redirect: '/driver/profile'
     },
     {
       path: '/driver',
@@ -89,11 +90,15 @@ const router = new Router({
       children:  [
         {
           path: 'login',
-          component: Login
+          component: DriverLogin
         },
         {
           path: 'register',
-          component: Register
+          component: DriverRegister
+        },
+        {
+          path: 'profile',
+          component: DriverProfile
         }
       ]
     },

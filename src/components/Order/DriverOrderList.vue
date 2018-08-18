@@ -14,19 +14,15 @@
                 <p class="scroll-view-item">
                 <ul>
                     <li>订单号：{{item.series}}</li>
-                    <li>司机报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
+                    <li>司机真实价：{{item.driverRealPrice}}元</li>
+                    <li>客户名字：{{item.customerName}}</li>
+                    <li>线路别名：{{item.routerAlia}}</li>
+                    <li>用车时间：{{item.appointmentDate}}</li>
                     <li>订单状态：{{item.orderStatusName}}</li>
                     <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
-                    <li>超里程价：{{item.overstepPrice}}元/公里</li>
-                    <li>车牌号：{{item.carPlateNumber}}</li>
-                    <li>车型：{{item.carTypeName}}</li>
-                    <li>司机姓名：{{item.driverName}}</li>
-                    <li>司机手机：{{item.driverMobile}}</li>
-                    <li>线路别名：{{item.routerAlia}}</li>
-                    <li>预约时间：{{item.appointmentDate}}</li>
                     <li>备注：{{item.remark}}</li>
                 </ul>
-                <div class="actions-wrapper">
+                <div class="actions-wrapper" v-show="isClicked">
                     <md-button type="link" @click.native="onComfirmOrder(item)">确认接单</md-button>
                     <md-button type="link" @click.native="onCompleteOrder(item)">完成送货</md-button>
                 </div>
@@ -48,16 +44,16 @@
 </template>
 
 <script>
-  import {ScrollView, ScrollViewMore, Button, ResultPage} from 'mand-mobile'
+  import {ScrollView, ScrollViewMore, Button, ResultPage, Toast} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
-  import {updateDriverOrder} from '@/api/order'
+  import {updateDriverOrder, getDriverOrder} from '@/api/order'
   import {getCookie} from '@/common/js/cache'
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
-    name: 'user-order-list',
+    name: 'driver-order-list',
     components: {
       [ScrollView.name]: ScrollView,
       [ScrollViewMore.name]: ScrollViewMore,
@@ -68,36 +64,63 @@
     },
     data() {
       return {
-        list: 10,
+        isClicked: true,
+        current: 1,
+        orderStatus: this.$route.query.orderStatus,
+        startTime: this.$route.query.startTime,
+        endTime: this.$route.query.endTime,
         isFinished: false
       }
     },
     computed: {
       ...mapGetters(['openId', 'driverOrders']),
       title () {
-        const orderStatus = this.$route.query.orderStatus
-        return orderStatus == 0 ? '未完成订单' : '已完成订单'
+        return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
     methods: {
+      ...mapMutations({
+        setDriverOrders: 'SET_DRIVERORDERS'
+      }),
+      _getDriverOrder (params) {
+        console.log(params)
+        getDriverOrder(params).then(res => {
+          if (res.code === 0) {
+            const driverOrders = res.driverOrder
+            const total = res.total
+            this.setDriverOrders(driverOrders)
+            if (driverOrders.length >= total) {
+              this.isFinished = true
+            }
+            this.$refs.scrollView.finishLoadMore()
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       $_onEndReached() {
         if (this.isFinished) {
           return
         }
         // async data
-        setTimeout(() => {
-          this.list += 5
-          if (this.list >= 20) {
-            this.isFinished = true
-          }
-          this.$refs.scrollView.finishLoadMore()
-        }, 1000)
+        this.current++
+        const params = {
+          openId: this.openId || getCookie('__user__openid'),
+          orderStatus: this.orderStatus,
+          routerDetailAliaSearchKey: '',
+          startTime: this.startTime,
+          endTime: this.endTime,
+          current: this.current,
+          pageSize: 10
+        }
+        this._getDriverOrder(params)
       },
       _updateDriverOrder (params) {
         Toast.loading('正在提交')
         updateDriverOrder(params).then(res => {
           if (res.code === 0) {
             Toast.succeed('成功')
+            this.isClicked = false
           }
         }).catch(err => {
           console.log(err)
@@ -124,8 +147,10 @@
 
 <style lang="stylus">
     .user-order-list
+        padding 0 0 200px
         .md-scroll-view
             background transparent
+            height 100%
         .scroll-view-list
             padding 0 20px
             margin 30px 0 30px
