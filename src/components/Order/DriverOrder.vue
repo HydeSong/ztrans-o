@@ -103,7 +103,7 @@
         getDriverOrder(params).then(res => {
           if (res.code === 0) {
             Toast.hide()
-            const driverOrders = res.data.driverOrder
+            const driverOrders = res.driverOrder
             this.setDriverOrders(driverOrders)
             this.$router.push(`/driver-order-list?orderStatus=${this.orderStatus}`)
           }

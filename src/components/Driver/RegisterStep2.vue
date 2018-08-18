@@ -291,7 +291,7 @@
           if (res.code === 0) {
             Toast.succeed('上传成功')
             const imgUlrList = this.imgUlrs[name] || []
-            imgUlrList.push(res.data.url)
+            imgUlrList.push(res.url)
             this.$set(this.imgUlrs, name, imgUlrList)
           }
         }).catch(err => {

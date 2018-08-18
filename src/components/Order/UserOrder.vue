@@ -37,7 +37,7 @@
                 </md-field-item>
             </md-field>
             <div class="order-footer">
-                <md-button @click.native="onSearch" :disabled="isBillOk">查询</md-button>
+                <md-button @click.native="onSearch">查询</md-button>
             </div>
         </div>
         <md-picker
@@ -99,7 +99,7 @@
         pickerData1: [],
         currentDate: new Date(),
         titles: ['未完成订单', '已完成订单'],
-        orderStatus: '',
+        orderStatus: 1,
         routerDetailAliaSearchKey: '',
         startTime: '',
         endTime: '',
@@ -113,9 +113,6 @@
     },
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
-      isBillOk() {
-        return !(this.routerDetailAliaSearchKey && this.startTime && this.endTime)
-      }
     },
     methods: {
       ...mapMutations({
@@ -123,10 +120,11 @@
       }),
       _getCustomerOrder (params) {
         Toast.loading('正在查询')
+        console.log(params)
         getCustomerOrder(params).then(res => {
           if (res.code === 0) {
             Toast.hide()
-            const customerOrders = res.data.customerOrders
+            const customerOrders = res.customerOrders
             this.setCustomerOrders(customerOrders)
             this.$router.push(`/user-order-list?orderStatus=${this.orderStatus}`)
           }
@@ -137,7 +135,7 @@
       _getRouterAliaByCustomerMasterId(params) {
         getRouterAliaByCustomerMasterId(params).then(res => {
           if (res.code === 0) {
-            const routerAliaModels = res.data.routerAliaModels
+            const routerAliaModels = res.routerAliaModels
             const ra = routerAliaModels.map((value) => {
               return {'text': value.routerAlia, 'value': value.series, ...value}
             })
@@ -158,7 +156,7 @@
         const values = this.$refs.pickerRouter.getColumnValues()
         let res = ''
         values.forEach(value => {
-          res += `${value.text || value.label} `
+          res += `${value.text || value.label}`
         })
         this.routerDetailAliaSearchKey = res
       },

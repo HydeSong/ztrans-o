@@ -225,14 +225,14 @@
           if (res.code === 0) {
             let district = []
             if (this.isShipping) {
-              const sourceRouterCityAreaTownModel = res.data.sourceRouterCityAreaTownModel
+              const sourceRouterCityAreaTownModel = res.sourceRouterCityAreaTownModel
               district.push(sourceRouterCityAreaTownModel)
               // 省市区/县默认值
               const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
               this.pickerValue1 = defaultValue
               this.routerDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
             } else {
-              const destionRouterCityAreaTownModel = res.data.destionRouterCityAreaTownModel
+              const destionRouterCityAreaTownModel = res.destionRouterCityAreaTownModel
               district.push(destionRouterCityAreaTownModel)
               // 省市区/县默认值
               const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`

@@ -87,7 +87,9 @@
                     </div>
                 </div>
                 <split></split>
-                <md-button @click.native="booking" :disabled="!isPriceShow">约 车</md-button>
+                <md-button @click.native="booking" :disabled="!isPriceShow">确认下单</md-button>
+                <split></split>
+                <md-button @click.native="onSearchUserOrder">查询订单</md-button>
             </div>
             <router-view></router-view>
         </div>
@@ -213,6 +215,9 @@
         setCityIds: 'SET_CITYIDS',
         setOpenId: 'SET_OPENID'
       }),
+      onSearchUserOrder () {
+        this.$router.push('/user-order')
+      },
       booking () {
         // console.log('约车')
         // console.log('验证数据 入参')
@@ -346,7 +351,7 @@
         getPicture(params).then(res => {
           // console.log(res)
           if (res.code === 0) {
-            console.log(res.data)
+            console.log(res)
           }
         }).catch(err => {
           console.log(err)

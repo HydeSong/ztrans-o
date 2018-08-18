@@ -48,6 +48,8 @@
                 <split></split>
                 <split></split>
                 <md-button @click.native="booking" :disabled="isBillOk">确认下单</md-button>
+                <split></split>
+                <md-button @click.native="onSearchUserOrder">查询订单</md-button>
             </div>
         </div>
         <md-picker
@@ -150,6 +152,9 @@
       }
     },
     methods: {
+      onSearchUserOrder () {
+        this.$router.push('/user-order')
+      },
       booking() {
         const params = {
           openId: this.openId || getCookie('__user__openid'),

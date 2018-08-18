@@ -199,6 +199,7 @@
             position absolute
             bottom 20px
             right 32px
+            width 1.8rem
         .login-btn
             padding 0 20px
 </style>
