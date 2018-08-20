@@ -53,7 +53,7 @@
   import Split from './Base/Split'
   import NavBar from './Base/NavBar'
   import {getContactMobileCode} from '@/api/sms'
-  import {registContact} from '@/api/activate'
+  import {registContact, alivedDriver} from '@/api/activate'
   import {getCookie} from '@/common/js/cache'
   import {mapGetters, mapMutations} from 'vuex'
 
@@ -104,6 +104,9 @@
       ...mapMutations({
         setCustomerInfo: 'SET_CUSTOMERINFO'
       }),
+      _alivedDriver (params) {
+
+      },
       _registContact (params) {
         // console.log(params)
         registContact(params).then(res => {

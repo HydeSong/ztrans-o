@@ -34,16 +34,11 @@
                     align="right"
                     :value="carInfo"
                     @click.native="isCarInfoShow = true">
-                </md-field-item>
+            </md-field-item>
             <md-input-item
                     v-model="carPlateNumber"
                     title="车牌号码"
                     placeholder="例：沪A88888"
-            ></md-input-item>
-            <md-input-item
-                    v-model="carPlateNumber"
-                    title="车辆尺寸"
-                    placeholder=""
             ></md-input-item>
         </md-field>
         <split></split>
@@ -73,7 +68,7 @@
   import {Picker, Button, Field, FieldItem, InputItem} from 'mand-mobile'
   import Split from '../Base/Split'
   import {getAllRouterByCity} from '@/api/road'
-  import {getCarBandList, getCarColourList, getCarTypeList} from '@/api/car'
+  import {getCarBandList, getCarColourList, getCarTypeList, getCarSizeList} from '@/api/car'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -105,15 +100,17 @@
       Split
     },
     computed: {
-      ...mapGetters(['openId']),
+      ...mapGetters(['openId', 'customerInfo']),
       disabled () {
         return !(this.driverName && this.driverIdentityId && this.mobilePhone && this.carInfo && this.carPlateNumber && this.billCity)
       }
     },
     created () {
-      this._getCarBrandList({customerNumId: 1})
-      this._getCarTypeList({customerNumId: 1})
-      this._getCarColourList({customerNumId: 1})
+      console.log(this.customerInfo.customerMasterId)
+      this._getCarBrandList({customerNumId: this.customerInfo.customerMasterId})
+      this._getCarTypeList({customerNumId: this.customerInfo.customerMasterId})
+      this._getCarColourList({customerNumId: this.customerInfo.customerMasterId})
+      this._getCarSizeList({customerNumId: this.customerInfo.customerMasterId})
       this._getAllRouterByCity({openId: this.openId})
     },
     methods: {
@@ -169,6 +166,24 @@
               })
             })
             this.carInfoData.push(carTypes)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      _getCarSizeList (params) {
+        getCarSizeList(params).then(res => {
+          console.log(res)
+          if (res.code === 0) {
+            let carSizes = []
+            res.carSizes.forEach((item) => {
+              carSizes.push({
+                text: item.sizeName,
+                value: item.sizeId,
+                ...item
+              })
+            })
+            this.carInfoData.push(carSizes)
           }
         }).catch(err => {
           console.log(err)
