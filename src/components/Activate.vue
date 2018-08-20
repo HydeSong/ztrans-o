@@ -114,7 +114,7 @@
             if (res.wetherRegister === 'Y') {
               this.$router.push('/driver-order')
             } else if (res.wetherRegister === 'N') {
-              this.$router.push('/driver/login')
+              this.$router.push('/driver/register')
             }
           }
         }).catch(err => {

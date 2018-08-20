@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <nav-bar>
-            司机加盟
+            司机登录
         </nav-bar>
         <div class="content">
             <div class="banner">
@@ -39,10 +39,10 @@
                 <split></split>
                 <split></split>
                 <div class="login-btn">
-                    <md-button @click="register" :disabled="disabled">去注册</md-button>
+                    <md-button @click="login" :disabled="disabled">去登录</md-button>
                 </div>
                 <split></split>
-                <p class="discription">点击“去注册”即代表同意《司机协议》</p>
+                <p class="discription">点击“去登录”即代表同意《司机协议》</p>
             </div>
         </div>
     </div>
@@ -87,7 +87,7 @@
     computed: {
       ...mapGetters(['wxcode', 'openId']),
       disabled () {
-        return !(this.code && this.phone && (this.code == this.mobileCode))
+        return !(this.code && this.phone)
       }
     },
     mounted () {
@@ -139,9 +139,6 @@
       },
       goto() {
         this.$refs.swiper.goto(2)
-      },
-      register() {
-        this.$router.push('/driver/register')
       },
       login() {
         console.log('login')

@@ -45,7 +45,7 @@
     },
     methods: {
       next () {
-        this.$router.push('/driver/login')
+        window.location = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b0e2306f65b18cc&redirect_uri=http%3A%2F%2Fss.mofter.com&response_type=code&scope=snsapi_base&state=2#wechat_redirect'
       },
       _registDriver (params) {
         registDriver(params).then(res => {
@@ -55,7 +55,7 @@
             this.text = '账号注册成功'
             this.subtext = '我们准备了赚钱小技巧，请登录司机端查看'
             this.$emit('next', 3)
-            this.$router.push('/driver/profile')
+            this.$router.push('/driver-order')
           } else {
             Toast.succeed('注册失败')
             this.text = '账号注册失败'
