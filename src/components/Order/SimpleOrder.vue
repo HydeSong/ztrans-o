@@ -199,7 +199,7 @@
         this.carTypeName = ''
       },
       onSearchUserOrder () {
-        this.$router.push('/user-order')
+        this.$router.push('/user/user-order')
       },
       booking() {
         const params = {

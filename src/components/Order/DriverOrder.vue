@@ -102,7 +102,7 @@
             Toast.hide()
             const driverOrders = res.driverOrder
             this.setDriverOrders(driverOrders)
-            this.$router.push(`/driver-order-list?orderStatus=${this.orderStatus}&startTime=${this.startTime}&endTime=${this.endTime}`)
+            this.$router.push(`/driver/driver-order-list?orderStatus=${this.orderStatus}&startTime=${this.startTime}&endTime=${this.endTime}`)
           }
         }).catch(err => {
           console.log(err)

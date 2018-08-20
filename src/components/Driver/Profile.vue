@@ -22,7 +22,7 @@
     },
     methods: {
       onSearchDriverOrder () {
-        this.$router.push('/driver-order')
+        this.$router.push('/driver/driver-order')
       },
     }
   }

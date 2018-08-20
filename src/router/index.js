@@ -14,6 +14,7 @@ import DriverProfile from '@/components/Driver/Profile'
 import DriverOrder from '@/components/Order/DriverOrder'
 import DriverOrderList from '@/components/Order/DriverOrderList'
 import Activate from '@/components/Activate'
+import Order from '@/components/Order/Order'
 import UserOrder from '@/components/Order/UserOrder'
 import UserOrderList from '@/components/Order/UserOrderList'
 import SimpleOrder from '@/components/Order/SimpleOrder'
@@ -65,9 +66,8 @@ const router = new Router({
       component: Activate
     },
     {
-      path: '/simple-order',
-      name: 'simple-order',
-      component: SimpleOrder
+      path: '/user',
+      redirect: '/user/order'
     },
     {
       path: '/user',
@@ -77,7 +77,26 @@ const router = new Router({
         {
           path: 'address-info/:id',
           component: AddressInfo
-        }
+        },
+        {
+          path: 'order',
+          component: Order
+        },
+        {
+          path: 'user-order',
+          name: 'user-order',
+          component: UserOrder
+        },
+        {
+          path: 'user-order-list',
+          name: 'user-order-list',
+          component: UserOrderList
+        },
+        {
+          path: 'simple-order',
+          name: 'simple-order',
+          component: SimpleOrder
+        },
       ]
     },
     {
@@ -104,28 +123,18 @@ const router = new Router({
         {
           path: 'profile',
           component: DriverProfile
-        }
+        },
+        {
+          path: 'driver-order',
+          name: 'driver-order',
+          component: DriverOrder
+        },
+        {
+          path: 'driver-order-list',
+          name: 'driver-order-list',
+          component: DriverOrderList
+        },
       ]
-    },
-    {
-      path: '/user-order',
-      name: 'user-order',
-      component: UserOrder
-    },
-    {
-      path: '/user-order-list',
-      name: 'user-order-list',
-      component: UserOrderList
-    },
-    {
-      path: '/driver-order',
-      name: 'driver-order',
-      component: DriverOrder
-    },
-    {
-      path: '/driver-order-list',
-      name: 'driver-order-list',
-      component: DriverOrderList
     },
     {
       path: '/test',

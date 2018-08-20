@@ -40,13 +40,13 @@
         setCustomerInfo: 'SET_CUSTOMERINFO'
       }),
       call () {
-        this.$router.push('/user')
+        this.$router.push('/user/order')
       },
       simpleOrder () {
-        this.$router.push('/simple-order')
+        this.$router.push('/user/simple-order')
       },
       join () {
-        this.$router.push('/driver')
+        this.$router.push('/driver/driver-order')
       },
       activate (from) {
         this.$router.push(`/activate?from=${from}`)
