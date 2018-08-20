@@ -22,6 +22,7 @@
   import Split from '../Base/Split'
   import {registDriver} from '@/api/register'
   import {mapGetters} from 'vuex'
+import { setTimeout } from 'timers';
 
   export default {
     name: 'register-step3',
@@ -55,7 +56,7 @@
             this.text = '账号注册成功'
             this.subtext = '我们准备了赚钱小技巧，请登录司机端查看'
             this.$emit('next', 3)
-            this.$router.push('/driver/driver-order')
+            setTimeout(() => this.$router.push('/driver/driver-order'), 3000)
           } else {
             Toast.succeed('注册失败')
             this.text = '账号注册失败'
