@@ -57,7 +57,7 @@
                 ref="carInfo"
                 v-model="isCarInfoShow"
                 :data="carInfoData"
-                :cols="3"
+                :cols="4"
                 title="选择车辆信息"
                 @confirm="onPickerConfirm('carInfo')"
         ></md-picker>
@@ -75,10 +75,11 @@
     name: 'register-step1',
     data () {
       return {
-        carBrandId: 0,
-        carColourId: 0,
+        carBrandId: '',
+        carColourId: '',
         carPlateNumber: '',
-        carTypeId: 0,
+        carTypeId: '',
+        sizeId: '',
         driverIdentityId: '',
         driverName: '',
         driverWorkCity:[],
@@ -214,6 +215,7 @@
           carColourId: this.carColourId,
           carPlateNumber: this.carPlateNumber,
           carTypeId: this.carTypeId,
+          sizeId: this.sizeId,
           driverIdentityId: this.driverIdentityId,
           driverName: this.driverName,
           driverWorkCity: this.driverWorkCity,
@@ -244,6 +246,10 @@
 
             if (value.colourId) {
               this.carColourId = value.colourId
+            }
+
+            if (value.sizeId) {
+              this.sizeId = value.sizeId
             }
           }
         })

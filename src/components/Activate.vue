@@ -105,7 +105,21 @@
         setCustomerInfo: 'SET_CUSTOMERINFO'
       }),
       _alivedDriver (params) {
-
+        alivedDriver(params).then(res => {
+          console.log(res)
+          if (res.code === 0) {
+            // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
+            // this.setCustomerInfo(res)
+            Toast.succeed('激活成功')
+            if (res.wetherRegister === 'Y') {
+              this.$router.push('/driver-order')
+            } else if (res.wetherRegister === 'N') {
+              this.$router.push('/driver/login')
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
       },
       _registContact (params) {
         // console.log(params)
@@ -113,7 +127,7 @@
           console.log(res)
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
-            this.setCustomerInfo(res)
+            // this.setCustomerInfo(res)
             Toast.succeed('激活成功')
             let from = this.$route.query.from
             this.$router.push(from)
@@ -164,7 +178,12 @@
         this.$refs.swiper.goto(2)
       },
       activate() {
-        this._registContact({mobileCode: this.code, mobilePhone: this.phone, openId: this.openId || getCookie('__user__openid')})
+        let from = this.$route.query.from
+        if (from === 'driver') {
+          this._alivedDriver({mobileCode: this.code, mobilePhone: this.phone, openId: this.openId || getCookie('__user__openid')})
+        } else if (from === 'user') {
+          this._registContact({mobileCode: this.code, mobilePhone: this.phone, openId: this.openId || getCookie('__user__openid')})
+        }
       },
       login() {
         console.log('login')
