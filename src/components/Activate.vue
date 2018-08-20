@@ -112,9 +112,9 @@
             // this.setCustomerInfo(res)
             Toast.succeed('激活成功')
             if (res.wetherRegister === 'Y') {
-              this.$router.push('/driver/driver-order')
+              this.$router.replace('/driver/driver-order')
             } else if (res.wetherRegister === 'N') {
-              this.$router.push('/driver/register')
+              this.$router.replace('/driver/register')
             }
           }
         }).catch(err => {
@@ -130,7 +130,7 @@
             // this.setCustomerInfo(res)
             Toast.succeed('激活成功')
             let from = this.$route.query.from
-            this.$router.push(from)
+            this.$router.replace(from)
           }
         }).catch(err => {
           console.log(err)
