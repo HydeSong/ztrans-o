@@ -75,11 +75,20 @@
                 :default-date="currentDate"
                 @confirm="onDatePickerConfirm"
         ></md-date-picker>
+        <md-dialog
+                icon="circle-right"
+                title="下单成功"
+                :closable="false"
+                v-model="actDialog.open"
+                :btns="actDialog.btns"
+        >
+            恭喜您成功完成下单
+        </md-dialog>
     </div>
 </template>
 
 <script>
-  import { Button, Picker, Field, FieldItem, DatePicker, InputItem, Toast } from 'mand-mobile'
+  import { Button, Picker, Field, FieldItem, DatePicker, InputItem, Toast, Dialog } from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
@@ -96,6 +105,7 @@
       [Picker.name]: Picker,
       [Field.name]: Field,
       [FieldItem.name]: FieldItem,
+      [Dialog.name]: Dialog,
       Split,
       NavBar
     },
@@ -123,7 +133,20 @@
           routerPriceSeries: ''
         },
         pickerData1: [],
-        pickerData2: []
+        pickerData2: [],
+        actDialog: {
+          open: false,
+          btns: [
+            {
+              text: '继续下单',
+              handler: this.onActCancel,
+            },
+            {
+              text: '查询订单',
+              handler: this.onActConfirm,
+            },
+          ],
+        },
       }
     },
     created() {
@@ -152,6 +175,29 @@
       }
     },
     methods: {
+      onActConfirm () {
+        this.onSearchUserOrder()
+      },
+      onActCancel () {
+        console.log('继续下单')
+        this.actDialog.open = false
+        this.bill = {
+          appointmentDate: '',
+          carTypeSeries: '',
+          contactName: '',
+          customerMasterId: '',
+          initDistance: '',
+          initPrice: '',
+          mobilePhone: '',
+          openId: '',
+          overstepPrice: '',
+          remark: '',
+          routerDetailSeries: '',
+          routerPriceSeries: ''
+        }
+        this.routerName = ''
+        this.carTypeName = ''
+      },
       onSearchUserOrder () {
         this.$router.push('/user-order')
       },
@@ -178,7 +224,8 @@
           // console.log(res)
           if (res.code === 0) {
             console.log('下单成功')
-            Toast.succeed('下单成功')
+            // Toast.succeed('下单成功')
+            this.actDialog.open = true
           }
         }).catch(err => {
           console.log(err)

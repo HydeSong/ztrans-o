@@ -93,11 +93,20 @@
             </div>
             <router-view></router-view>
         </div>
+        <md-dialog
+                icon="circle-right"
+                title="下单成功"
+                :closable="false"
+                v-model="actDialog.open"
+                :btns="actDialog.btns"
+        >
+            恭喜您成功完成下单
+        </md-dialog>
     </div>
 </template>
 
 <script>
-  import {DropMenu, Dialog, Tabs, Field, FieldItem, InputItem, Switch, Agree, Button, Toast} from 'mand-mobile'
+  import {DropMenu, Dialog, Tabs, Field, FieldItem, InputItem, Switch, Agree, Button} from 'mand-mobile'
   import Split from '../Base/Split'
   import NavBar from '../Base/NavBar'
 
@@ -119,32 +128,32 @@
       [FieldItem.name]: FieldItem,
       [InputItem.name]: InputItem,
       [Switch.name]: Switch,
+      [Dialog.name]: Dialog,
       Split,
       NavBar
     },
     data() {
       return {
         bill: {
-          appointmentDate: "",
+          appointmentDate: '',
           appointmentNum: 1,
           carTypeSeries: '',
-          deliverGoodsTime: "",
-          initDistance: "",
+          deliverGoodsTime: '',
+          initDistance: '',
           initPrice: 0,
-          openId: "",
+          openId: '',
           overstepPrice: 0,
-          receiveAddressDetail: "",
+          receiveAddressDetail: '',
           receiveGoodsLocationNum: 0,
-          receiveGoodsPersonMobile: "",
-          receiveGoodsPersonName: "",
-          remark: "",
+          receiveGoodsPersonMobile: '',
+          receiveGoodsPersonName: '',
+          remark: '',
           routerDetailSeries: 0,
           routerPriceSeries: 0,
-          sendAddressDetail: "",
+          sendAddressDetail: '',
           sendGoodsLocationNum: 0,
-          sendGoodsPersonMobile: "",
-          sendGoodsPersonName: "",
-          // wetherTakeover: false,
+          sendGoodsPersonMobile: '',
+          sendGoodsPersonName: '',
           goodsRemark: '',
           wetherSpecialCustomerPrice: ''
         },
@@ -164,7 +173,20 @@
             options: [],
           },
         ],
-        defaultPath: []
+        defaultPath: [],
+        actDialog: {
+          open: false,
+          btns: [
+            {
+              text: '继续下单',
+              handler: this.onActCancel,
+            },
+            {
+              text: '查询订单',
+              handler: this.onActConfirm,
+            },
+          ],
+        },
       }
     },
     watch: {
@@ -215,19 +237,45 @@
         setCityIds: 'SET_CITYIDS',
         setOpenId: 'SET_OPENID'
       }),
+      onActConfirm () {
+        this.onSearchUserOrder()
+      },
+      onActCancel () {
+        console.log('继续下单')
+        this.actDialog.open = false
+        this.bill = {
+          appointmentDate: '',
+          appointmentNum: 1,
+          carTypeSeries: '',
+          deliverGoodsTime: '',
+          initDistance: '',
+          initPrice: 0,
+          openId: '',
+          overstepPrice: 0,
+          receiveAddressDetail: '',
+          receiveGoodsLocationNum: 0,
+          receiveGoodsPersonMobile: '',
+          receiveGoodsPersonName: '',
+          remark: '',
+          routerDetailSeries: 0,
+          routerPriceSeries: 0,
+          sendAddressDetail: '',
+          sendGoodsLocationNum: 0,
+          sendGoodsPersonMobile: '',
+          sendGoodsPersonName: '',
+          goodsRemark: '',
+          wetherSpecialCustomerPrice: ''
+        }
+        this.wetherTakeover = ''
+      },
       onSearchUserOrder () {
         this.$router.push('/user-order')
       },
       booking () {
-        // console.log('约车')
-        // console.log('验证数据 入参')
         this._createOrder()
       },
-      tabIndexChange (index, preIndex) {
-        // console.log(index, preIndex)
+      tabIndexChange (index) {
         this.bill.carTypeSeries = this.tabs[index].series
-        // console.log(this.bill.carTypeSeries)
-        // 切换车型时查询价格
         if (this.bill.carTypeSeries && this.shipping.routerDetailSeries) {
           this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
         }
@@ -240,7 +288,6 @@
           sourceCityId: listItem.sourceCityId,
           destinyCityId: listItem.destinyCityId
         })
-        // 切换路线时查询价格
         if (this.bill.carTypeSeries && this.shipping.routerDetailSeries) {
           this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
         }
@@ -264,7 +311,7 @@
           // console.log(res)
           if (res.code === 0) {
             console.log('下单成功')
-            Toast.succeed('下单成功')
+            this.actDialog.open = true
           }
         }).catch(err => {
           console.log(err)

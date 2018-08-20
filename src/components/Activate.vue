@@ -80,16 +80,20 @@
         disabledVerify: false,
         btnTxt: '获取验证码',
         banners: [{
-          img: require('../assets/images/index_banner.png')
+          img: require('../assets/images/index_banner1.png')
         }, {
-          img: require('../assets/images/index_banner.png')
+          img: require('../assets/images/index_banner1.png')
+        }, {
+          img: require('../assets/images/index_banner1.png')
+        }, {
+          img: require('../assets/images/index_banner1.png')
         }]
       }
     },
     computed: {
       ...mapGetters(['openId']),
       disabled () {
-        return !(this.code && this.phone && (this.code == this.mobileCode))
+        return !(this.code && this.phone)
       }
     },
     mounted () {
@@ -161,7 +165,7 @@
         this.$refs.swiper.goto(2)
       },
       activate() {
-        this._registContact({mobilePhone: this.phone, openId: this.openId || getCookie('__user__openid')})
+        this._registContact({mobileCode: this.code, mobilePhone: this.phone, openId: this.openId || getCookie('__user__openid')})
       },
       login() {
         console.log('login')

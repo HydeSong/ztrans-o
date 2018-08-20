@@ -40,6 +40,11 @@
                     title="车牌号码"
                     placeholder="例：沪A88888"
             ></md-input-item>
+            <md-input-item
+                    v-model="carPlateNumber"
+                    title="车辆尺寸"
+                    placeholder=""
+            ></md-input-item>
         </md-field>
         <split></split>
         <split></split>

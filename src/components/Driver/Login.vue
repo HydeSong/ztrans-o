@@ -78,9 +78,13 @@
         disabledVerify: false,
         btnTxt: '获取验证码',
         banners: [{
-          img: require('../../assets/images/index_banner.png')
+          img: require('../../assets/images/index_banner1.png')
         }, {
-          img: require('../../assets/images/index_banner.png')
+          img: require('../../assets/images/index_banner1.png')
+        }, {
+          img: require('../../assets/images/index_banner1.png')
+        }, {
+          img: require('../../assets/images/index_banner1.png')
         }]
       }
     },
