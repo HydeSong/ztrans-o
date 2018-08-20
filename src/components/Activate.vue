@@ -82,11 +82,7 @@
         banners: [{
           img: require('../assets/images/index_banner1.png')
         }, {
-          img: require('../assets/images/index_banner1.png')
-        }, {
-          img: require('../assets/images/index_banner1.png')
-        }, {
-          img: require('../assets/images/index_banner1.png')
+          img: require('../assets/images/index_banner2.png')
         }]
       }
     },
