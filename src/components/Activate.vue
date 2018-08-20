@@ -52,7 +52,7 @@
   import {Toast, Button, Field, FieldItem, InputItem, Swiper, SwiperItem, Codebox} from 'mand-mobile'
   import Split from './Base/Split'
   import NavBar from './Base/NavBar'
-  import {getContactMobileCode} from '@/api/sms'
+  import {getMobileCode, getContactMobileCode} from '@/api/sms'
   import {registContact, alivedDriver} from '@/api/activate'
   import {getCookie} from '@/common/js/cache'
   import {mapGetters, mapMutations} from 'vuex'
@@ -154,14 +154,27 @@
             this.timeout = 60
           }
         }, 1000)
-        getContactMobileCode({mobilePhone: this.phone}).then(res => {
-          console.log(res)
-          if (res.code === 0) {
-            this.mobileCode = res.mobileCode
-          }
-        }).catch(err => {
-          console.log(err)
-        })
+
+        let from = this.$route.query.from
+        if (from === 'driver') {
+          getMobileCode({mobilePhone: this.phone}).then(res => {
+            console.log(res)
+            if (res.code === 0) {
+              this.mobileCode = res.mobileCode
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+        } else if (from === 'user') {
+          getContactMobileCode({mobilePhone: this.phone}).then(res => {
+            console.log(res)
+            if (res.code === 0) {
+              this.mobileCode = res.mobileCode
+            }
+          }).catch(err => {
+            console.log(err)
+          })
+        }
       },
       setValue(id, value) {
         document.querySelector(id) && (document.querySelector(id).innerHTML = value)
