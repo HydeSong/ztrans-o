@@ -11,7 +11,7 @@ export function registContact (params) {
   return axios.get(url, {params: data})
 }
 
-export function alivedDriver () {
+export function alivedDriver (params) {
   const url = `${CONFIG.HOST}/alivedDriver`
   const data = {
     params: paramsify(params),
