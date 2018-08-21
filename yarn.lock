@@ -4168,9 +4168,9 @@ mamacro@^0.0.3:
   version "0.0.3"
   resolved "http://registry.npm.taobao.org/mamacro/download/mamacro-0.0.3.tgz#ad2c9576197c9f1abf308d0787865bd975a3f3e4"
 
-mand-mobile@^1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/mand-mobile/-/mand-mobile-1.5.5.tgz#043b5610d951053509f381e0a428208c570e3edf"
+mand-mobile@^1.5.6:
+  version "1.5.6"
+  resolved "http://registry.npm.taobao.org/mand-mobile/download/mand-mobile-1.5.6.tgz#164dad34685b2b25084bb9260c415ce82de1a4f3"
 
 map-cache@^0.2.2:
   version "0.2.2"
