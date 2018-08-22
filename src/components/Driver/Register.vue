@@ -85,9 +85,9 @@
       }
     },
     computed: {
-      ...mapGetters(['wxcode', 'openId']),
+      ...mapGetters(['openId']),
       disabled () {
-        return !(this.code && this.phone && (this.code === this.mobileCode))
+        return !(this.code && this.phone)
       }
     },
     mounted () {

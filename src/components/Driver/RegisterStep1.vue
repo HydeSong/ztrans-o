@@ -103,7 +103,7 @@
     computed: {
       ...mapGetters(['openId', 'customerInfo']),
       disabled () {
-        return !(this.driverName && this.driverIdentityId && this.mobilePhone && this.carInfo && this.carPlateNumber && this.billCity)
+        return !(this.driverName && this.driverIdentityId && this.mobilePhone && this.carInfo && this.carPlateNumber)
       }
     },
     created () {

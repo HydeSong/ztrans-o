@@ -19,7 +19,7 @@ export function urlParse (window) {
     })
   }
   return obj
-};
+}
 
 /**
  * 数组对象去重
