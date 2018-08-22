@@ -87,7 +87,7 @@
     computed: {
       ...mapGetters(['wxcode', 'openId']),
       disabled () {
-        return !(this.code && this.phone)
+        return !(this.code && this.phone && (this.code === this.mobileCode))
       }
     },
     mounted () {
