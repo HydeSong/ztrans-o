@@ -74,11 +74,12 @@
             this.setCustomerInfo(res)
             setCookie('__user__customerinfo', JSON.stringify(res))
             if (res.wetherRegister === 1) {
-              if (res.wetherSpecialCustomer === 0) {
-                this.simpleOrder()
-              } else {
-                this.call()
-              }
+              // if (res.wetherSpecialCustomer === 0) {
+              //   this.simpleOrder()
+              // } else {
+              //   this.call()
+              // }
+              this.call()
             } else if (res.wetherRegister === 0) {
               this.activate('user')
             }

@@ -11,7 +11,7 @@ import RegisterStep from '@/components/Driver/RegisterStep'
 import DriverOrder from '@/components/Order/DriverOrder'
 import DriverOrderList from '@/components/Order/DriverOrderList'
 import Activate from '@/components/Activate'
-import Order from '@/components/Order/Order'
+import OrderNew from '@/components/Order/OrderNew'
 import UserOrder from '@/components/Order/UserOrder'
 import UserOrderList from '@/components/Order/UserOrderList'
 import SimpleOrder from '@/components/Order/SimpleOrder'
@@ -77,7 +77,7 @@ const router = new Router({
         },
         {
           path: 'order',
-          component: Order
+          component: OrderNew
         },
         {
           path: 'user-order',
