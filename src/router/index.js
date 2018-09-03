@@ -7,10 +7,7 @@ import Home from '@/components/Home'
 import User from '@/components/User/User'
 import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
-import DriverLogin from '@/components/Driver/Login'
-import DriverRegister from '@/components/Driver/Register'
 import RegisterStep from '@/components/Driver/RegisterStep'
-import DriverProfile from '@/components/Driver/Profile'
 import DriverOrder from '@/components/Order/DriverOrder'
 import DriverOrderList from '@/components/Order/DriverOrderList'
 import Activate from '@/components/Activate'
@@ -109,20 +106,8 @@ const router = new Router({
       component: Driver,
       children:  [
         {
-          path: 'login',
-          component: DriverLogin
-        },
-        {
-          path: 'register',
-          component: DriverRegister
-        },
-        {
           path: 'register-step',
           component: RegisterStep
-        },
-        {
-          path: 'profile',
-          component: DriverProfile
         },
         {
           path: 'driver-order',

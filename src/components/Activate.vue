@@ -106,8 +106,6 @@
       }),
       _alivedDriver (params) {
         alivedDriver(params).then(res => {
-          console.log(res)
-          console.log('alivedDriver')
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
@@ -115,7 +113,7 @@
             if (res.wetherRegister === 'Y') {
               this.$router.replace('/driver/driver-order')
             } else if (res.wetherRegister === 'N') {
-              this.$router.replace('/driver/register')
+              this.$router.replace('/driver/register-step')
             }
           }
         }).catch(err => {
@@ -125,8 +123,6 @@
       _registContact (params) {
         // console.log(params)
         registContact(params).then(res => {
-          console.log(res)
-          console.log('registContact')
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
