@@ -386,6 +386,7 @@
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice
         this.bill.routerPriceSeries = res.routerPriceId
+        console.log(this.bill)
       },
     },
   }
