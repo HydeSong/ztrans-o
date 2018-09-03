@@ -263,6 +263,7 @@
         })
       },
       _getPriceAndCarByCustomerIdAndRouterSeries(params) {
+        console.log(params)
         getPriceAndCarByCustomerIdAndRouterSeries(params).then(res => {
           if (res.code === 0) {
             Toast.hide()
@@ -335,7 +336,7 @@
       },
       _getRouterPriceByCarTypeAndRouterDetailSeries(params) {
         getRouterPriceByCarTypeAndRouterDetailSeries(params).then(res => {
-          // console.log(res)
+          console.log(res)
           if (res.code === 0) {
             this.isPriceShow = true
             this.bill.initDistance = res.initDistance
