@@ -6,7 +6,7 @@ import axios from 'axios'
 // 在这里添加你自己的逻辑
 axios.interceptors.response.use(res => {
   let result = ''
-  console.log(res)
+  // console.log(res)
   if (res.status === 200) {
     const code = res.data.code
     switch (code) {
@@ -14,7 +14,7 @@ axios.interceptors.response.use(res => {
         result = res.data
         break
       default:
-        console.log(code)
+        // console.log(code)
         Toast.failed(`${code}:${res.data.message}`)
         break
     }
