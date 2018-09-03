@@ -106,8 +106,8 @@
       }),
       _alivedDriver (params) {
         alivedDriver(params).then(res => {
-          console.log(res)
-          console.log('alivedDriver')
+          // console.log(res)
+          // console.log('alivedDriver')
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
@@ -125,8 +125,8 @@
       _registContact (params) {
         // console.log(params)
         registContact(params).then(res => {
-          console.log(res)
-          console.log('registContact')
+          // console.log(res)
+          // console.log('registContact')
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
