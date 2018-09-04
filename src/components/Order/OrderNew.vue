@@ -231,9 +231,9 @@
     },
     beforeRouteUpdate (to, from, next) {
       if (to.path === '/user/order') {
-        this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
-        this.bill.deliverGoodsTime = this.shipping.goodsTime
+        // this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
         this.bill.openId = this.openId || getCookie('__user__openid')
+        this.bill.deliverGoodsTime = this.shipping.goodsTime
         this.bill.receiveAddressDetail = this.receiver.addressDetail
         this.bill.receiveGoodsLocationNum = this.receiver.locationNum
         this.bill.receiveGoodsPersonMobile = this.receiver.personMobile
@@ -255,7 +255,6 @@
             const ra = routerAliaModels.map((value) => {
               return {'text': value.routerAlia, 'value': value.series, ...value}
             })
-            // console.log('ra', ra)
             this.pickerData1 = [ra]
           }
         }).catch(err => {
@@ -334,32 +333,8 @@
           console.log(err)
         })
       },
-      _getRouterPriceByCarTypeAndRouterDetailSeries(params) {
-        getRouterPriceByCarTypeAndRouterDetailSeries(params).then(res => {
-          console.log(res)
-          if (res.code === 0) {
-            this.isPriceShow = true
-            this.bill.initDistance = res.initDistance
-            this.bill.initPrice = res.initPrice
-            this.bill.overstepPrice = res.overstepPrice
-            this.bill.routerPriceId = res.routerPriceId
-            this.bill.routerPriceSeries = res.routerPriceId
-            this.bill.wetherSpecialCustomerPrice = res.wetherSpecialCustomerPrice
-          } else {
-            this.isPriceShow = false
-            this.bill.initDistance = 0
-            this.bill.initPrice = 0
-            this.bill.overstepPrice = 0
-            this.bill.routerPriceId = 0
-            this.bill.routerPriceSeries = 0
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
       onPickerRouterConfirm() {
         const values = this.$refs.pickerRouter.getColumnValues()
-        // console.log(values)
         let res = ''
         let val = ''
         values.forEach(value => {
@@ -368,19 +343,17 @@
             val = value
           }
         })
-        // console.log(res)
-        // console.log(val)
         this.routerName = res
         this.bill.routerDetailSeries = val.series
+        this.bill.receiveAddressDetail = val.receiveAddressDetail
+        this.bill.sendAddressDetail = val.sendAddressDetail
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
-        // console.log(values)
         let res = ''
         values.forEach(value => {
           value && (res = value)
         })
-        // console.log(res)
         this.carTypeName = res.typeName
         this.bill.carTypeSeries = res.series
         this.bill.initDistance = res.initDistance

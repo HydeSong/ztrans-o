@@ -49,6 +49,7 @@ import { setTimeout } from 'timers';
         window.location = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b0e2306f65b18cc&redirect_uri=http%3A%2F%2Fss.mofter.com&response_type=code&scope=snsapi_base&state=2#wechat_redirect'
       },
       _registDriver (params) {
+        console.log(params)
         registDriver(params).then(res => {
           console.log(res)
           if (res.code === 0) {

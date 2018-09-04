@@ -1,45 +1,47 @@
 <template>
-    <div class="user-order-list">
+    <div class="driver-order-list">
         <nav-bar>
             {{title}}
         </nav-bar>
-        <md-scroll-view
-                ref="scrollView"
-                :scrolling-x="false"
-                @endReached="$_onEndReached">
-            <div
-                    v-for="(item, index) in driverOrders"
-                    :key="index"
-                    class="scroll-view-list">
-                <p class="scroll-view-item">
-                <ul>
-                    <li>订单号：{{item.series}}</li>
-                    <li>司机真实价：{{item.driverRealPrice}}元</li>
-                    <li>客户名字：{{item.customerName}}</li>
-                    <li>线路别名：{{item.routerAlia}}</li>
-                    <li>用车时间：{{item.appointmentDate}}</li>
-                    <li>订单状态：{{item.orderStatusName}}</li>
-                    <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
-                    <li>备注：{{item.remark}}</li>
-                </ul>
-                <div class="actions-wrapper" v-show="isClicked">
-                    <md-button type="link" @click.native="onComfirmOrder(item)">确认接单</md-button>
-                    <md-button type="link" @click.native="onCompleteOrder(item)">完成送货</md-button>
+        <div>
+            <md-scroll-view
+                    ref="scrollView"
+                    :scrolling-x="false"
+                    @endReached="$_onEndReached">
+                <div
+                        v-for="(item, index) in driverOrders"
+                        :key="index"
+                        class="scroll-view-list">
+                    <p class="scroll-view-item">
+                    <ul>
+                        <li>订单号：{{item.series}}</li>
+                        <li>司机真实价：{{item.driverRealPrice}}元</li>
+                        <li>客户名字：{{item.customerName}}</li>
+                        <li>线路别名：{{item.routerAlia}}</li>
+                        <li>用车时间：{{item.appointmentDate}}</li>
+                        <li>订单状态：{{item.orderStatusName}}</li>
+                        <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
+                        <li>备注：{{item.remark}}</li>
+                    </ul>
+                    <div class="actions-wrapper" v-show="isClicked">
+                        <md-button type="link" @click.native="onComfirmOrder(item)">确认接单</md-button>
+                        <md-button type="link" @click.native="onCompleteOrder(item)">完成送货</md-button>
+                    </div>
+                    </p>
                 </div>
-                </p>
-            </div>
-            <md-scroll-view-more
-                    slot="more"
-                    :is-finished="isFinished">
-            </md-scroll-view-more>
-        </md-scroll-view>
-        <md-result-page
-                v-if="driverOrders.length === 0"
-                class="customized"
-                img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
-                text="没有订单"
-                subtext="要不然刷新试试？">
-        </md-result-page>
+                <md-scroll-view-more
+                        slot="more"
+                        :is-finished="isFinished">
+                </md-scroll-view-more>
+            </md-scroll-view>
+            <md-result-page
+                    v-if="driverOrders.length === 0"
+                    class="customized"
+                    img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
+                    text="没有订单"
+                    subtext="要不然刷新试试？">
+            </md-result-page>
+        </div>
     </div>
 </template>
 
@@ -146,7 +148,7 @@
 </script>
 
 <style lang="stylus">
-    .user-order-list
+    .driver-order-list
         padding 0 0 200px
         .md-scroll-view
             background transparent

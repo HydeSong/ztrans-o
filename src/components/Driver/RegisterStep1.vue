@@ -120,7 +120,6 @@
       }),
       _getCarBrandList (params) {
         getCarBandList(params).then(res => {
-          console.log(res)
           if (res.code === 0) {
             let carBrands = []
             res.carBrands.forEach((item) => {
@@ -138,7 +137,6 @@
       },
       _getCarColourList (params) {
         getCarColourList(params).then(res => {
-          console.log(res)
           if (res.code === 0) {
             let carColours = []
             res.carColours.forEach((item) => {
@@ -156,7 +154,6 @@
       },
       _getCarTypeList (params) {
         getCarTypeList(params).then(res => {
-          console.log(res)
           if (res.code === 0) {
             let carTypes = []
             res.carTypes.forEach((item) => {
@@ -174,12 +171,11 @@
       },
       _getCarSizeList (params) {
         getCarSizeList(params).then(res => {
-          console.log(res)
           if (res.code === 0) {
             let carSizes = []
             res.carSizes.forEach((item) => {
               carSizes.push({
-                text: item.sizeName,
+                text: `${item.sizeName}米`,
                 value: item.sizeId,
                 ...item
               })
