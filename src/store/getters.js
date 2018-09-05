@@ -17,3 +17,7 @@ export const customerInfo = state => state.customerInfo
 export const customerOrders = state => state.customerOrders
 
 export const driverOrders = state => state.driverOrders
+
+export const shippingDistrictDetail = state => state.shippingDistrictDetail
+
+export const receiveDistrictDetail = state => state.receiveDistrictDetail

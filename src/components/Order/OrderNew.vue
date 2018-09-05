@@ -23,16 +23,16 @@
                 </md-field-item>
                 <md-field-item
                         name="shipping-address"
-                        :title="(shipping.addressDetail||shipping.districtDetail)?`${shipping.districtDetail}${shipping.addressDetail}`:'请输入发货地'"
+                        :title="shippingDistrictDetail?`${shippingDistrictDetail}`:'请输入发货地'"
                         arrow="arrow-right"
-                        :class="[(shipping.addressDetail||shipping.districtDetail)?'':'saddress']"
+                        :class="[shippingDistrictDetail?'':'saddress']"
                         @click="fillShipping">
                 </md-field-item>
                 <md-field-item
                         name="receiver-address"
-                        :title="(receiver.addressDetail||receiver.districtDetail)?`${receiver.districtDetail}${receiver.addressDetail}`:'请输入收货地'"
+                        :title="receiveDistrictDetail?`${receiveDistrictDetail}`:'请输入收货地'"
                         arrow="arrow-right"
-                        :class="[(receiver.addressDetail||receiver.districtDetail)?'':'saddress']"
+                        :class="[receiveDistrictDetail?'':'saddress']"
                         @click="fillReceiver">
                 </md-field-item>
             </md-field>
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <split></split>
-                <md-button @click.native="booking" :disabled="!isPriceShow">确认下单</md-button>
+                <md-button @click.native="booking">确认下单</md-button>
                 <split></split>
                 <md-button @click.native="onSearchUserOrder">查询订单</md-button>
             </div>
@@ -92,8 +92,7 @@
                 title="下单成功"
                 :closable="false"
                 v-model="actDialog.open"
-                :btns="actDialog.btns"
-        >
+                :btns="actDialog.btns">
             恭喜您成功完成下单
         </md-dialog>
         <md-picker
@@ -101,15 +100,15 @@
                 v-model="isPickerShow1"
                 :data="pickerData1"
                 @confirm="onPickerRouterConfirm"
-                title="选择线路别名"
-        ></md-picker>
+                title="选择线路别名">
+        </md-picker>
         <md-picker
                 ref="pickerCarType"
                 v-model="isPickerShow2"
                 :data="pickerData2"
                 @confirm="onPickerCarTypeConfirm"
-                title="选择车型"
-        ></md-picker>
+                title="选择车型">
+        </md-picker>
     </div>
 </template>
 
@@ -122,7 +121,7 @@
   import {getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
   import {getRouterAliaByCustomerMasterId, getPriceAndCarByCustomerIdAndRouterSeries} from '@/api/simple-order'
   import {getCookie} from '@/common/js/cache'
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: 'user',
@@ -146,16 +145,19 @@
         isPickerShow2: false,
         routerName: '',
         carTypeName: '',
+        receiveDistrictDetail: '',
+        shippingDistrictDetail: '',
         pickerData1: [],
         pickerData2: [],
         bill: {
           appointmentDate: '',
           appointmentNum: 1,
           carTypeSeries: '',
+          carSizeSeries: '',
           deliverGoodsTime: '',
           initDistance: '',
           initPrice: 0,
-          openId: '',
+          openId: this.openId || getCookie('__user__openid'),
           overstepPrice: 0,
           receiveAddressDetail: '',
           receiveGoodsLocationNum: 0,
@@ -168,11 +170,9 @@
           sendGoodsLocationNum: 0,
           sendGoodsPersonMobile: '',
           sendGoodsPersonName: '',
-          goodsRemark: '',
-          wetherSpecialCustomerPrice: ''
+          goodsRemark: ''
         },
         wetherTakeover: false,
-        tabs: [],
         agreeConf: {
           checked: false,
           name: 'wetherTakeover',
@@ -181,13 +181,6 @@
           introduction: '未选中状态',
         },
         isPriceShow: false,
-        pathData: [
-          {
-            text: '请选择路线',
-            options: [],
-          },
-        ],
-        defaultPath: [],
         actDialog: {
           open: false,
           btns: [
@@ -218,10 +211,32 @@
         setTimeout(() => {
           Toast.hide()
         }, 3000)
+      },
+      "$route" (to, from) {
+        if (to.path === '/user/order') {
+
+          this.bill.receiveAddressDetail = this.receiver.addressDetail
+          this.bill.receiveGoodsLocationNum = this.receiver.locationNum
+          this.bill.receiveGoodsPersonMobile = this.receiver.personMobile
+          this.bill.receiveGoodsPersonName = this.receiver.personName
+
+          this.bill.sendAddressDetail = this.shipping.addressDetail
+          this.bill.sendGoodsLocationNum = this.shipping.locationNum
+          this.bill.sendGoodsPersonMobile = this.shipping.personMobile
+          this.bill.sendGoodsPersonName = this.shipping.personName
+
+          this.bill.deliverGoodsTime = this.shipping.goodsTime
+          this.bill.appointmentDate = this.shipping.goodsTime
+          console.log(this.shipping.goodsTime)
+          console.log(this.bill.appointmentDate)
+        }
       }
     },
     computed: {
-      ...mapGetters(['shipping', 'receiver', 'wxcode', 'openId', 'customerInfo'])
+      ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
+      'bill.appointmentDate' () {
+        return this.shipping.goodsTime
+      }
     },
     created () {
       this._getRouterAliaByCustomerMasterId({
@@ -229,25 +244,13 @@
         openId: this.openId || getCookie('__user__openid')
       })
     },
-    beforeRouteUpdate (to, from, next) {
-      if (to.path === '/user/order') {
-        // this._getRouterPriceByCarTypeAndRouterDetailSeries({carTypeSeries: this.bill.carTypeSeries, openId: this.openId || getCookie('__user__openid'), routerDetailSeries: this.shipping.routerDetailSeries})
-        this.bill.openId = this.openId || getCookie('__user__openid')
-        this.bill.deliverGoodsTime = this.shipping.goodsTime
-        this.bill.receiveAddressDetail = this.receiver.addressDetail
-        this.bill.receiveGoodsLocationNum = this.receiver.locationNum
-        this.bill.receiveGoodsPersonMobile = this.receiver.personMobile
-        this.bill.receiveGoodsPersonName = this.receiver.personName
-        this.bill.routerDetailSeries = this.shipping.routerDetailSeries
-        this.bill.sendAddressDetail = this.shipping.addressDetail
-        this.bill.sendGoodsLocationNum = this.shipping.locationNum
-        this.bill.sendGoodsPersonMobile = this.shipping.personMobile
-        this.bill.sendGoodsPersonName = this.shipping.personName
-        this.bill.appointmentDate = this.shipping.goodsTime
-      }
-      next()
-    },
     methods: {
+      ...mapMutations({
+        setShipping: 'SET_SHIPPING',
+        setReceiver: 'SET_RECEIVER',
+        setShippingDistrictDetail: 'SET_SHIPPINGDISTRICTDETAIL',
+        setReceiveDistrictDetail: 'SET_RECEIVEDISTRICTDETAIL'
+      }),
       _getRouterAliaByCustomerMasterId(params) {
         getRouterAliaByCustomerMasterId(params).then(res => {
           if (res.code === 0) {
@@ -262,7 +265,6 @@
         })
       },
       _getPriceAndCarByCustomerIdAndRouterSeries(params) {
-        console.log(params)
         getPriceAndCarByCustomerIdAndRouterSeries(params).then(res => {
           if (res.code === 0) {
             Toast.hide()
@@ -270,7 +272,6 @@
             const cp = carAndPriceModels.map((value) => {
               return {'text': value.typeName, 'value': value.series, ...value}
             })
-            // console.log('cp', cp)
             this.pickerData2 = [cp]
           }
         }).catch(err => {
@@ -287,6 +288,7 @@
           appointmentDate: '',
           appointmentNum: 1,
           carTypeSeries: '',
+          carSizeSeries: '',
           deliverGoodsTime: '',
           initDistance: '',
           initPrice: 0,
@@ -303,10 +305,13 @@
           sendGoodsLocationNum: 0,
           sendGoodsPersonMobile: '',
           sendGoodsPersonName: '',
-          goodsRemark: '',
-          wetherSpecialCustomerPrice: ''
+          goodsRemark: ''
         }
         this.wetherTakeover = ''
+        this.routerName = ''
+        this.carTypeName = ''
+        this.shippingDistrictDetail = ''
+        this.receiveDistrictDetail = ''
       },
       onSearchUserOrder () {
         this.$router.push('/user/user-order')
@@ -322,7 +327,7 @@
       },
       _createOrder() {
         let params = this.bill
-        // console.log(params)
+        console.log(params)
         createOrder(params).then(res => {
           // console.log(res)
           if (res.code === 0) {
@@ -344,9 +349,24 @@
           }
         })
         this.routerName = res
+        console.log(val)
         this.bill.routerDetailSeries = val.series
+
         this.bill.receiveAddressDetail = val.receiveAddressDetail
+        this.bill.receiveGoodsLocationNum = val.receiveGoodsLocationNum
+        this.bill.receiveGoodsPersonMobile = val.receiveGoodsPersonMobile
+        this.bill.receiveGoodsPersonName = val.receiveGoodsPersonName
+
         this.bill.sendAddressDetail = val.sendAddressDetail
+        this.bill.sendGoodsLocationNum = val.sendGoodsLocationNum
+        this.bill.sendGoodsPersonMobile = val.sendGoodsPersonMobile
+        this.bill.sendGoodsPersonName = val.sendGoodsPersonName
+
+        this.shippingDistrictDetail = `${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}${val.sendAddressDetail}`
+        this.receiveDistrictDetail = `${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}${val.receiveAddressDetail}`
+
+        this.setShippingDistrictDetail(`${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}`)
+        this.setReceiveDistrictDetail(`${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}`)
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
@@ -355,7 +375,9 @@
           value && (res = value)
         })
         this.carTypeName = res.typeName
-        this.bill.carTypeSeries = res.series
+
+        this.bill.carTypeSeries = res.carTypeName
+        this.bill.carSizeSeries = res.carSizeName
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice

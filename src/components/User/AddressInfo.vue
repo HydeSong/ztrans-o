@@ -3,14 +3,14 @@
         <nav-bar>
             {{title}}
         </nav-bar>
+        <split></split>
         <div class="content" v-show="isShipping">
             <md-field>
                 <md-field-item
                         title="省市区/县"
-                        arrow="arrow-right"
                         align="right"
-                        :value="pickerValue1"
-                        @click.native="isPickerShow1 = true">
+                        readonly
+                        :value="shippingDistrictDetail">
                 </md-field-item>
                 <md-input-item
                         v-model="addressDetail"
@@ -48,10 +48,9 @@
             <md-field>
                 <md-field-item
                         title="省市区/县"
-                        arrow="arrow-right"
                         align="right"
-                        :value="pickerValue1"
-                        @click.native="isPickerShow1 = true">
+                        readonly
+                        :value="receiveDistrictDetail">
                 </md-field-item>
                 <md-input-item
                         v-model="raddressDetail"
@@ -81,15 +80,6 @@
         <div class="footer">
             <md-button @click.native="confirm">确 认</md-button>
         </div>
-        <md-picker
-                ref="picker1"
-                v-model="isPickerShow1"
-                :data="district"
-                :cols="3"
-                is-cascade
-                title="选择省市区/县"
-                @confirm="onPickerConfirm(1)"
-        ></md-picker>
         <md-date-picker
                 ref="datePicker"
                 v-model="isDatePickerShow"
@@ -123,46 +113,21 @@
     },
     data () {
       return {
-        rrouterDetailSeries: '',
-        rrouterType: '',
         raddressDetail: '',
         rpersonMobile: '',
         rpersonName: '',
         rlocationNum: '1',
-        routerDetailSeries: '',
-        routerType: '',
         personMobile: '',
         personName: '',
         addressDetail: '',
         goodsTime: '',
         locationNum: '1',
-        sourceCityId: 0,
-        sourceCityName:'',
-        sourceCityAreaId:0,
-        sourceCityAreaName:'',
-        sourceTownId:0,
-        sourceTownName:'',
-        destinyCityId:0,
-        destinyCityName:'',
-        destinyCityAreaId:0,
-        destinyCityAreaName:'',
-        destinyTownId:0,
-        destinyTownName:'',
-        isPickerShow1: false,
-        district: [[]],
-        pickerValue1: '',
         currentDate: new Date(),
         isDatePickerShow: false,
       }
     },
-    created() {
-      this._getRouterByCityAreaTown({
-        openId: this.openId,
-        sourceCityId: this.cityIds.sourceCityId
-      })
-    },
     computed: {
-      ...mapState(['cityIds', 'openId']),
+      ...mapState(['shipping', 'receiver', 'shippingDistrictDetail', 'receiveDistrictDetail']),
       title () {
         const id = this.$route.params.id
         if (id === 'shipping') {
@@ -184,85 +149,28 @@
         if (this.isShipping) {
           console.log('确认发货信息')
           let addressInfo = {
-            routerDetailSeries: this.routerDetailSeries,
             personMobile: this.personMobile,
             personName: this.personName,
             addressDetail: this.addressDetail,
             goodsTime: this.goodsTime,
-            locationNum: this.locationNum,
-            districtDetail: this.pickerValue1,
-            sourceCityId:310100,
-            sourceCityName:'上海市',
-            sourceCityAreaId:310101,
-            sourceCityAreaName:'黄浦区',
-            sourceTownId:31010101,
-            sourceTownName:'南京东路街道',
+            locationNum: this.locationNum
           }
           this.setShipping(addressInfo)
         } else {
           console.log('确认收货信息')
           let addressInfo = {
-            routerDetailSeries: this.rrouterDetailSeries,
             personMobile: this.rpersonMobile,
             personName: this.rpersonName,
             addressDetail: this.raddressDetail,
-            locationNum: this.rlocationNum,
-            districtDetail: this.pickerValue1,
-            destinyCityId:320500,
-            destinyCityName:'苏州市',
-            destinyCityAreaId:320502,
-            destinyCityAreaName:'沧浪区',
-            destinyTownId:32050201,
-            destinyTownName:'双塔街道',
+            locationNum: this.rlocationNum
           }
           this.setReceiver(addressInfo)
         }
         this.$router.go(-1)
       },
-      _getRouterByCityAreaTown (params) {
-        getRouterByCityAreaTown(params).then(res => {
-          // console.log(res)
-          if (res.code === 0) {
-            let district = []
-            if (this.isShipping) {
-              const sourceRouterCityAreaTownModel = res.sourceRouterCityAreaTownModel
-              district.push(sourceRouterCityAreaTownModel)
-              // 省市区/县默认值
-              const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
-              this.pickerValue1 = defaultValue
-              this.routerDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
-            } else {
-              const destionRouterCityAreaTownModel = res.destionRouterCityAreaTownModel
-              district.push(destionRouterCityAreaTownModel)
-              // 省市区/县默认值
-              const defaultValue = `${district[0][0].label}${district[0][0].children[0].label}${district[0][0].children[0].children[0].label}`
-              this.pickerValue1 = defaultValue
-              this.rrouterDetailSeries = district[0][0].children[0].children[0].routerDetailSeries
-            }
-            this.district = district
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      onPickerConfirm(index) {
-        const values = this.$refs[`picker${index}`].getColumnValues()
-        const activeValue = this.$refs[`picker${index}`].getColumnValue(index)
-        let res = ''
-        values.forEach(value => {
-          value && (res += `${value.text || value.label}`)
-        })
-        this[`pickerValue${index}`] = res
-        if (this.isShipping) {
-          this.routerDetailSeries = activeValue.children[0].routerDetailSeries
-          this.routerType = activeValue.children[0].routerType
-        } else {
-          this.rrouterDetailSeries = activeValue.children[0].routerDetailSeries
-          this.rrouterType = activeValue.children[0].routerType
-        }
-      },
       onDatePickerConfirm() {
         this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
+        console.log(this.goodsTime)
       },
     },
   }

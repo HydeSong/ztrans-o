@@ -8,7 +8,9 @@ const state = {
   step1Data: {},
   step2Data: {},
   customerOrders: [],
-  driverOrders: []
+  driverOrders: [],
+  shippingDistrictDetail: '',
+  receiveDistrictDetail: ''
 }
 
 export default state

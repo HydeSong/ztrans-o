@@ -30,6 +30,12 @@ const mutations = {
   },
   [types.SET_DRIVERORDERS] (state, data) {
     state.driverOrders = data
+  },
+  [types.SET_SHIPPINGDISTRICTDETAIL] (state, data) {
+    state.shippingDistrictDetail = data
+  },
+  [types.SET_RECEIVEDISTRICTDETAIL] (state, data) {
+    state.receiveDistrictDetail = data
   }
 }
 
