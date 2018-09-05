@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <split></split>
-                <md-button @click.native="booking">确认下单</md-button>
+                <md-button @click.native="booking" :disabled="!isPriceShow">确认下单</md-button>
                 <split></split>
                 <md-button @click.native="onSearchUserOrder">查询订单</md-button>
             </div>
@@ -156,18 +156,18 @@
           carSizeSeries: '',
           deliverGoodsTime: '',
           initDistance: '',
-          initPrice: 0,
-          openId: this.openId || getCookie('__user__openid'),
-          overstepPrice: 0,
+          initPrice: '',
+          openId: '',
+          overstepPrice: '',
           receiveAddressDetail: '',
-          receiveGoodsLocationNum: 0,
+          receiveGoodsLocationNum: '',
           receiveGoodsPersonMobile: '',
           receiveGoodsPersonName: '',
           remark: '',
-          routerDetailSeries: 0,
-          routerPriceSeries: 0,
+          routerDetailSeries: '',
+          routerPriceSeries: '',
           sendAddressDetail: '',
-          sendGoodsLocationNum: 0,
+          sendGoodsLocationNum: '',
           sendGoodsPersonMobile: '',
           sendGoodsPersonName: '',
           goodsRemark: ''
@@ -180,7 +180,6 @@
           disabled: false,
           introduction: '未选中状态',
         },
-        isPriceShow: false,
         actDialog: {
           open: false,
           btns: [
@@ -212,8 +211,9 @@
           Toast.hide()
         }, 3000)
       },
-      "$route" (to, from) {
+      '$route' (to, from) {
         if (to.path === '/user/order') {
+          this.bill.openId = this.openId || getCookie('__user__openid')
 
           this.bill.receiveAddressDetail = this.receiver.addressDetail
           this.bill.receiveGoodsLocationNum = this.receiver.locationNum
@@ -227,8 +227,9 @@
 
           this.bill.deliverGoodsTime = this.shipping.goodsTime
           this.bill.appointmentDate = this.shipping.goodsTime
-          console.log(this.shipping.goodsTime)
-          console.log(this.bill.appointmentDate)
+
+          this.shippingDistrictDetail += this.shipping.addressDetail
+          this.receiveDistrictDetail += this.receiver.addressDetail
         }
       }
     },
@@ -236,6 +237,13 @@
       ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
       'bill.appointmentDate' () {
         return this.shipping.goodsTime
+      },
+      'isPriceShow' () {
+        let ret = false
+        ret = Object.values(this.bill).every((item) => {
+          return item !== ''
+        })
+        return ret
       }
     },
     created () {
@@ -291,29 +299,30 @@
           carSizeSeries: '',
           deliverGoodsTime: '',
           initDistance: '',
-          initPrice: 0,
+          initPrice: '',
           openId: '',
-          overstepPrice: 0,
+          overstepPrice: '',
           receiveAddressDetail: '',
-          receiveGoodsLocationNum: 0,
+          receiveGoodsLocationNum: '',
           receiveGoodsPersonMobile: '',
           receiveGoodsPersonName: '',
           remark: '',
-          routerDetailSeries: 0,
-          routerPriceSeries: 0,
+          routerDetailSeries: '',
+          routerPriceSeries: '',
           sendAddressDetail: '',
-          sendGoodsLocationNum: 0,
+          sendGoodsLocationNum: '',
           sendGoodsPersonMobile: '',
           sendGoodsPersonName: '',
           goodsRemark: ''
         }
-        this.wetherTakeover = ''
+        this.wetherTakeover = false
         this.routerName = ''
         this.carTypeName = ''
         this.shippingDistrictDetail = ''
         this.receiveDistrictDetail = ''
       },
       onSearchUserOrder () {
+        this.actDialog.open = false
         this.$router.push('/user/user-order')
       },
       booking () {
@@ -362,11 +371,25 @@
         this.bill.sendGoodsPersonMobile = val.sendGoodsPersonMobile
         this.bill.sendGoodsPersonName = val.sendGoodsPersonName
 
-        this.shippingDistrictDetail = `${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}${val.sendAddressDetail}`
-        this.receiveDistrictDetail = `${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}${val.receiveAddressDetail}`
+        this.shippingDistrictDetail = `${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}`
+        this.receiveDistrictDetail = `${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}`
 
         this.setShippingDistrictDetail(`${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}`)
         this.setReceiveDistrictDetail(`${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}`)
+
+        this.setShipping({
+          personMobile:  val.receiveGoodsPersonMobile?val.receiveGoodsPersonMobile:'',
+          personName: val.receiveGoodsPersonName?val.receiveGoodsPersonName:'',
+          addressDetail: val.sendAddressDetail?val.sendAddressDetail:'',
+          goodsTime: this.bill.appointmentDate,
+          locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
+        })
+        this.setReceiver({
+          personMobile:  val.sendGoodsPersonMobile?val.sendGoodsPersonMobile:'',
+          personName: val.sendGoodsPersonName?val.sendGoodsPersonName:'',
+          addressDetail: val.receiveAddressDetail?val.receiveAddressDetail:'',
+          locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
+        })
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
@@ -375,13 +398,13 @@
           value && (res = value)
         })
         this.carTypeName = res.typeName
-
         this.bill.carTypeSeries = res.carTypeName
         this.bill.carSizeSeries = res.carSizeName
         this.bill.initDistance = res.initDistance
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice
         this.bill.routerPriceSeries = res.routerPriceId
+        console.log(res)
       },
     },
   }

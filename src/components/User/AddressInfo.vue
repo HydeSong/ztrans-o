@@ -13,18 +13,18 @@
                         :value="shippingDistrictDetail">
                 </md-field-item>
                 <md-input-item
-                        v-model="addressDetail"
+                        v-model="shipping.addressDetail"
                         title="详细地址"
                         placeholder="请输入详细地址(必填)"
                 ></md-input-item>
                 <md-input-item
                         type="phone"
-                        v-model="personMobile"
+                        v-model="shipping.personMobile"
                         title="联系电话"
                         placeholder="请填写联系电话(必填)"
                 ></md-input-item>
                 <md-input-item
-                        v-model="personName"
+                        v-model="shipping.personName"
                         title="发货人姓名"
                         placeholder="请填写发货人姓名(可选填)"
                 ></md-input-item>
@@ -33,13 +33,13 @@
                         title="发货时间"
                         arrow="arrow-right"
                         align="right"
-                        :value="goodsTime"
+                        :value="shipping.goodsTime"
                         @click.native="isDatePickerShow = true">
                 </md-field-item>
                 <md-input-item
                         title="发货点个数"
                         type="digit"
-                        v-model="locationNum"
+                        v-model="shipping.locationNum"
                         placeholder="请输入发货点个数"
                 ></md-input-item>
             </md-field>
@@ -53,25 +53,25 @@
                         :value="receiveDistrictDetail">
                 </md-field-item>
                 <md-input-item
-                        v-model="raddressDetail"
+                        v-model="receiver.addressDetail"
                         title="详细地址"
                         placeholder="请输入详细地址(必填)"
                 ></md-input-item>
                 <md-input-item
                         type="phone"
-                        v-model="rpersonMobile"
+                        v-model="receiver.personMobile"
                         title="联系电话"
                         placeholder="请填写联系电话(必填)"
                 ></md-input-item>
                 <md-input-item
-                        v-model="rpersonName"
+                        v-model="receiver.personName"
                         title="收货人姓名"
                         placeholder="请填写收货人姓名(可选填)"
                 ></md-input-item>
                 <md-input-item
                         title="收货点个数"
                         type="digit"
-                        v-model="rlocationNum"
+                        v-model="receiver.locationNum"
                         placeholder="请输入收货点个数"
                 ></md-input-item>
             </md-field>
@@ -113,15 +113,6 @@
     },
     data () {
       return {
-        raddressDetail: '',
-        rpersonMobile: '',
-        rpersonName: '',
-        rlocationNum: '1',
-        personMobile: '',
-        personName: '',
-        addressDetail: '',
-        goodsTime: '',
-        locationNum: '1',
         currentDate: new Date(),
         isDatePickerShow: false,
       }
@@ -148,29 +139,16 @@
       confirm () {
         if (this.isShipping) {
           console.log('确认发货信息')
-          let addressInfo = {
-            personMobile: this.personMobile,
-            personName: this.personName,
-            addressDetail: this.addressDetail,
-            goodsTime: this.goodsTime,
-            locationNum: this.locationNum
-          }
-          this.setShipping(addressInfo)
+          this.setShipping(this.shipping)
         } else {
           console.log('确认收货信息')
-          let addressInfo = {
-            personMobile: this.rpersonMobile,
-            personName: this.rpersonName,
-            addressDetail: this.raddressDetail,
-            locationNum: this.rlocationNum
-          }
-          this.setReceiver(addressInfo)
+          this.setReceiver(this.receiver)
         }
         this.$router.go(-1)
       },
       onDatePickerConfirm() {
-        this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
-        console.log(this.goodsTime)
+        this.shipping.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
+        console.log(this.shipping.goodsTime)
       },
     },
   }
