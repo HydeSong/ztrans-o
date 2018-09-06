@@ -145,10 +145,10 @@
         isPickerShow2: false,
         routerName: '',
         carTypeName: '',
-        receiveDistrictDetail: '',
-        shippingDistrictDetail: '',
         pickerData1: [],
         pickerData2: [],
+        shippingDistrictDetail: '',
+        receiveDistrictDetail: '',
         bill: {
           appointmentDate: '',
           appointmentNum: 1,
@@ -228,8 +228,8 @@
           this.bill.deliverGoodsTime = this.shipping.goodsTime
           this.bill.appointmentDate = this.shipping.goodsTime
 
-          this.shippingDistrictDetail += this.shipping.addressDetail
-          this.receiveDistrictDetail += this.receiver.addressDetail
+          // this.shippingDistrictDetail += this.shipping.addressDetail
+          // this.receiveDistrictDetail += this.receiver.addressDetail
         }
       }
     },
@@ -378,17 +378,17 @@
         this.setReceiveDistrictDetail(`${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}`)
 
         this.setShipping({
-          personMobile:  val.receiveGoodsPersonMobile?val.receiveGoodsPersonMobile:'',
-          personName: val.receiveGoodsPersonName?val.receiveGoodsPersonName:'',
+          personMobile:  val.sendGoodsPersonMobile?val.sendGoodsPersonMobile:'',
+          personName: val.sendGoodsPersonName?val.sendGoodsPersonName:'',
           addressDetail: val.sendAddressDetail?val.sendAddressDetail:'',
           goodsTime: this.bill.appointmentDate,
           locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
         })
         this.setReceiver({
-          personMobile:  val.sendGoodsPersonMobile?val.sendGoodsPersonMobile:'',
-          personName: val.sendGoodsPersonName?val.sendGoodsPersonName:'',
+          personMobile:  val.receiveGoodsPersonMobile?val.receiveGoodsPersonMobile:'',
+          personName: val.receiveGoodsPersonName?val.receiveGoodsPersonName:'',
           addressDetail: val.receiveAddressDetail?val.receiveAddressDetail:'',
-          locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
+          locationNum: val.receiveGoodsLocationNum?val.receiveGoodsLocationNum:''
         })
       },
       onPickerCarTypeConfirm() {
