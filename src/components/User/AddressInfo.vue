@@ -152,8 +152,8 @@
             personMobile: this.personMobile,
             personName: this.personName,
             addressDetail: this.addressDetail,
-            goodsTime: this.goodsTime,
-            locationNum: this.locationNum
+            locationNum: this.locationNum,
+            goodsTime: this.goodsTime
           }
           this.setShipping(addressInfo)
         } else {
@@ -169,8 +169,8 @@
         this.$router.go(-1)
       },
       onDatePickerConfirm() {
-        this.shipping.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
-        console.log(this.shipping.goodsTime)
+        this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
+        console.log(this.goodsTime)
       },
     },
   }
