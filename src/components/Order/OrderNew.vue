@@ -228,8 +228,8 @@
           this.bill.deliverGoodsTime = this.shipping.goodsTime
           this.bill.appointmentDate = this.shipping.goodsTime
 
-          this.shippingDistrictDetail = this.shippingDistrictDetail + this.shipping.addressDetail
-          this.receiveDistrictDetail = this.receiveDistrictDetail + this.receiver.addressDetail
+          this.shippingDistrictDetail += this.shipping.addressDetail
+          this.receiveDistrictDetail += this.receiver.addressDetail
         }
       }
     },

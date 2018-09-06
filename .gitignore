@@ -63,4 +63,6 @@ typings/
 
 *.rar
 *.zip
+*.tar
 .idea/
+deploy.md
