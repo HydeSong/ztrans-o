@@ -1,6 +1,6 @@
 <template>
     <div class="order">
-        <nav-bar>
+        <nav-bar :arrowLeft="false">
             客户下单
         </nav-bar>
         <div class="content">
@@ -81,7 +81,7 @@
                     </div>
                 </div>
                 <split></split>
-                <md-button @click.native="booking" :disabled="!isPriceShow">确认下单</md-button>
+                <md-button @click.native="booking">确认下单</md-button>
                 <split></split>
                 <md-button @click.native="onSearchUserOrder">查询订单</md-button>
             </div>
@@ -261,6 +261,7 @@
       }),
       _getRouterAliaByCustomerMasterId(params) {
         getRouterAliaByCustomerMasterId(params).then(res => {
+          // console.log(res)
           if (res.code === 0) {
             const routerAliaModels = res.routerAliaModels
             const ra = routerAliaModels.map((value) => {
@@ -336,7 +337,7 @@
       },
       _createOrder() {
         let params = this.bill
-        console.log(params)
+        // console.log(params)
         createOrder(params).then(res => {
           // console.log(res)
           if (res.code === 0) {
@@ -358,7 +359,7 @@
           }
         })
         this.routerName = res
-        console.log(val)
+        // console.log(val)
         this.bill.routerDetailSeries = val.series
 
         this.bill.receiveAddressDetail = val.receiveAddressDetail
@@ -404,7 +405,7 @@
         this.bill.initPrice = res.initPrice
         this.bill.overstepPrice = res.overstepPrice
         this.bill.routerPriceSeries = res.routerPriceId
-        console.log(res)
+        // console.log(res)
       },
     },
   }

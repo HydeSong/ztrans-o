@@ -1,7 +1,7 @@
 <template>
     <header class="nav-bar">
         <div class="navbar-left" role="button" @click="back">
-            <md-icon name="arrow-left" size="lg"></md-icon>
+            <md-icon name="arrow-left" size="lg" v-show="arrowLeft"></md-icon>
         </div>
         <div class="navbar-title">
             <slot></slot>
@@ -20,9 +20,17 @@
     components: {
       [Icon.name]: Icon,
     },
+    props: {
+      arrowLeft: {
+        type: Boolean,
+        default: true
+      }
+    },
     methods: {
       back () {
-        this.$router.go(-1)
+        if (this.arrowLeft) {
+          this.$router.go(-1)
+        }
       }
     }
   }

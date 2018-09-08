@@ -57,7 +57,7 @@
                 ref="carInfo"
                 v-model="isCarInfoShow"
                 :data="carInfoData"
-                :cols="4"
+                :cols="5"
                 title="选择车辆信息"
                 @confirm="onPickerConfirm('carInfo')"
         ></md-picker>
@@ -68,7 +68,7 @@
   import {Picker, Button, Field, FieldItem, InputItem} from 'mand-mobile'
   import Split from '../Base/Split'
   import {getAllRouterByCity} from '@/api/road'
-  import {getCarBandList, getCarColourList, getCarTypeList, getCarSizeList} from '@/api/car'
+  import {getCarBandList, getCarColourList, getCarTypeList, getCarSizeList, getCarWeightList} from '@/api/car'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -112,6 +112,7 @@
       this._getCarTypeList({customerNumId: this.customerInfo.customerMasterId})
       this._getCarColourList({customerNumId: this.customerInfo.customerMasterId})
       this._getCarSizeList({customerNumId: this.customerInfo.customerMasterId})
+      this._getCarWeightList({customerNumId: this.customerInfo.customerMasterId})
       this._getAllRouterByCity({openId: this.openId})
     },
     methods: {
@@ -181,6 +182,23 @@
               })
             })
             this.carInfoData.push(carSizes)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
+      _getCarWeightList (params) {
+        getCarWeightList(params).then(res => {
+          if (res.code === 0) {
+            let carWeights = []
+            res.carWeights.forEach((item) => {
+              carWeights.push({
+                text: item.weightName,
+                value: item.weightId,
+                ...item
+              })
+            })
+            this.carInfoData.push(carWeights)
           }
         }).catch(err => {
           console.log(err)

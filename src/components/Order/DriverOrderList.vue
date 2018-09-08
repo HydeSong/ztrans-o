@@ -21,6 +21,17 @@
                         <li>用车时间：{{item.appointmentDate}}</li>
                         <li>订单状态：{{item.orderStatusName}}</li>
                         <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
+                        <li>发货人地址：{{item.sendAddressDetail}}</li>
+                        <li>发货点个数：{{item.sendGoodsLocationNum}}</li>
+                        <li>发货人电话：{{item.sendGoodsPersonMobile}}</li>
+                        <li>发货人名字：{{item.sendGoodsPersonName}}</li>
+                        <li>收件人地址：{{item.receiveAddressDetail}}</li>
+                        <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
+                        <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
+                        <li>路经其他站点：<ul class="ul-inner">
+                                            <li v-for="(itm, index) in item.goodsLocation">{{itm}}</li>
+                                        </ul>
+                        </li>
                         <li>备注：{{item.remark}}</li>
                     </ul>
                     <div class="actions-wrapper" v-show="isClicked">
@@ -68,7 +79,7 @@
       return {
         isClicked: true,
         current: 1,
-        orderStatus: this.$route.query.orderStatus,
+        orderStatus: 0,
         startTime: this.$route.query.startTime,
         endTime: this.$route.query.endTime,
         isFinished: false
@@ -77,6 +88,7 @@
     computed: {
       ...mapGetters(['openId', 'driverOrders']),
       title () {
+        this.orderStatus = this.$route.query.orderStatus
         return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
@@ -166,6 +178,8 @@
             box-sizing border-box
             line-height 1.5
             text-indent 2em
+            .ul-inner
+                padding 0 50px
         .actions-wrapper
             display flex
 </style>

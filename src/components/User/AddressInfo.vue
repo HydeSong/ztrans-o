@@ -116,12 +116,12 @@
         raddressDetail: '',
         rpersonMobile: '',
         rpersonName: '',
-        rlocationNum: 1,
+        rlocationNum: '',
         personMobile: '',
         personName: '',
         addressDetail: '',
         goodsTime: '',
-        locationNum: 1,
+        locationNum: '',
         currentDate: new Date(),
         isDatePickerShow: false,
       }
@@ -139,6 +139,17 @@
       isShipping () {
         return this.$route.params.id === 'shipping'
       }
+    },
+    created () {
+      this.raddressDetail = this.receiver.addressDetail
+      this.rpersonMobile = this.receiver.personMobile
+      this.rpersonName = this.receiver.personName
+      this.rlocationNum = this.receiver.locationNum
+      this.personMobile = this.shipping.personMobile
+      this.personName = this.shipping.personName
+      this.addressDetail = this.shipping.addressDetail
+      this.goodsTime = this.shipping.goodsTime
+      this.locationNum = this.shipping.locationNum
     },
     methods: {
       ...mapMutations({

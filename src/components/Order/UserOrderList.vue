@@ -24,7 +24,17 @@
                             <li>司机姓名：{{item.driverName}}</li>
                             <li>司机手机：{{item.driverMobile}}</li>
                             <li>线路别名：{{item.routerAlia}}</li>
-                            <li>预约时间：{{item.appointmentDate}}</li>
+                            <li>发货人地址：{{item.sendAddressDetail}}</li>
+                            <li>发货点个数：{{item.sendGoodsLocationNum}}</li>
+                            <li>发货人电话：{{item.sendGoodsPersonMobile}}</li>
+                            <li>发货人名字：{{item.sendGoodsPersonName}}</li>
+                            <li>收件人地址：{{item.receiveAddressDetail}}</li>
+                            <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
+                            <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
+                            <li>路经其他站点：<ul class="ul-inner">
+                                                <li v-for="(itm, index) in item.goodsLocation">{{itm}}</li>
+                                            </ul>
+                            </li>
                             <li>备注：{{item.remark}}</li>
                         </ul>
                     </p>
@@ -67,7 +77,7 @@
     data() {
       return {
         current: 1,
-        orderStatus: this.$route.query.orderStatus,
+        orderStatus: 0,
         routerDetailAliaSearchKey: this.$route.query.routerDetailAliaSearchKey,
         startTime: this.$route.query.startTime,
         endTime: this.$route.query.endTime,
@@ -77,6 +87,7 @@
     computed: {
       ...mapGetters(['openId', 'customerOrders']),
       title () {
+        this.orderStatus = this.$route.query.orderStatus
         return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
@@ -141,6 +152,8 @@
             box-sizing border-box
             line-height 1.5
             text-indent 2em
+            .ul-inner
+                padding 0 50px
         .actions-wrapper
             display flex
     .md-result-page.customized

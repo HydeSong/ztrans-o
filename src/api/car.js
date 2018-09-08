@@ -37,3 +37,13 @@ export function getCarSizeList (params) {
   }
   return axios.get(url, {params: data})
 }
+
+
+export function getCarWeightList (params) {
+  const url = `${CONFIG.HOST}/getCarWeightList`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
