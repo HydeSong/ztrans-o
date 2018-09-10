@@ -29,7 +29,7 @@
                         <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
                         <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
                         <li>路经其他站点：<ul class="ul-inner">
-                                            <li v-for="(itm, index) in item.goodsLocation">{{itm}}</li>
+                                            <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
                                         </ul>
                         </li>
                         <li>备注：{{item.remark}}</li>
