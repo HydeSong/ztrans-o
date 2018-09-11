@@ -227,9 +227,6 @@
 
           this.bill.deliverGoodsTime = this.shipping.goodsTime
           this.bill.appointmentDate = this.shipping.goodsTime
-
-          // this.shippingDistrictDetail += this.shipping.addressDetail
-          // this.receiveDistrictDetail += this.receiver.addressDetail
         }
       }
     },
@@ -359,6 +356,8 @@
           }
         })
         this.routerName = res
+        // 清空车型
+        this.carTypeName = ''
         // console.log(val)
         this.bill.routerDetailSeries = val.series
 
@@ -385,6 +384,7 @@
           goodsTime: this.bill.appointmentDate,
           locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
         })
+
         this.setReceiver({
           personMobile:  val.receiveGoodsPersonMobile?val.receiveGoodsPersonMobile:'',
           personName: val.receiveGoodsPersonName?val.receiveGoodsPersonName:'',

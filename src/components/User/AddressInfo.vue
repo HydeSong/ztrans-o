@@ -140,16 +140,32 @@
         return this.$route.params.id === 'shipping'
       }
     },
+    watch: {
+      '$route' (to, from) {
+        if (to.path === '/user/address-info/shipping') {
+          this.personMobile = this.shipping.personMobile
+          this.personName = this.shipping.personName
+          this.addressDetail = this.shipping.addressDetail
+          this.goodsTime = this.shipping.goodsTime
+          this.locationNum = this.shipping.locationNum
+        } else if (to.path === '/user/address-info/receiver') {
+          this.raddressDetail = this.receiver.addressDetail
+          this.rpersonMobile = this.receiver.personMobile
+          this.rpersonName = this.receiver.personName
+          this.rlocationNum = this.receiver.locationNum
+        }
+      }
+    },
     created () {
-      this.raddressDetail = this.receiver.addressDetail
-      this.rpersonMobile = this.receiver.personMobile
-      this.rpersonName = this.receiver.personName
-      this.rlocationNum = this.receiver.locationNum
       this.personMobile = this.shipping.personMobile
       this.personName = this.shipping.personName
       this.addressDetail = this.shipping.addressDetail
       this.goodsTime = this.shipping.goodsTime
       this.locationNum = this.shipping.locationNum
+      this.raddressDetail = this.receiver.addressDetail
+      this.rpersonMobile = this.receiver.personMobile
+      this.rpersonName = this.receiver.personName
+      this.rlocationNum = this.receiver.locationNum
     },
     methods: {
       ...mapMutations({

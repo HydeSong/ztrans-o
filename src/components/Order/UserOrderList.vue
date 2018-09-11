@@ -21,6 +21,7 @@
                             <li>超里程价：{{item.overstepPrice}}元/公里</li>
                             <li>车牌号：{{item.carPlateNumber}}</li>
                             <li>车型：{{item.carTypeName}}</li>
+                            <li>车尺寸：{{item.carSizeName}}</li>
                             <li>司机姓名：{{item.driverName}}</li>
                             <li>司机手机：{{item.driverMobile}}</li>
                             <li>线路别名：{{item.routerAlia}}</li>
