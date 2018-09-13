@@ -1,10 +1,18 @@
 <template>
-    <div class="driver-order-list">
+    <div>
         <nav-bar>
             {{title}}
         </nav-bar>
-        <div>
+        <div class="driver-order-list" ref="page">
+            <md-result-page
+                    v-if="driverOrders.length === 0"
+                    class="customized"
+                    img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
+                    text="没有订单"
+                    subtext="要不然刷新试试？">
+            </md-result-page>
             <md-scroll-view
+                    v-else
                     ref="scrollView"
                     :scrolling-x="false"
                     @endReached="$_onEndReached">
@@ -29,8 +37,8 @@
                         <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
                         <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
                         <li>路经其他站点：<ul class="ul-inner">
-                                            <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
-                                        </ul>
+                            <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
+                        </ul>
                         </li>
                         <li>备注：{{item.remark}}</li>
                     </ul>
@@ -45,15 +53,9 @@
                         :is-finished="isFinished">
                 </md-scroll-view-more>
             </md-scroll-view>
-            <md-result-page
-                    v-if="driverOrders.length === 0"
-                    class="customized"
-                    img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
-                    text="没有订单"
-                    subtext="要不然刷新试试？">
-            </md-result-page>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -92,18 +94,27 @@
         return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
+    mounted () {
+      setTimeout(() => {
+        this.setPageHeight()
+      }, 0)
+    },
     methods: {
       ...mapMutations({
         setDriverOrders: 'SET_DRIVERORDERS'
       }),
+      setPageHeight () {
+        const height = window.screen.availHeight
+        this.$refs.page.style.height = `${height}px`
+      },
       _getDriverOrder (params) {
-        console.log(params)
         getDriverOrder(params).then(res => {
           if (res.code === 0) {
             const driverOrders = res.driverOrder
             const total = res.total
-            this.setDriverOrders(driverOrders)
-            if (driverOrders.length >= total) {
+            const more =  this.driverOrders.concat(driverOrders)
+            this.setDriverOrders(more)
+            if (more.length >= total) {
               this.isFinished = true
             }
             this.$refs.scrollView.finishLoadMore()
@@ -162,6 +173,7 @@
 <style lang="stylus">
     .driver-order-list
         padding 0 0 200px
+        height 700px
         .md-scroll-view
             background transparent
             height 100%

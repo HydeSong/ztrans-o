@@ -298,7 +298,7 @@
           deliverGoodsTime: '',
           initDistance: '',
           initPrice: '',
-          openId: '',
+          openId: this.openId || getCookie('__user__openid'),
           overstepPrice: '',
           receiveAddressDetail: '',
           receiveGoodsLocationNum: '',

@@ -1,10 +1,18 @@
 <template>
-    <div class="user-order-list">
+    <div>
         <nav-bar>
             {{title}}
         </nav-bar>
-        <div>
+        <div class="user-order-list" ref="page">
+            <md-result-page
+                    v-if="customerOrders.length === 0"
+                    class="customized"
+                    img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
+                    text="没有订单"
+                    subtext="要不然刷新试试？">
+            </md-result-page>
             <md-scroll-view
+                    v-else
                     ref="scrollView"
                     :scrolling-x="false"
                     @endReached="$_onEndReached">
@@ -15,7 +23,7 @@
                     <p class="scroll-view-item">
                         <ul>
                             <li>订单号：{{item.series}}</li>
-                            <li>司机报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
+                            <li>订单报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
                             <li>订单状态：{{item.orderStatusName}}</li>
                             <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
                             <li>超里程价：{{item.overstepPrice}}元/公里</li>
@@ -33,8 +41,8 @@
                             <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
                             <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
                             <li>路经其他站点：<ul class="ul-inner">
-                                                <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
-                                            </ul>
+                                <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
+                            </ul>
                             </li>
                             <li>备注：{{item.remark}}</li>
                         </ul>
@@ -45,13 +53,6 @@
                         :is-finished="isFinished">
                 </md-scroll-view-more>
             </md-scroll-view>
-            <md-result-page
-                    v-if="customerOrders.length === 0"
-                    class="customized"
-                    img-url="//manhattan.didistatic.com/static/manhattan/mfd/result-page/lost"
-                    text="没有订单"
-                    subtext="要不然刷新试试？">
-            </md-result-page>
         </div>
     </div>
 </template>
@@ -92,18 +93,27 @@
         return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
       }
     },
+    mounted () {
+      setTimeout(() => {
+        this.setPageHeight()
+      }, 0)
+    },
     methods: {
       ...mapMutations({
         setCustomerOrders: 'SET_CUSTOMERORDERS'
       }),
+      setPageHeight () {
+        const height = window.screen.availHeight
+        this.$refs.page.style.height = `${height}px`
+      },
       _getCustomerOrder (params) {
-        console.log(params)
         getCustomerOrder(params).then(res => {
           if (res.code === 0) {
             const customerOrders = res.customerOrders
             const total = res.total
-            this.setCustomerOrders(customerOrders)
-            if (customerOrders.length >= total) {
+            const more =  this.customerOrders.concat(customerOrders)
+            this.setCustomerOrders(more)
+            if (more.length >= total) {
               this.isFinished = true
             }
             this.$refs.scrollView.finishLoadMore()
@@ -137,6 +147,7 @@
 <style lang="stylus">
     .user-order-list
         padding 0 0 200px
+        height 700px
         .md-scroll-view
             background transparent
             height 100%

@@ -1,6 +1,6 @@
 <template>
     <div class="simple-order">
-        <nav-bar>
+        <nav-bar :arrowLeft="false">
             {{title}}
         </nav-bar>
         <div class="content">
