@@ -157,7 +157,7 @@
           deliverGoodsTime: '',
           initDistance: '',
           initPrice: '',
-          openId: '',
+          openId: this.openId || getCookie('__user__openid'),
           overstepPrice: '',
           receiveAddressDetail: '',
           receiveGoodsLocationNum: '',
@@ -196,11 +196,11 @@
       }
     },
     watch: {
-      'wetherTakeover' (val) {
+      'wetherTakeover'(val) {
         let ret = val ? 'Y' : 'N'
         this.bill.wetherTakeover = ret
       },
-      'routerName' () {
+      'routerName'() {
         Toast.loading('正在查询')
         this._getPriceAndCarByCustomerIdAndRouterSeries({
           customerMasterId: this.customerInfo.customerMasterId,
@@ -211,7 +211,7 @@
           Toast.hide()
         }, 3000)
       },
-      '$route' (to, from) {
+      '$route'(to, from) {
         if (to.path === '/user/order') {
           this.bill.openId = this.openId || getCookie('__user__openid')
 
@@ -232,10 +232,10 @@
     },
     computed: {
       ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
-      'bill.appointmentDate' () {
+      'bill.appointmentDate'() {
         return this.shipping.goodsTime
       },
-      'isPriceShow' () {
+      'isPriceShow'() {
         let ret = false
         ret = Object.values(this.bill).every((item) => {
           return item !== ''
@@ -284,10 +284,10 @@
           console.log(err)
         })
       },
-      onActConfirm () {
+      onActConfirm() {
         this.onSearchUserOrder()
       },
-      onActCancel () {
+      onActCancel() {
         console.log('继续下单')
         this.actDialog.open = false
         this.bill = {
@@ -319,17 +319,17 @@
         this.shippingDistrictDetail = ''
         this.receiveDistrictDetail = ''
       },
-      onSearchUserOrder () {
+      onSearchUserOrder() {
         this.actDialog.open = false
         this.$router.push('/user/user-order')
       },
       booking () {
         this._createOrder()
       },
-      fillShipping () {
+      fillShipping() {
         this.$router.push('/user/address-info/shipping')
       },
-      fillReceiver () {
+      fillReceiver() {
         this.$router.push('/user/address-info/receiver')
       },
       _createOrder() {
