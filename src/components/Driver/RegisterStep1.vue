@@ -254,29 +254,12 @@
               sourceCityId: value.sourceCityId
             })
           } else if (name === 'carInfo') {
-            if (value.typeId) {
-              this.carTypeId = value.typeId
-            }
-
-            if (value.brandId) {
-              this.carBrandId = value.brandId
-            }
-
-            if (value.colourId) {
-              this.carColourId = value.colourId
-            }
-
-            if (value.sizeId) {
-              this.sizeId = value.sizeId
-            }
-            
-            if (value.carSizeId) {
-              this.carSizeId = carSizeId
-            }
-
-            if (value.carWeightId) {
-              this.carWeightId = carWeightId
-            }
+            value.typeId && (this.carTypeId = value.typeId)
+            value.brandId && (this.carBrandId = value.brandId)
+            value.colourId && (this.carColourId = value.colourId)
+            value.sizeId && (this.sizeId = value.sizeId)
+            value.carSizeId && (this.carSizeId = carSizeId)
+            value.carWeightId && (this.carWeightId = carWeightId)
           }
         })
         this[name] = res
