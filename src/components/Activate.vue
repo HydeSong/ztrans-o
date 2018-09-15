@@ -114,9 +114,9 @@
             // this.setCustomerInfo(res)
             Toast.succeed('激活成功')
             if (res.wetherRegister === 'Y') {
-              this.$router.replace('/driver/driver-order')
+              this.$router.push('/driver/driver-order')
             } else if (res.wetherRegister === 'N') {
-              this.$router.replace('/driver/register-step')
+              this.$router.push('/driver/register-step')
               this.setDriverMobilePhone(this.phone)
             }
           }

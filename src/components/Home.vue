@@ -35,7 +35,7 @@
     },
     methods: {
       ...mapMutations({
-        setWxCode: 'SET_WXCODE',
+        // setWxCode: 'SET_WXCODE',
         setOpenId: 'SET_OPENID',
         setCustomerInfo: 'SET_CUSTOMERINFO'
       }),
@@ -62,7 +62,7 @@
       _getWxCode (queryStr) {
         const wxcode = queryStr.code
         this.wxcode = wxcode
-        this.setWxCode(wxcode)
+        // this.setWxCode(wxcode)
       },
       _getCustomerOpenIdByCode (params) {
         getCustomerOpenIdByCode(params).then(res => {

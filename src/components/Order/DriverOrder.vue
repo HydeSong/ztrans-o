@@ -11,6 +11,7 @@
                     @indexChanged="onIndexTabChange">
             </md-tab-bar>
             <split></split>
+
             <md-field>
                 <md-field-item
                         name="name"
