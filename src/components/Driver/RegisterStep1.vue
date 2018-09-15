@@ -80,6 +80,8 @@
         carPlateNumber: '',
         carTypeId: '',
         sizeId: '',
+        carSizeId: '',
+        carWeightId: '',
         driverIdentityId: '',
         driverName: '',
         driverWorkCity:[],
@@ -230,6 +232,8 @@
           carPlateNumber: this.carPlateNumber,
           carTypeId: this.carTypeId,
           sizeId: this.sizeId,
+          carSizeId: this.carSizeId,
+          carWeightId: this.carWeightId,
           driverIdentityId: this.driverIdentityId,
           driverName: this.driverName,
           driverWorkCity: this.driverWorkCity,
@@ -264,6 +268,14 @@
 
             if (value.sizeId) {
               this.sizeId = value.sizeId
+            }
+            
+            if (value.carSizeId) {
+              this.carSizeId = carSizeId
+            }
+
+            if (value.carWeightId) {
+              this.carWeightId = carWeightId
             }
           }
         })
