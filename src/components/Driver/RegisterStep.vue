@@ -1,6 +1,6 @@
 <template>
     <div class="register">
-        <nav-bar>
+        <nav-bar :arrowLeft="false">
             司机加盟
         </nav-bar>
         <div class="content">
