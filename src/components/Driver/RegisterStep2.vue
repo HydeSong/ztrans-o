@@ -147,7 +147,7 @@
   import {Icon, ImageReader, ImageViewer, Button, Toast, Field, FieldItem} from 'mand-mobile'
   import Split from '../Base/Split'
   import {uploadPicture, getPicture, deletePicture} from '@/api/picture'
-  import {mapMutations} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
 
   export default {
     name: 'register-step1',
@@ -179,6 +179,7 @@
       Split
     },
     computed: {
+      ...mapGetters(['customerInfo']),
       imageView () {
         let imageView = []
         const identityCard = this.imageList.identityCard[0]
@@ -227,8 +228,8 @@
         Toast.loading('图片读取中...')
       },
       onReaderComplete(name, {dataUrl, blob, file}) {
-        if (file.size > 1 * 1024 * 1024) {
-          Toast.failed('文件不能大于1M')
+        if (file.size > 5 * 1024 * 1024) {
+          Toast.failed('文件不能大于5M')
           return
         }
         const demoImageList = this.imageList[name] || []
@@ -253,7 +254,7 @@
             pictureCode = ''
             break
         }
-        let customerNumId = '1'
+        let customerNumId = this.customerInfo.customerMasterId
         // 把图片上传到服务器
         const params = {customerNumId, pictureCode}
         this._uploadPicture(params, file, name)
@@ -270,7 +271,7 @@
 
         const imgUlrList = this.imgUlrs[name] || []
         // 从服务器上删除
-        this._deletePicture ({customerNumId: 1, url: imgUlrList[index]}, name)
+        this._deletePicture ({customerNumId: this.customerInfo.customerMasterId, url: imgUlrList[index]}, name)
       },
       _deletePicture (params, name) {
         deletePicture(params).then(res => {

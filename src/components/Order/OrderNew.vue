@@ -157,7 +157,7 @@
           deliverGoodsTime: '',
           initDistance: '',
           initPrice: '',
-          openId: '',
+          openId: this.openId || getCookie('__user__openid'),
           overstepPrice: '',
           receiveAddressDetail: '',
           receiveGoodsLocationNum: '',
@@ -196,11 +196,11 @@
       }
     },
     watch: {
-      'wetherTakeover' (val) {
+      'wetherTakeover'(val) {
         let ret = val ? 'Y' : 'N'
         this.bill.wetherTakeover = ret
       },
-      'routerName' () {
+      'routerName'() {
         Toast.loading('正在查询')
         this._getPriceAndCarByCustomerIdAndRouterSeries({
           customerMasterId: this.customerInfo.customerMasterId,
@@ -211,7 +211,7 @@
           Toast.hide()
         }, 3000)
       },
-      '$route' (to, from) {
+      '$route'(to, from) {
         if (to.path === '/user/order') {
           this.bill.openId = this.openId || getCookie('__user__openid')
 
@@ -227,18 +227,15 @@
 
           this.bill.deliverGoodsTime = this.shipping.goodsTime
           this.bill.appointmentDate = this.shipping.goodsTime
-
-          // this.shippingDistrictDetail += this.shipping.addressDetail
-          // this.receiveDistrictDetail += this.receiver.addressDetail
         }
       }
     },
     computed: {
       ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
-      'bill.appointmentDate' () {
+      'bill.appointmentDate'() {
         return this.shipping.goodsTime
       },
-      'isPriceShow' () {
+      'isPriceShow'() {
         let ret = false
         ret = Object.values(this.bill).every((item) => {
           return item !== ''
@@ -287,10 +284,10 @@
           console.log(err)
         })
       },
-      onActConfirm () {
+      onActConfirm() {
         this.onSearchUserOrder()
       },
-      onActCancel () {
+      onActCancel() {
         console.log('继续下单')
         this.actDialog.open = false
         this.bill = {
@@ -301,7 +298,7 @@
           deliverGoodsTime: '',
           initDistance: '',
           initPrice: '',
-          openId: '',
+          openId: this.openId || getCookie('__user__openid'),
           overstepPrice: '',
           receiveAddressDetail: '',
           receiveGoodsLocationNum: '',
@@ -322,17 +319,17 @@
         this.shippingDistrictDetail = ''
         this.receiveDistrictDetail = ''
       },
-      onSearchUserOrder () {
+      onSearchUserOrder() {
         this.actDialog.open = false
         this.$router.push('/user/user-order')
       },
       booking () {
         this._createOrder()
       },
-      fillShipping () {
+      fillShipping() {
         this.$router.push('/user/address-info/shipping')
       },
-      fillReceiver () {
+      fillReceiver() {
         this.$router.push('/user/address-info/receiver')
       },
       _createOrder() {
@@ -359,6 +356,8 @@
           }
         })
         this.routerName = res
+        // 清空车型
+        this.carTypeName = ''
         // console.log(val)
         this.bill.routerDetailSeries = val.series
 
@@ -385,6 +384,7 @@
           goodsTime: this.bill.appointmentDate,
           locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
         })
+
         this.setReceiver({
           personMobile:  val.receiveGoodsPersonMobile?val.receiveGoodsPersonMobile:'',
           personName: val.receiveGoodsPersonName?val.receiveGoodsPersonName:'',

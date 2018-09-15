@@ -109,7 +109,7 @@
       }
     },
     created () {
-      console.log(this.customerInfo.customerMasterId)
+      // console.log(this.customerInfo.customerMasterId)
       this._getCarBrandList({customerNumId: this.customerInfo.customerMasterId})
       this._getCarTypeList({customerNumId: this.customerInfo.customerMasterId})
       this._getCarColourList({customerNumId: this.customerInfo.customerMasterId})
