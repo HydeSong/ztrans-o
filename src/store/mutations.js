@@ -36,6 +36,9 @@ const mutations = {
   },
   [types.SET_RECEIVEDISTRICTDETAIL] (state, data) {
     state.receiveDistrictDetail = data
+  },
+  [types.SET_DRIVERMOBILEPHONE] (state, data) {
+    state.mobilePhone = data
   }
 }
 

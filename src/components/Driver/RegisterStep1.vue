@@ -20,7 +20,7 @@
                     @click.native="isOrderCityShow = true">
             </md-field-item>
             <md-input-item
-                    v-model="mobilePhone"
+                    v-model="commandPhone"
                     type="phone"
                     title="邀请人手机号"
                     placeholder="选填，提交后不可更改"
@@ -85,7 +85,7 @@
         driverIdentityId: '',
         driverName: '',
         driverWorkCity:[],
-        mobilePhone: '',
+        commandPhone: '',
         billCity: '',
         carInfo: '',
         billCityData: [],
@@ -237,7 +237,7 @@
           driverIdentityId: this.driverIdentityId,
           driverName: this.driverName,
           driverWorkCity: this.driverWorkCity,
-          mobilePhone: this.mobilePhone,
+          commandPhone: this.commandPhone,
         }
         this.setStep1Data(step1Data)
       },

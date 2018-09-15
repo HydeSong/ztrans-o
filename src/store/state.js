@@ -7,6 +7,7 @@ const state = {
   receiver: {},
   step1Data: {},
   step2Data: {},
+  mobilePhone: '',
   customerOrders: [],
   driverOrders: [],
   shippingDistrictDetail: '',

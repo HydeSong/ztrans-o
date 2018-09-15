@@ -38,10 +38,11 @@ import { setTimeout } from 'timers';
       Split
     },
     computed: {
-      ...mapGetters(['openId', 'step1Data', 'step2Data']),
+      ...mapGetters(['openId', 'step1Data', 'step2Data', 'mobilePhone']),
     },
     created () {
-      let params = Object.assign({}, this.step1Data, this.step2Data, {openId: this.openId})
+      let params = Object.assign({}, {mobilePhone: this.mobilePhone}, this.step1Data, this.step2Data, {openId: this.openId})
+      console.log(params)
       this._registDriver(params)
     },
     methods: {

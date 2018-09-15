@@ -104,7 +104,8 @@
     },
     methods: {
       ...mapMutations({
-        setCustomerInfo: 'SET_CUSTOMERINFO'
+        setCustomerInfo: 'SET_CUSTOMERINFO',
+        setDriverMobilePhone: 'SET_DRIVERMOBILEPHONE'
       }),
       _alivedDriver (params) {
         alivedDriver(params).then(res => {
@@ -116,6 +117,7 @@
               this.$router.replace('/driver/driver-order')
             } else if (res.wetherRegister === 'N') {
               this.$router.replace('/driver/register-step')
+              this.setDriverMobilePhone(this.phone)
             }
           }
         }).catch(err => {
