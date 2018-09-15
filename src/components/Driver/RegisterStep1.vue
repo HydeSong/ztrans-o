@@ -79,7 +79,6 @@
         carColourId: '',
         carPlateNumber: '',
         carTypeId: '',
-        sizeId: '',
         carSizeId: '',
         carWeightId: '',
         driverIdentityId: '',
@@ -257,9 +256,8 @@
             value.typeId && (this.carTypeId = value.typeId)
             value.brandId && (this.carBrandId = value.brandId)
             value.colourId && (this.carColourId = value.colourId)
-            value.sizeId && (this.sizeId = value.sizeId)
-            value.carSizeId && (this.carSizeId = carSizeId)
-            value.carWeightId && (this.carWeightId = carWeightId)
+            value.sizeId && (this.carSizeId = value.sizeId)
+            value.weightId && (this.carWeightId = value.weightId)
           }
         })
         this[name] = res

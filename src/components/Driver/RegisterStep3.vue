@@ -11,9 +11,9 @@
         <split></split>
         <split></split>
         <split></split>
-        <div class="login-btn">
-            <md-button @click.native="next">去登录</md-button>
-        </div>
+        <!--<div class="login-btn">-->
+            <!--<md-button @click.native="next">去登录</md-button>-->
+        <!--</div>-->
     </div>
 </template>
 
@@ -28,8 +28,8 @@ import { setTimeout } from 'timers';
     name: 'register-step3',
     data () {
       return {
-        text: '',
-        subtext: ''
+        text: '账号注册成功',
+        subtext: '我们准备了赚钱小技巧，请登录司机端查看'
       }
     },
     components: {
