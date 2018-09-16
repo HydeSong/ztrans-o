@@ -132,7 +132,7 @@
             // this.setCustomerInfo(res)
             Toast.succeed('激活成功')
             let from = this.$route.query.from
-            this.$router.replace(from)
+            this.$router.push(from)
           }
         }).catch(err => {
           console.log(err)
