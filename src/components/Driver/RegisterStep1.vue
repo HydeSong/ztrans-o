@@ -230,7 +230,6 @@
           carColourId: this.carColourId,
           carPlateNumber: this.carPlateNumber,
           carTypeId: this.carTypeId,
-          sizeId: this.sizeId,
           carSizeId: this.carSizeId,
           carWeightId: this.carWeightId,
           driverIdentityId: this.driverIdentityId,

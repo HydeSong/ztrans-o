@@ -14,7 +14,6 @@
                         @click.native="isPickerShow1 = true">
                 </md-field-item>
                 <md-field-item
-                        name="name"
                         title="车型"
                         arrow="arrow-right"
                         align="right"
@@ -22,14 +21,12 @@
                         @click.native="isPickerShow2 = true">
                 </md-field-item>
                 <md-field-item
-                        name="shipping-address"
                         :title="shippingDistrictDetail?`${shippingDistrictDetail}`:'请输入发货地'"
                         arrow="arrow-right"
                         :class="[shippingDistrictDetail?'':'saddress']"
                         @click="fillShipping">
                 </md-field-item>
                 <md-field-item
-                        name="receiver-address"
                         :title="receiveDistrictDetail?`${receiveDistrictDetail}`:'请输入收货地'"
                         arrow="arrow-right"
                         :class="[receiveDistrictDetail?'':'saddress']"
@@ -39,7 +36,6 @@
             <split></split>
             <md-field>
                 <md-field-item
-                        name="item3"
                         customized
                         align="left">
                     <md-agree
@@ -50,7 +46,6 @@
                     </md-agree>
                 </md-field-item>
                 <md-field-item
-                        name="item3"
                         customized
                         align="center">
                     <md-input-item
@@ -59,7 +54,6 @@
                     ></md-input-item>
                 </md-field-item>
                 <md-field-item
-                        name="item3"
                         customized
                         align="center">
                     <md-input-item
@@ -77,7 +71,7 @@
                     </div>
                     <div class="booking-info">
                         <span>预约数量：{{bill.appointmentNum || '--'}}</span>
-                        <span>预约时间：{{bill.appointmentDate || '--:--:--'}}</span>
+                        <span>用车时间：{{bill.appointmentDate || '--:--:--'}}</span>
                     </div>
                 </div>
                 <split></split>
@@ -279,6 +273,7 @@
               return {'text': value.typeName, 'value': value.series, ...value}
             })
             this.pickerData2 = [cp]
+            this.$refs.pickerCarType.refresh()
           }
         }).catch(err => {
           console.log(err)
@@ -335,6 +330,58 @@
       _createOrder() {
         let params = this.bill
         // console.log(params)
+        // 字段非空校验
+        // 线路，车型，发货人 电话，发货人名字，发货人地址，收货人地址，收货人名字，收货人电话，货物描述，用车时间
+        if (!params.routerDetailSeries) {
+          Toast.failed('线路不可以为空！')
+          return
+        }
+
+        if (!params.carTypeSeries) {
+          Toast.failed('车型不可以为空！')
+          return
+        }
+
+        if (!params.sendGoodsPersonMobile) {
+          Toast.failed('发货人电话不可以为空！')
+          return
+        }
+
+        if (!params.sendGoodsPersonName) {
+          Toast.failed('发货人名字不可以为空！')
+          return
+        }
+
+        if (!params.sendAddressDetail) {
+          Toast.failed('发货人地址不可以为空！')
+          return
+        }
+
+        if (!params.receiveAddressDetail) {
+          Toast.failed('收货人地址不可以为空！')
+          return
+        }
+
+        if (!params.receiveGoodsPersonName) {
+          Toast.failed('收货人名字不可以为空！')
+          return
+        }
+
+        if (!params.receiveGoodsPersonMobile) {
+          Toast.failed('收货人电话不可以为空！')
+          return
+        }
+
+        if (!params.goodsRemark) {
+          Toast.failed('货物描述不可以为空！')
+          return
+        }
+
+        if (!params.appointmentDate) {
+          Toast.failed('用车时间不可以为空！')
+          return
+        }
+
         createOrder(params).then(res => {
           // console.log(res)
           if (res.code === 0) {

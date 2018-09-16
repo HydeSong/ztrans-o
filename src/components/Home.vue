@@ -6,11 +6,11 @@
 </template>
 
 <script>
-  import {Button, Toast} from 'mand-mobile'
+  import {Button} from 'mand-mobile'
   import Split from './Base/Split'
   import {urlParse} from '@/common/js/utils'
   import {mapMutations} from 'vuex'
-  import {getCustomerOpenIdByCode, getDriverOpenIdByCode} from '@/api/openid'
+  import {getCustomerOpenIdByCode, getDriverOpenIdByCode, regainCodeByRefreshPage} from '@/api/openid'
   import {setCookie} from '@/common/js/cache'
 
   export default {
@@ -68,20 +68,24 @@
         getCustomerOpenIdByCode(params).then(res => {
           // console.log(res)
           if (res.code === 0) {
-            this.setOpenId(res.openId)
-            setCookie('__user__openid', res.openId)
-            // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
-            this.setCustomerInfo(res)
-            setCookie('__user__customerinfo', JSON.stringify(res))
-            if (res.wetherRegister === 1) {
-              // if (res.wetherSpecialCustomer === 0) {
-              //   this.simpleOrder()
-              // } else {
-              //   this.call()
-              // }
-              this.call()
-            } else if (res.wetherRegister === 0) {
-              this.activate('user')
+            if (res.openId) {
+              this.setOpenId(res.openId)
+              setCookie('__user__openid', res.openId)
+              // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
+              this.setCustomerInfo(res)
+              setCookie('__user__customerinfo', JSON.stringify(res))
+              if (res.wetherRegister === 1) {
+                // if (res.wetherSpecialCustomer === 0) {
+                //   this.simpleOrder()
+                // } else {
+                //   this.call()
+                // }
+                this.call()
+              } else if (res.wetherRegister === 0) {
+                this.activate('user')
+              }
+            } else {
+              this._refreshCode(1)
             }
           }
         }).catch(err => {
@@ -92,17 +96,24 @@
         getDriverOpenIdByCode(params).then(res => {
           // console.log(res)
           if (res.code === 0) {
-            this.setOpenId(res.openId)
-            setCookie('__user__openid', res.openId)
-            if (res.wetherRegister === 1) {
-              this.join()
-            } else if (res.wetherRegister === 0) {
-              this.activate('driver')
+            if (res.openId) {
+              this.setOpenId(res.openId)
+              setCookie('__user__openid', res.openId)
+              if (res.wetherRegister === 1) {
+                this.join()
+              } else if (res.wetherRegister === 0) {
+                this.activate('driver')
+              }
+            } else {
+              this._refreshCode(2)
             }
           }
         }).catch(err => {
           console.log(err)
         })
+      },
+      _refreshCode (state) {
+        regainCodeByRefreshPage(state)
       }
     }
   }

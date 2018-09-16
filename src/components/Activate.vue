@@ -55,6 +55,7 @@
   import {getMobileCode, getContactMobileCode} from '@/api/sms'
   import {registContact, alivedDriver} from '@/api/activate'
   import {getCookie} from '@/common/js/cache'
+  import {regainCodeByRefreshPage} from '@/api/openid'
   import {mapGetters, mapMutations} from 'vuex'
 
   export default {
@@ -131,8 +132,9 @@
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
             Toast.succeed('激活成功')
-            let from = this.$route.query.from
-            this.$router.push(from)
+            this._refreshCode(1)
+            // let from = this.$route.query.from
+            // this.$router.push(from)
           }
         }).catch(err => {
           console.log(err)
@@ -202,6 +204,9 @@
       },
       login() {
         console.log('login')
+      },
+      _refreshCode (state) {
+        regainCodeByRefreshPage(state)
       }
     },
   }
