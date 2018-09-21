@@ -259,6 +259,7 @@
               return {'text': value.routerAlia, 'value': value.series, ...value}
             })
             this.pickerData1 = [ra]
+            this.$refs.pickerRouter.refresh()
           }
         }).catch(err => {
           console.log(err)
@@ -313,6 +314,8 @@
         this.carTypeName = ''
         this.shippingDistrictDetail = ''
         this.receiveDistrictDetail = ''
+        this.$refs.pickerRouter.refresh()
+        this.$refs.pickerCarType.refresh()
       },
       onSearchUserOrder() {
         this.actDialog.open = false
