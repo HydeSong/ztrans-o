@@ -313,6 +313,9 @@
         this.carTypeName = ''
         this.shippingDistrictDetail = ''
         this.receiveDistrictDetail = ''
+        // 解决重新下单不能选择路线和车型问题
+        this.$refs.pickerRouter.refresh()
+        this.$refs.pickerCarType.refresh()
       },
       onSearchUserOrder() {
         this.actDialog.open = false
