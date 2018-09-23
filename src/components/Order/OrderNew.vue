@@ -264,11 +264,11 @@
             this.bill.sendGoodsPersonMobile = res.sendGoodsPersonMobile
             this.bill.sendGoodsPersonName = res.sendGoodsPersonName
 
-            this.shippingDistrictDetail = `${res.sourcePrvName}${res.sourceCityName}${res.sourceCityAreaName}${res.sourceTownName}`
-            this.receiveDistrictDetail = `${res.destinationPrvName}${res.destinationCityName}${res.destinationCityAreaName}${res.destinationTownName}`
+            this.shippingDistrictDetail = `${res.sourcePrvName}${res.sourceCityName}${res.sourceCityAreaName}${res.sourceTownName?res.sourceTownName:''}`
+            this.receiveDistrictDetail = `${res.destinationPrvName}${res.destinationCityName}${res.destinationCityAreaName}${res.destinationTownName?res.destinationTownName:''}`
 
-            this.setShippingDistrictDetail(`${res.sourcePrvName}${res.sourceCityName}${res.sourceCityAreaName}${res.sourceTownName}`)
-            this.setReceiveDistrictDetail(`${res.destinationPrvName}${res.destinationCityName}${res.destinationCityAreaName}${res.destinationTownName}`)
+            this.setShippingDistrictDetail(this.shippingDistrictDetail)
+            this.setReceiveDistrictDetail(this.receiveDistrictDetail)
 
             this.setShipping({
               personMobile:  res.sendGoodsPersonMobile?res.sendGoodsPersonMobile:'',
