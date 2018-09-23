@@ -84,7 +84,7 @@
                 ref="datePicker"
                 v-model="isDatePickerShow"
                 type="datetime"
-                today-text="&(今天)"
+                today-text="(今天)"
                 title="选择发货时间"
                 :default-date="currentDate"
                 @confirm="onDatePickerConfirm"
@@ -116,12 +116,12 @@
         raddressDetail: '',
         rpersonMobile: '',
         rpersonName: '',
-        rlocationNum: '',
+        rlocationNum: 1,
         personMobile: '',
         personName: '',
         addressDetail: '',
         goodsTime: '',
-        locationNum: '',
+        locationNum: 1,
         currentDate: new Date(),
         isDatePickerShow: false,
       }

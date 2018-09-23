@@ -46,3 +46,12 @@ export function getCityByOpenId (params) {
   }
   return axios.get(url, {params: data})
 }
+
+export function getCustomerRouterDetail (params) {
+  const url = `${CONFIG.HOST}/getCustomerRouterDetail`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}

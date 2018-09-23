@@ -112,7 +112,7 @@
   import NavBar from '../Base/NavBar'
 
   import {createOrder} from '@/api/order'
-  import {getRouterPriceByCarTypeAndRouterDetailSeries} from '@/api/road'
+  import {getRouterPriceByCarTypeAndRouterDetailSeries, getCustomerRouterDetail} from '@/api/road'
   import {getRouterAliaByCustomerMasterId, getPriceAndCarByCustomerIdAndRouterSeries} from '@/api/simple-order'
   import {getCookie} from '@/common/js/cache'
   import {mapGetters, mapMutations} from 'vuex'
@@ -250,6 +250,45 @@
         setShippingDistrictDetail: 'SET_SHIPPINGDISTRICTDETAIL',
         setReceiveDistrictDetail: 'SET_RECEIVEDISTRICTDETAIL'
       }),
+      _getCustomerRouterDetail(params) {
+        getCustomerRouterDetail(params).then(res => {
+          // console.log(res)
+          if (res.code === 0) {
+            this.bill.receiveAddressDetail = res.receiveAddressDetail
+            this.bill.receiveGoodsLocationNum = res.receiveGoodsLocationNum
+            this.bill.receiveGoodsPersonMobile = res.receiveGoodsPersonMobile
+            this.bill.receiveGoodsPersonName = res.receiveGoodsPersonName
+
+            this.bill.sendAddressDetail = res.sendAddressDetail
+            this.bill.sendGoodsLocationNum = res.sendGoodsLocationNum
+            this.bill.sendGoodsPersonMobile = res.sendGoodsPersonMobile
+            this.bill.sendGoodsPersonName = res.sendGoodsPersonName
+
+            this.shippingDistrictDetail = `${res.sourcePrvName}${res.sourceCityName}${res.sourceCityAreaName}${res.sourceTownName}`
+            this.receiveDistrictDetail = `${res.destinationPrvName}${res.destinationCityName}${res.destinationCityAreaName}${res.destinationTownName}`
+
+            this.setShippingDistrictDetail(`${res.sourcePrvName}${res.sourceCityName}${res.sourceCityAreaName}${res.sourceTownName}`)
+            this.setReceiveDistrictDetail(`${res.destinationPrvName}${res.destinationCityName}${res.destinationCityAreaName}${res.destinationTownName}`)
+
+            this.setShipping({
+              personMobile:  res.sendGoodsPersonMobile?res.sendGoodsPersonMobile:'',
+              personName: res.sendGoodsPersonName?res.sendGoodsPersonName:'',
+              addressDetail: res.sendAddressDetail?res.sendAddressDetail:'',
+              goodsTime: this.bill.appointmentDate,
+              locationNum: res.sendGoodsLocationNum?res.sendGoodsLocationNum:''
+            })
+
+            this.setReceiver({
+              personMobile:  res.receiveGoodsPersonMobile?res.receiveGoodsPersonMobile:'',
+              personName: res.receiveGoodsPersonName?res.receiveGoodsPersonName:'',
+              addressDetail: res.receiveAddressDetail?res.receiveAddressDetail:'',
+              locationNum: res.receiveGoodsLocationNum?res.receiveGoodsLocationNum:''
+            })
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       _getRouterAliaByCustomerMasterId(params) {
         getRouterAliaByCustomerMasterId(params).then(res => {
           // console.log(res)
@@ -410,38 +449,10 @@
         // 清空车型
         this.carTypeName = ''
         // console.log(val)
+        this._getCustomerRouterDetail({
+          routerDetailSeries:val.series
+        })
         this.bill.routerDetailSeries = val.series
-
-        this.bill.receiveAddressDetail = val.receiveAddressDetail
-        this.bill.receiveGoodsLocationNum = val.receiveGoodsLocationNum
-        this.bill.receiveGoodsPersonMobile = val.receiveGoodsPersonMobile
-        this.bill.receiveGoodsPersonName = val.receiveGoodsPersonName
-
-        this.bill.sendAddressDetail = val.sendAddressDetail
-        this.bill.sendGoodsLocationNum = val.sendGoodsLocationNum
-        this.bill.sendGoodsPersonMobile = val.sendGoodsPersonMobile
-        this.bill.sendGoodsPersonName = val.sendGoodsPersonName
-
-        this.shippingDistrictDetail = `${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}`
-        this.receiveDistrictDetail = `${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}`
-
-        this.setShippingDistrictDetail(`${val.sourcePrvName}${val.sourceCityName}${val.sourceCityAreaName}${val.sourceTownName}`)
-        this.setReceiveDistrictDetail(`${val.destinationPrvName}${val.destinationCityName}${val.destinationCityAreaName}${val.destinationTownName}`)
-
-        this.setShipping({
-          personMobile:  val.sendGoodsPersonMobile?val.sendGoodsPersonMobile:'',
-          personName: val.sendGoodsPersonName?val.sendGoodsPersonName:'',
-          addressDetail: val.sendAddressDetail?val.sendAddressDetail:'',
-          goodsTime: this.bill.appointmentDate,
-          locationNum: val.sendGoodsLocationNum?val.sendGoodsLocationNum:''
-        })
-
-        this.setReceiver({
-          personMobile:  val.receiveGoodsPersonMobile?val.receiveGoodsPersonMobile:'',
-          personName: val.receiveGoodsPersonName?val.receiveGoodsPersonName:'',
-          addressDetail: val.receiveAddressDetail?val.receiveAddressDetail:'',
-          locationNum: val.receiveGoodsLocationNum?val.receiveGoodsLocationNum:''
-        })
       },
       onPickerCarTypeConfirm() {
         const values = this.$refs.pickerCarType.getColumnValues()
