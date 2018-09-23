@@ -259,6 +259,7 @@
               return {'text': value.routerAlia, 'value': value.series, ...value}
             })
             this.pickerData1 = [ra]
+            this.$refs.pickerRouter.refresh()
           }
         }).catch(err => {
           console.log(err)
