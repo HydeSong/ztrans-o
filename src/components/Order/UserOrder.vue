@@ -69,122 +69,145 @@
 </template>
 
 <script>
-  import { Button, Picker, Field, FieldItem, DatePicker, Toast, TabBar } from 'mand-mobile'
-  import Split from '../Base/Split'
-  import NavBar from '../Base/NavBar'
+import {
+  Button,
+  Picker,
+  Field,
+  FieldItem,
+  DatePicker,
+  Toast,
+  TabBar
+} from "mand-mobile";
+import Split from "../Base/Split";
+import NavBar from "../Base/NavBar";
 
-  import {getRouterAliaByCustomerMasterId} from '@/api/simple-order'
-  import {getCustomerOrder} from '@/api/order'
-  import {getCookie} from '@/common/js/cache'
-  import {mapGetters, mapMutations} from 'vuex'
+import { getRouterAliaByCustomerMasterId } from "@/api/simple-order";
+import { getCustomerOrder } from "@/api/order";
+import { getCookie } from "@/common/js/cache";
+import { mapGetters, mapMutations } from "vuex";
 
-  export default {
-    name: 'user-order',
-    components: {
-      [Button.name]: Button,
-      [DatePicker.name]: DatePicker,
-      [Picker.name]: Picker,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      [TabBar.name]: TabBar,
-      Split,
-      NavBar
-    },
-    data() {
-      return {
-        title: '客户订单管理',
-        isPickerShow1: false,
-        isDatePickerShow1: false,
-        isDatePickerShow2: false,
-        pickerData1: [],
-        currentDate: new Date(),
-        titles: ['未完成订单', '已完成订单'],
-        orderStatus: 1,
-        routerDetailAliaSearchKey: '',
-        startTime: '',
-        endTime: '',
-      }
-    },
-    created() {
-      this._getRouterAliaByCustomerMasterId({
-        customerMasterId: this.customerInfo.customerMasterId,
-        openId: this.openId || getCookie('__user__openid')
-      })
-    },
-    computed: {
-      ...mapGetters(['openId', 'customerInfo']),
-    },
-    methods: {
-      ...mapMutations({
-        setCustomerOrders: 'SET_CUSTOMERORDERS'
-      }),
-      _getCustomerOrder (params) {
-        Toast.loading('正在查询')
-        console.log(params)
-        getCustomerOrder(params).then(res => {
+export default {
+  name: "user-order",
+  components: {
+    [Button.name]: Button,
+    [DatePicker.name]: DatePicker,
+    [Picker.name]: Picker,
+    [Field.name]: Field,
+    [FieldItem.name]: FieldItem,
+    [TabBar.name]: TabBar,
+    Split,
+    NavBar
+  },
+  data() {
+    return {
+      title: "客户订单管理",
+      isPickerShow1: false,
+      isDatePickerShow1: false,
+      isDatePickerShow2: false,
+      pickerData1: [],
+      currentDate: new Date(),
+      titles: ["未完成订单", "已完成订单"],
+      orderStatus: 1,
+      routerDetailAliaSearchKey: "",
+      startTime: "",
+      endTime: ""
+    };
+  },
+  created() {
+    this._getRouterAliaByCustomerMasterId({
+      customerMasterId: this.customerInfo.customerMasterId,
+      openId: this.openId || getCookie("__user__openid")
+    });
+  },
+  computed: {
+    ...mapGetters(["openId", "customerInfo"])
+  },
+  methods: {
+    ...mapMutations({
+      setCustomerOrders: "SET_CUSTOMERORDERS"
+    }),
+    _getCustomerOrder(params) {
+      Toast.loading("正在查询");
+      console.log(params);
+      getCustomerOrder(params)
+        .then(res => {
           if (res.code === 0) {
-            Toast.hide()
-            const customerOrders = res.customerOrders
-            this.setCustomerOrders(customerOrders)
-            this.$router.push(`/user/user-order-list?orderStatus=${this.orderStatus}&startTime=${this.startTime}&endTime=${this.endTime}&routerDetailAliaSearchKey=${this.routerDetailAliaSearchKey}`)
+            Toast.hide();
+            const customerOrders = res.customerOrders;
+            this.setCustomerOrders(customerOrders);
+            this.$router.push(
+              `/user/user-order-list?orderStatus=${
+                this.orderStatus
+              }&startTime=${this.startTime}&endTime=${
+                this.endTime
+              }&routerDetailAliaSearchKey=${this.routerDetailAliaSearchKey}`
+            );
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      _getRouterAliaByCustomerMasterId(params) {
-        getRouterAliaByCustomerMasterId(params).then(res => {
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getRouterAliaByCustomerMasterId(params) {
+      getRouterAliaByCustomerMasterId(params)
+        .then(res => {
           if (res.code === 0) {
-            const routerAliaModels = res.routerAliaModels
-            const ra = routerAliaModels.map((value) => {
-              return {'text': value.routerAlia, 'value': value.series, ...value}
-            })
+            const routerAliaModels = res.routerAliaModels;
+            const ra = routerAliaModels.map(value => {
+              return { text: value.routerAlia, value: value.series, ...value };
+            });
             // console.log('ra', ra)
-            this.pickerData1 = [ra]
+            this.pickerData1 = [ra];
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      onDatePickerConfirm1() {
-        this.startTime = this.$refs.datePicker1.getFormatDate('yyyy-MM-dd hh:mm:00')
-      },
-      onDatePickerConfirm2() {
-        this.endTime = this.$refs.datePicker2.getFormatDate('yyyy-MM-dd hh:mm:00')
-      },
-      onPickerRouterConfirm() {
-        const values = this.$refs.pickerRouter.getColumnValues()
-        let res = ''
-        values.forEach(value => {
-          res += `${value.text || value.label}`
-        })
-        this.routerDetailAliaSearchKey = res
-      },
-      onIndexTabChange (index) {
-        this.orderStatus = index
-      },
-      onSearch () {
-        console.log('searching')
-        const params = {
-          openId: this.openId || getCookie('__user__openid'),
-          orderStatus: this.orderStatus,
-          routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          current: 1,
-          pageSize: 10
-        }
-        this._getCustomerOrder(params)
-      }
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    onDatePickerConfirm1() {
+      this.startTime = this.$refs.datePicker1.getFormatDate(
+        "yyyy-MM-dd hh:mm:00"
+      );
+    },
+    onDatePickerConfirm2() {
+      this.endTime = this.$refs.datePicker2.getFormatDate(
+        "yyyy-MM-dd hh:mm:00"
+      );
+    },
+    onPickerRouterConfirm() {
+      const values = this.$refs.pickerRouter.getColumnValues();
+      let res = "";
+      values.forEach(value => {
+        res += `${value.text || value.label}`;
+      });
+      this.routerDetailAliaSearchKey = res;
+    },
+    onIndexTabChange(index) {
+      this.orderStatus = index;
+    },
+    onSearch() {
+      console.log("searching");
+      const params = {
+        openId: this.openId || getCookie("__user__openid"),
+        orderStatus: this.orderStatus,
+        routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        current: 1,
+        pageSize: 10
+      };
+      this._getCustomerOrder(params);
     }
   }
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .content {
-        height 100%
-    }
-    .order-footer {
-        margin: 16px*2 10px*2;
-    }
+.content {
+  height: 100%;
+}
+
+.order-footer {
+  margin: 16px * 2 10px * 2;
+}
 </style>

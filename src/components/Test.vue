@@ -48,59 +48,63 @@
 </template>
 
 <script>
-  import {
-    Button,
-    Toast,
-    Agree,
-    ActionBar,
-    Field,
-    FieldItem,
-    InputItem,
-    Picker
-  } from 'mand-mobile'
-  export default {
-    name: 'Test',
-    components: {
-      [Button.name]: Button,
-      [Agree.name]: Agree,
-      [ActionBar.name]: ActionBar,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      [InputItem.name]: InputItem,
-      [Picker.name]: Picker
-    },
-    data () {
-      return {
-        addressInfo: {
-          personMobile: '',
-          personName: '',
-          addressDetail: '',
-          goodsTime: '',
-          locationNum: ''
-        },
-        relation: '本人',
-        isPickerShow: false,
-        actionBarData: [{
-          text: '我要投保'
-        }],
-        pickerData: [[{text:'本人'},{text:'父母'},{text:'配偶'},{text:'子女'}]]
-      }
-    },
-    methods: {
-      handleClick() {
-        Toast.info('不错哟~')
-      }
+import {
+  Button,
+  Toast,
+  Agree,
+  ActionBar,
+  Field,
+  FieldItem,
+  InputItem,
+  Picker
+} from "mand-mobile";
+export default {
+  name: "Test",
+  components: {
+    [Button.name]: Button,
+    [Agree.name]: Agree,
+    [ActionBar.name]: ActionBar,
+    [Field.name]: Field,
+    [FieldItem.name]: FieldItem,
+    [InputItem.name]: InputItem,
+    [Picker.name]: Picker
+  },
+  data() {
+    return {
+      addressInfo: {
+        personMobile: "",
+        personName: "",
+        addressDetail: "",
+        goodsTime: "",
+        locationNum: ""
+      },
+      relation: "本人",
+      isPickerShow: false,
+      actionBarData: [
+        {
+          text: "我要投保"
+        }
+      ],
+      pickerData: [
+        [{ text: "本人" }, { text: "父母" }, { text: "配偶" }, { text: "子女" }]
+      ]
+    };
+  },
+  methods: {
+    handleClick() {
+      Toast.info("不错哟~");
     }
   }
+};
 </script>
 
 <style scoped>
-  .block{
-    margin-top: .32rem;
-  }
-  .agree{
-    padding: .32rem;
-    font-size: .24rem;
-    color: #666;
-  }
+.block {
+  margin-top: 0.32rem;
+}
+.agree {
+  padding: 0.32rem;
+  font-size: 0.24rem;
+  color: #666;
+}
 </style>

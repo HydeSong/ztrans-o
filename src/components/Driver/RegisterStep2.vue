@@ -144,240 +144,292 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Icon, ImageReader, ImageViewer, Button, Toast, Field, FieldItem} from 'mand-mobile'
-  import Split from '../Base/Split'
-  import {uploadPicture, getPicture, deletePicture} from '@/api/picture'
-  import {mapGetters, mapMutations} from 'vuex'
+import {
+  Icon,
+  ImageReader,
+  ImageViewer,
+  Button,
+  Toast,
+  Field,
+  FieldItem
+} from "mand-mobile";
+import Split from "../Base/Split";
+import { uploadPicture, getPicture, deletePicture } from "@/api/picture";
+import { mapGetters, mapMutations } from "vuex";
 
-  export default {
-    name: 'register-step1',
-    data () {
-      return {
-        isViewerShow: false,
-        viewerIndex: 0,
-        imageList: {
-          identityCard: [],
-          drivingLicense: [],
-          drivingPicture: [],
-          persomCarPicture: [],
-        },
-        imgUlrs: {
-          identityCard: [],
-          drivingLicense: [],
-          drivingPicture: [],
-          persomCarPicture: [],
-        },
+export default {
+  name: "register-step1",
+  data() {
+    return {
+      isViewerShow: false,
+      viewerIndex: 0,
+      imageList: {
+        identityCard: [],
+        drivingLicense: [],
+        drivingPicture: [],
+        persomCarPicture: []
+      },
+      imgUlrs: {
+        identityCard: [],
+        drivingLicense: [],
+        drivingPicture: [],
+        persomCarPicture: []
       }
-    },
-    components: {
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      [ImageViewer.name]: ImageViewer,
-      [Icon.name]: Icon,
-      [ImageReader.name]: ImageReader,
-      [Button.name]: Button,
-      Split
-    },
-    computed: {
-      ...mapGetters(['customerInfo']),
-      imageView () {
-        let imageView = []
-        const identityCard = this.imageList.identityCard[0]
-        const drivingLicense = this.imageList.drivingLicense[0]
-        const drivingPicture = this.imageList.drivingPicture[0]
-        const persomCarPicture = this.imageList.persomCarPicture[0]
+    };
+  },
+  components: {
+    [Field.name]: Field,
+    [FieldItem.name]: FieldItem,
+    [ImageViewer.name]: ImageViewer,
+    [Icon.name]: Icon,
+    [ImageReader.name]: ImageReader,
+    [Button.name]: Button,
+    Split
+  },
+  computed: {
+    ...mapGetters(["customerInfo"]),
+    imageView() {
+      let imageView = [];
+      const identityCard = this.imageList.identityCard[0];
+      const drivingLicense = this.imageList.drivingLicense[0];
+      const drivingPicture = this.imageList.drivingPicture[0];
+      const persomCarPicture = this.imageList.persomCarPicture[0];
 
-        identityCard && imageView.push(identityCard)
-        drivingLicense && imageView.push(drivingLicense)
-        drivingPicture && imageView.push(drivingPicture)
-        persomCarPicture && imageView.push(persomCarPicture)
-        return imageView
-      },
-      disabled () {
-        const identityCard = this.imageList.identityCard[0]
-        const drivingLicense = this.imageList.drivingLicense[0]
-        const drivingPicture = this.imageList.drivingPicture[0]
-        const persomCarPicture = this.imageList.persomCarPicture[0]
-        return !(identityCard && drivingLicense && drivingPicture && persomCarPicture)
+      identityCard && imageView.push(identityCard);
+      drivingLicense && imageView.push(drivingLicense);
+      drivingPicture && imageView.push(drivingPicture);
+      persomCarPicture && imageView.push(persomCarPicture);
+      return imageView;
+    },
+    disabled() {
+      const identityCard = this.imageList.identityCard[0];
+      const drivingLicense = this.imageList.drivingLicense[0];
+      const drivingPicture = this.imageList.drivingPicture[0];
+      const persomCarPicture = this.imageList.persomCarPicture[0];
+      return !(
+        identityCard &&
+        drivingLicense &&
+        drivingPicture &&
+        persomCarPicture
+      );
+    }
+  },
+  created() {
+    // this._getPicture({
+    //   "customerNumId": 1,
+    //   "url": "/tmp/tomcat-docbase.5708326160788120757.8080/driverIdentityPicture/1805030019058.087ce5d"
+    // })
+  },
+  methods: {
+    ...mapMutations({
+      setStep2Data: "SET_STEP2DATA"
+    }),
+    showViewer(index) {
+      this.viewerIndex = index;
+      this.isViewerShow = true;
+    },
+    next() {
+      this.$emit("next", 2);
+      this.setStep2Data({
+        drivingLicense: this.imgUlrs.drivingLicense[0],
+        drivingPicture: this.imgUlrs.drivingPicture[0],
+        identityCard: this.imgUlrs.identityCard[0],
+        persomCarPicture: this.imgUlrs.persomCarPicture[0]
+      });
+    },
+    onReaderSelect() {
+      Toast.loading("图片读取中...");
+    },
+    onReaderComplete(name, { dataUrl, blob, file }) {
+      if (file.size > 5 * 1024 * 1024) {
+        Toast.failed("文件不能大于5M");
+        return;
       }
-    },
-    created () {
-      // this._getPicture({
-      //   "customerNumId": 1,
-      //   "url": "/tmp/tomcat-docbase.5708326160788120757.8080/driverIdentityPicture/1805030019058.087ce5d"
-      // })
-    },
-    methods: {
-      ...mapMutations({
-        setStep2Data: 'SET_STEP2DATA'
-      }),
-      showViewer(index) {
-        this.viewerIndex = index
-        this.isViewerShow = true
-      },
-      next () {
-        this.$emit('next', 2)
-        this.setStep2Data({
-          drivingLicense: this.imgUlrs.drivingLicense[0],
-          drivingPicture: this.imgUlrs.drivingPicture[0],
-          identityCard: this.imgUlrs.identityCard[0],
-          persomCarPicture: this.imgUlrs.persomCarPicture[0]
-        })
-      },
-      onReaderSelect() {
-        Toast.loading('图片读取中...')
-      },
-      onReaderComplete(name, {dataUrl, blob, file}) {
-        if (file.size > 5 * 1024 * 1024) {
-          Toast.failed('文件不能大于5M')
-          return
-        }
-        const demoImageList = this.imageList[name] || []
-        demoImageList.push(dataUrl)
-        this.$set(this.imageList, name, demoImageList)
+      const demoImageList = this.imageList[name] || [];
+      demoImageList.push(dataUrl);
+      this.$set(this.imageList, name, demoImageList);
 
-        let pictureCode = ''
-        switch (name) {
-          case 'drivingLicense':
-            pictureCode = '0'
-            break
-          case 'drivingPicture':
-            pictureCode = '1'
-            break
-          case 'persomCarPicture':
-            pictureCode = '2'
-            break
-          case 'identityCard':
-            pictureCode = '3'
-            break
-          default:
-            pictureCode = ''
-            break
-        }
-        let customerNumId = this.customerInfo.customerMasterId
-        // 把图片上传到服务器
-        const params = {customerNumId, pictureCode}
-        this._uploadPicture(params, file, name)
+      let pictureCode = "";
+      switch (name) {
+        case "drivingLicense":
+          pictureCode = "0";
+          break;
+        case "drivingPicture":
+          pictureCode = "1";
+          break;
+        case "persomCarPicture":
+          pictureCode = "2";
+          break;
+        case "identityCard":
+          pictureCode = "3";
+          break;
+        default:
+          pictureCode = "";
+          break;
+      }
+      let customerNumId = this.customerInfo.customerMasterId;
+      // 把图片上传到服务器
+      const params = { customerNumId, pictureCode };
+      this._uploadPicture(params, file, name);
 
-        Toast.hide()
-      },
-      onReaderError(name, {msg}) {
-        Toast.failed(msg)
-      },
-      onDeleteImage(name, index) {
-        const demoImageList = this.imageList[name] || []
-        demoImageList.splice(index, 1)
-        this.$set(this.imageList, name, demoImageList)
-
-        const imgUlrList = this.imgUlrs[name] || []
-        // 从服务器上删除
-        this._deletePicture ({customerNumId: this.customerInfo.customerMasterId, url: imgUlrList[index]}, name)
-      },
-      _deletePicture (params, name) {
-        deletePicture(params).then(res => {
-          console.log(res)
-          if (res.code === 0) {
-            Toast.succeed('删除成功')
-            const imgUlrList = this.imgUlrs[name] || []
-            imgUlrList.splice(0, 1)
-            this.$set(this.imgUlrs, name, imgUlrList)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      _uploadPicture (params, file, name) {
-        uploadPicture(params, file).then(res => {
-          console.log(res)
-          if (res.code === 0) {
-            Toast.succeed('上传成功')
-            const imgUlrList = this.imgUlrs[name] || []
-            imgUlrList.push(res.url)
-            this.$set(this.imgUlrs, name, imgUlrList)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      _getPicture (params) {
-        getPicture(params).then(res => {
-          console.log(res)
-          if (res.code === 0) {
-            this.test = res
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
+      Toast.hide();
     },
+    onReaderError(name, { msg }) {
+      Toast.failed(msg);
+    },
+    onDeleteImage(name, index) {
+      const demoImageList = this.imageList[name] || [];
+      demoImageList.splice(index, 1);
+      this.$set(this.imageList, name, demoImageList);
+
+      const imgUlrList = this.imgUlrs[name] || [];
+      // 从服务器上删除
+      this._deletePicture(
+        {
+          customerNumId: this.customerInfo.customerMasterId,
+          url: imgUlrList[index]
+        },
+        name
+      );
+    },
+    _deletePicture(params, name) {
+      deletePicture(params)
+        .then(res => {
+          console.log(res);
+          if (res.code === 0) {
+            Toast.succeed("删除成功");
+            const imgUlrList = this.imgUlrs[name] || [];
+            imgUlrList.splice(0, 1);
+            this.$set(this.imgUlrs, name, imgUlrList);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _uploadPicture(params, file, name) {
+      uploadPicture(params, file)
+        .then(res => {
+          console.log(res);
+          if (res.code === 0) {
+            Toast.succeed("上传成功");
+            const imgUlrList = this.imgUlrs[name] || [];
+            imgUlrList.push(res.url);
+            this.$set(this.imgUlrs, name, imgUlrList);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getPicture(params) {
+      getPicture(params)
+        .then(res => {
+          console.log(res);
+          if (res.code === 0) {
+            this.test = res;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .register-step2
-        .login-btn
-            padding 0 20px
-    .upload-qualification
-        display -ms-flexbox
-        display flex
-        -ms-flex-align center
-        align-items center
-        -ms-flex-pack center
-        justify-content center
-        -ms-flex-wrap wrap
-        flex-wrap wrap
-    .upload-qualification-item
-        width 50%
-        height 224px
-        border-bottom 1px solid #ececec
-        -webkit-box-sizing border-box
-        box-sizing border-box
-        position relative
-        display flex
-        justify-content center
-        align-items center
-        .md-image-reader
-            width 100%
-            height 100%
-            position absolute
-            top 0
-            left 0
-            display flex
-            justify-content center
-            align-items center
-        .image-reader-item
-            width 100%
-            height 100%
-            display flex
-            justify-content flex-end
-            align-items flex-start
-    .upload-qualification-item:nth-child(2n)
-        border-left 1px solid #ececec
-    .upload-qualification-item:nth-child(3),.upload-qualification-item:nth-child(4)
-        border-bottom 0
-    .upload-qualification-item input
-        display none
-    .upload-qualification-item span
-        display block
-        width 100%
-        padding-top 60px*2
-        text-align center
-        color #363636
-    .btn-upload-identity-card
-        background url('../../assets/images/icon-user.png') no-repeat center 10px*2
-    .btn-upload-driving-licence1
-        background url('../../assets/images/icon-car.png') no-repeat center 10px*2
-    .btn-upload-driving-licence2
-        background url('../../assets/images/icon-steering-wheel.png') no-repeat center 10px*2
-    .btn-upload-group-photo
-        background url('../../assets/images/icon-photo.png') no-repeat center 10px*2
+.register-step2 {
+  .login-btn {
+    padding: 0 20px;
+  }
+}
 
-    .register-step2-tips
-        list-style decimal
-        text-align left
-        margin 12px 0 0
-        padding-left 20px
-        font-size .875em
-        line-height 1.5em
-        color #a1a1a1
+.upload-qualification {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.upload-qualification-item {
+  width: 50%;
+  height: 224px;
+  border-bottom: 1px solid #ececec;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .md-image-reader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .image-reader-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+}
+
+.upload-qualification-item:nth-child(2n) {
+  border-left: 1px solid #ececec;
+}
+
+.upload-qualification-item:nth-child(3), .upload-qualification-item:nth-child(4) {
+  border-bottom: 0;
+}
+
+.upload-qualification-item input {
+  display: none;
+}
+
+.upload-qualification-item span {
+  display: block;
+  width: 100%;
+  padding-top: 60px * 2;
+  text-align: center;
+  color: #363636;
+}
+
+.btn-upload-identity-card {
+  background: url('../../assets/images/icon-user.png') no-repeat center 10px * 2;
+}
+
+.btn-upload-driving-licence1 {
+  background: url('../../assets/images/icon-car.png') no-repeat center 10px * 2;
+}
+
+.btn-upload-driving-licence2 {
+  background: url('../../assets/images/icon-steering-wheel.png') no-repeat center 10px * 2;
+}
+
+.btn-upload-group-photo {
+  background: url('../../assets/images/icon-photo.png') no-repeat center 10px * 2;
+}
+
+.register-step2-tips {
+  list-style: decimal;
+  text-align: left;
+  margin: 12px 0 0;
+  padding-left: 20px;
+  font-size: 0.875em;
+  line-height: 1.5em;
+  color: #a1a1a1;
+}
 </style>

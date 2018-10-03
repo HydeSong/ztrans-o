@@ -65,208 +65,239 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Picker, Button, Field, FieldItem, InputItem} from 'mand-mobile'
-  import Split from '../Base/Split'
-  import {getAllRouterByCity} from '@/api/road'
-  import {getCarBandList, getCarColourList, getCarTypeList, getCarSizeList, getCarWeightList} from '@/api/car'
-  import {mapGetters, mapMutations} from 'vuex'
+import { Picker, Button, Field, FieldItem, InputItem } from "mand-mobile";
+import Split from "../Base/Split";
+import { getAllRouterByCity } from "@/api/road";
+import {
+  getCarBandList,
+  getCarColourList,
+  getCarTypeList,
+  getCarSizeList,
+  getCarWeightList
+} from "@/api/car";
+import { mapGetters, mapMutations } from "vuex";
 
-  export default {
-    name: 'register-step1',
-    data () {
-      return {
-        carBrandId: '',
-        carColourId: '',
-        carPlateNumber: '',
-        carTypeId: '',
-        carSizeId: '',
-        carWeightId: '',
-        driverIdentityId: '',
-        driverName: '',
-        driverWorkCity:[],
-        commandPhone: '',
-        billCity: '',
-        carInfo: '',
-        billCityData: [],
-        carInfoData: [],
-        isOrderCityShow: false,
-        isCarInfoShow: false,
-      }
-    },
-    components: {
-      [Button.name]: Button,
-      [Picker.name]: Picker,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      [InputItem.name]: InputItem,
-      Split
-    },
-    computed: {
-      ...mapGetters(['openId', 'customerInfo']),
-      disabled () {
-        return !(this.driverName && this.driverIdentityId && this.carInfo && this.carPlateNumber)
-      }
-    },
-    created () {
-      // console.log(this.customerInfo.customerMasterId)
-      this._getCarBrandList({customerNumId: this.customerInfo.customerMasterId})
-      this._getCarTypeList({customerNumId: this.customerInfo.customerMasterId})
-      this._getCarColourList({customerNumId: this.customerInfo.customerMasterId})
-      this._getCarSizeList({customerNumId: this.customerInfo.customerMasterId})
-      this._getCarWeightList({customerNumId: this.customerInfo.customerMasterId})
-      this._getAllRouterByCity({openId: this.openId})
-    },
-    methods: {
-      ...mapMutations({
-        setStep1Data: 'SET_STEP1DATA'
-      }),
-      _getCarBrandList (params) {
-        getCarBandList(params).then(res => {
+export default {
+  name: "register-step1",
+  data() {
+    return {
+      carBrandId: "",
+      carColourId: "",
+      carPlateNumber: "",
+      carTypeId: "",
+      carSizeId: "",
+      carWeightId: "",
+      driverIdentityId: "",
+      driverName: "",
+      driverWorkCity: [],
+      commandPhone: "",
+      billCity: "",
+      carInfo: "",
+      billCityData: [],
+      carInfoData: [],
+      isOrderCityShow: false,
+      isCarInfoShow: false
+    };
+  },
+  components: {
+    [Button.name]: Button,
+    [Picker.name]: Picker,
+    [Field.name]: Field,
+    [FieldItem.name]: FieldItem,
+    [InputItem.name]: InputItem,
+    Split
+  },
+  computed: {
+    ...mapGetters(["openId", "customerInfo"]),
+    disabled() {
+      return !(
+        this.driverName &&
+        this.driverIdentityId &&
+        this.carInfo &&
+        this.carPlateNumber
+      );
+    }
+  },
+  created() {
+    // console.log(this.customerInfo.customerMasterId)
+    this._getCarBrandList({
+      customerNumId: this.customerInfo.customerMasterId
+    });
+    this._getCarTypeList({ customerNumId: this.customerInfo.customerMasterId });
+    this._getCarColourList({
+      customerNumId: this.customerInfo.customerMasterId
+    });
+    this._getCarSizeList({ customerNumId: this.customerInfo.customerMasterId });
+    this._getCarWeightList({
+      customerNumId: this.customerInfo.customerMasterId
+    });
+    this._getAllRouterByCity({ openId: this.openId });
+  },
+  methods: {
+    ...mapMutations({
+      setStep1Data: "SET_STEP1DATA"
+    }),
+    _getCarBrandList(params) {
+      getCarBandList(params)
+        .then(res => {
           if (res.code === 0) {
-            let carBrands = []
-            res.carBrands.forEach((item) => {
+            let carBrands = [];
+            res.carBrands.forEach(item => {
               carBrands.push({
                 text: item.brandName,
                 value: item.brandId,
                 ...item
-              })
-            })
-            this.carInfoData.push(carBrands)
+              });
+            });
+            this.carInfoData.push(carBrands);
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      _getCarColourList (params) {
-        getCarColourList(params).then(res => {
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getCarColourList(params) {
+      getCarColourList(params)
+        .then(res => {
           if (res.code === 0) {
-            let carColours = []
-            res.carColours.forEach((item) => {
+            let carColours = [];
+            res.carColours.forEach(item => {
               carColours.push({
                 text: item.colourName,
                 value: item.colourId,
                 ...item
-              })
-            })
-            this.carInfoData.push(carColours)
+              });
+            });
+            this.carInfoData.push(carColours);
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      _getCarTypeList (params) {
-        getCarTypeList(params).then(res => {
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getCarTypeList(params) {
+      getCarTypeList(params)
+        .then(res => {
           if (res.code === 0) {
-            let carTypes = []
-            res.carTypes.forEach((item) => {
+            let carTypes = [];
+            res.carTypes.forEach(item => {
               carTypes.push({
                 text: item.typeName,
                 value: item.typeId,
                 ...item
-              })
-            })
-            this.carInfoData.push(carTypes)
+              });
+            });
+            this.carInfoData.push(carTypes);
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      _getCarSizeList (params) {
-        getCarSizeList(params).then(res => {
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getCarSizeList(params) {
+      getCarSizeList(params)
+        .then(res => {
           if (res.code === 0) {
-            let carSizes = []
-            res.carSizes.forEach((item) => {
+            let carSizes = [];
+            res.carSizes.forEach(item => {
               carSizes.push({
                 text: `${item.sizeName}米`,
                 value: item.sizeId,
                 ...item
-              })
-            })
-            this.carInfoData.push(carSizes)
+              });
+            });
+            this.carInfoData.push(carSizes);
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      _getCarWeightList (params) {
-        getCarWeightList(params).then(res => {
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getCarWeightList(params) {
+      getCarWeightList(params)
+        .then(res => {
           if (res.code === 0) {
-            let carWeights = []
-            res.carWeights.forEach((item) => {
+            let carWeights = [];
+            res.carWeights.forEach(item => {
               carWeights.push({
                 text: item.weightName,
                 value: item.weightId,
                 ...item
-              })
-            })
-            this.carInfoData.push(carWeights)
+              });
+            });
+            this.carInfoData.push(carWeights);
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      _getAllRouterByCity (params) {
-        getAllRouterByCity(params).then(res => {
-          console.log(res)
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    _getAllRouterByCity(params) {
+      getAllRouterByCity(params)
+        .then(res => {
+          console.log(res);
           if (res.code === 0) {
-            let billCityData = []
+            let billCityData = [];
             res.wxRouterCityRelationModel.forEach((item, index) => {
               billCityData.push({
                 text: `${item.sourceCityName} -> ${item.destinyCityName}`,
                 value: index + 1,
                 ...item
-              })
-            })
-            this.billCityData.push(billCityData)
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      next () {
-        this.$emit('next', 1)
-        let step1Data = {
-          carBrandId: this.carBrandId,
-          carColourId: this.carColourId,
-          carPlateNumber: this.carPlateNumber,
-          carTypeId: this.carTypeId,
-          carSizeId: this.carSizeId,
-          carWeightId: this.carWeightId,
-          driverIdentityId: this.driverIdentityId,
-          driverName: this.driverName,
-          driverWorkCity: this.driverWorkCity,
-          commandPhone: this.commandPhone,
-        }
-        this.setStep1Data(step1Data)
-      },
-      onPickerConfirm(name) {
-        const values = this.$refs[name].getColumnValues()
-
-        let res = ''
-        values.forEach(value => {
-          value && (res += `${value.text || value.label} `)
-          console.log(value)
-          if (name === 'billCity') {
-            this.driverWorkCity.push({
-              destinyCityId: value.destinyCityId,
-              sourceCityId: value.sourceCityId
-            })
-          } else if (name === 'carInfo') {
-            value.typeId && (this.carTypeId = value.typeId)
-            value.brandId && (this.carBrandId = value.brandId)
-            value.colourId && (this.carColourId = value.colourId)
-            value.sizeId && (this.carSizeId = value.sizeId)
-            value.weightId && (this.carWeightId = value.weightId)
+              });
+            });
+            this.billCityData.push(billCityData);
           }
         })
-        this[name] = res
-      }
+        .catch(err => {
+          console.log(err);
+        });
     },
+    next() {
+      this.$emit("next", 1);
+      let step1Data = {
+        carBrandId: this.carBrandId,
+        carColourId: this.carColourId,
+        carPlateNumber: this.carPlateNumber,
+        carTypeId: this.carTypeId,
+        carSizeId: this.carSizeId,
+        carWeightId: this.carWeightId,
+        driverIdentityId: this.driverIdentityId,
+        driverName: this.driverName,
+        driverWorkCity: this.driverWorkCity,
+        commandPhone: this.commandPhone
+      };
+      this.setStep1Data(step1Data);
+    },
+    onPickerConfirm(name) {
+      const values = this.$refs[name].getColumnValues();
+
+      let res = "";
+      values.forEach(value => {
+        value && (res += `${value.text || value.label} `);
+        console.log(value);
+        if (name === "billCity") {
+          this.driverWorkCity.push({
+            destinyCityId: value.destinyCityId,
+            sourceCityId: value.sourceCityId
+          });
+        } else if (name === "carInfo") {
+          value.typeId && (this.carTypeId = value.typeId);
+          value.brandId && (this.carBrandId = value.brandId);
+          value.colourId && (this.carColourId = value.colourId);
+          value.sizeId && (this.carSizeId = value.sizeId);
+          value.weightId && (this.carWeightId = value.weightId);
+        }
+      });
+      this[name] = res;
+    }
   }
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .register-step1
-        .login-btn
-            padding 0 20px
+.register-step1 {
+  .login-btn {
+    padding: 0 20px;
+  }
+}
 </style>

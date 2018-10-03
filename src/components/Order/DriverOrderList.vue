@@ -54,144 +54,180 @@
                 </md-scroll-view-more>
             </md-scroll-view>
         </div>
+        <router-view></router-view>
     </div>
-
 </template>
 
 <script>
-  import {ScrollView, ScrollViewMore, Button, ResultPage, Toast} from 'mand-mobile'
-  import Split from '../Base/Split'
-  import NavBar from '../Base/NavBar'
+import {
+  ScrollView,
+  ScrollViewMore,
+  Button,
+  ResultPage,
+  Toast
+} from "mand-mobile";
+import Split from "../Base/Split";
+import NavBar from "../Base/NavBar";
 
-  import {updateDriverOrder, getDriverOrder} from '@/api/order'
-  import {getCookie} from '@/common/js/cache'
-  import {mapGetters, mapMutations} from 'vuex'
+import { updateDriverOrder, getDriverOrder } from "@/api/order";
+import { getCookie } from "@/common/js/cache";
+import { mapGetters, mapMutations } from "vuex";
 
-  export default {
-    name: 'driver-order-list',
-    components: {
-      [ScrollView.name]: ScrollView,
-      [ScrollViewMore.name]: ScrollViewMore,
-      [Button.name]: Button,
-      [ResultPage.name]: ResultPage,
-      Split,
-      NavBar,
-    },
-    data() {
-      return {
-        isClicked: true,
-        current: 1,
-        orderStatus: 0,
-        startTime: this.$route.query.startTime,
-        endTime: this.$route.query.endTime,
-        isFinished: false
-      }
-    },
-    computed: {
-      ...mapGetters(['openId', 'driverOrders']),
-      title () {
-        this.orderStatus = this.$route.query.orderStatus
-        return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
-      }
-    },
-    mounted () {
-      setTimeout(() => {
-        this.setPageHeight()
-      }, 0)
-    },
-    methods: {
-      ...mapMutations({
-        setDriverOrders: 'SET_DRIVERORDERS'
-      }),
-      setPageHeight () {
-        const height = window.screen.availHeight
-        this.$refs.page.style.height = `${height}px`
-      },
-      _getDriverOrder (params) {
-        getDriverOrder(params).then(res => {
-          if (res.code === 0) {
-            const driverOrders = res.driverOrder
-            const total = res.total
-            const more =  this.driverOrders.concat(driverOrders)
-            this.setDriverOrders(more)
-            if (more.length >= total) {
-              this.isFinished = true
-            }
-            this.$refs.scrollView.finishLoadMore()
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      $_onEndReached() {
-        if (this.isFinished) {
-          return
-        }
-        // async data
-        this.current++
+export default {
+  name: "driver-order-list",
+  components: {
+    [ScrollView.name]: ScrollView,
+    [ScrollViewMore.name]: ScrollViewMore,
+    [Button.name]: Button,
+    [ResultPage.name]: ResultPage,
+    Split,
+    NavBar
+  },
+  data() {
+    return {
+      isClicked: true,
+      current: 1,
+      orderStatus: this.$route.query.orderStatus,
+      startTime: this.$route.query.startTime,
+      endTime: this.$route.query.endTime,
+      isFinished: false
+    };
+  },
+  watch: {
+    $route(to, from) {
+      if (to.path === "/driver/driver-order-list") {
         const params = {
-          openId: this.openId || getCookie('__user__openid'),
+          openId: this.openId || getCookie("__user__openid"),
           orderStatus: this.orderStatus,
-          routerDetailAliaSearchKey: '',
+          routerDetailAliaSearchKey: "",
           startTime: this.startTime,
           endTime: this.endTime,
           current: this.current,
           pageSize: 10
-        }
-        this._getDriverOrder(params)
-      },
-      _updateDriverOrder (params) {
-        Toast.loading('正在提交')
-        updateDriverOrder(params).then(res => {
-          if (res.code === 0) {
-            Toast.succeed('成功')
-            this.isClicked = false
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      onComfirmOrder (item) {
-        this._updateDriverOrder({
-          openId: this.openId || getCookie('__user__openid'),
-          orderStatus: 2,
-          series: item.series
-        })
-      },
-      onCompleteOrder (item) {
-        this._updateDriverOrder({
-          openId: this.openId || getCookie('__user__openid'),
-          orderStatus: 5,
-          series: item.series
-        })
+        };
+        console.log(params)
+        this._getDriverOrder(params);
       }
+    }
+  },
+  computed: {
+    ...mapGetters(["openId", "driverOrders"]),
+    title() {
+      this.orderStatus = this.$route.query.orderStatus;
+      return this.orderStatus == 0 ? "未完成订单" : "已完成订单";
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.setPageHeight();
+    }, 0);
+  },
+  methods: {
+    ...mapMutations({
+      setDriverOrders: "SET_DRIVERORDERS"
+    }),
+    setPageHeight() {
+      const height = window.screen.availHeight;
+      this.$refs.page.style.height = `${height}px`;
     },
+    _getDriverOrder(params) {
+      getDriverOrder(params)
+        .then(res => {
+          if (res.code === 0) {
+            const driverOrders = res.driverOrder;
+            const total = res.total;
+            const more = this.driverOrders.concat(driverOrders);
+            this.setDriverOrders(more);
+            if (more.length >= total) {
+              this.isFinished = true;
+            }
+            this.$refs.scrollView.finishLoadMore();
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    $_onEndReached() {
+      if (this.isFinished) {
+        return;
+      }
+      // async data
+      this.current++;
+      const params = {
+        openId: this.openId || getCookie("__user__openid"),
+        orderStatus: this.orderStatus,
+        routerDetailAliaSearchKey: "",
+        startTime: this.startTime,
+        endTime: this.endTime,
+        current: this.current,
+        pageSize: 10
+      };
+      this._getDriverOrder(params);
+    },
+    _updateDriverOrder(params) {
+      Toast.loading("正在提交");
+      updateDriverOrder(params)
+        .then(res => {
+          if (res.code === 0) {
+            Toast.succeed("成功");
+            this.isClicked = false;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    onComfirmOrder(item) {
+      this._updateDriverOrder({
+        openId: this.openId || getCookie("__user__openid"),
+        orderStatus: 2,
+        series: item.series
+      });
+    },
+    onCompleteOrder(item) {
+      this.$router.push({
+        path: "/driver/driver-order-list/driver-order-approval",
+        query: { series: item.series }
+      });
+    }
   }
-
+};
 </script>
 
 <style lang="stylus">
-    .driver-order-list
-        padding 0 0 200px
-        height 700px
-        .md-scroll-view
-            background transparent
-            height 100%
-        .scroll-view-list
-            padding 0 20px
-            margin 30px 0 30px
-        .scroll-view-item
-            width 100%
-            padding 60px 0 60px
-            color #333
-            font-size 24px
-            text-align left
-            background #fff
-            box-sizing border-box
-            line-height 1.5
-            text-indent 2em
-            .ul-inner
-                padding 0 50px
-        .actions-wrapper
-            display flex
+.driver-order-list {
+  padding: 0 0 200px;
+  height: 700px;
+
+  .md-scroll-view {
+    background: transparent;
+    height: 100%;
+  }
+
+  .scroll-view-list {
+    padding: 0 20px;
+    margin: 30px 0 30px;
+  }
+
+  .scroll-view-item {
+    width: 100%;
+    padding: 60px 0 60px;
+    color: #333;
+    font-size: 24px;
+    text-align: left;
+    background: #fff;
+    box-sizing: border-box;
+    line-height: 1.5;
+    text-indent: 2em;
+
+    .ul-inner {
+      padding: 0 50px;
+    }
+  }
+
+  .actions-wrapper {
+    display: flex;
+  }
+}
 </style>

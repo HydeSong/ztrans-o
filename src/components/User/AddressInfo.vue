@@ -93,127 +93,144 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Picker, Field, FieldItem, DatePicker, InputItem, Button} from 'mand-mobile'
-  import Split from '../Base/Split'
-  import NavBar from '../Base/NavBar'
-  import {mapState, mapMutations} from 'vuex'
-  import {getRouterByCityAreaTown} from '@/api/road'
+import {
+  Picker,
+  Field,
+  FieldItem,
+  DatePicker,
+  InputItem,
+  Button
+} from "mand-mobile";
+import Split from "../Base/Split";
+import NavBar from "../Base/NavBar";
+import { mapState, mapMutations } from "vuex";
+import { getRouterByCityAreaTown } from "@/api/road";
 
-  export default {
-    name: 'address-info',
-    components: {
-      [Button.name]: Button,
-      [InputItem.name]: InputItem,
-      [DatePicker.name]: DatePicker,
-      [Picker.name]: Picker,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      Split,
-      NavBar
-    },
-    data () {
-      return {
-        raddressDetail: '',
-        rpersonMobile: '',
-        rpersonName: '',
-        rlocationNum: 1,
-        personMobile: '',
-        personName: '',
-        addressDetail: '',
-        goodsTime: '',
-        locationNum: 1,
-        currentDate: new Date(),
-        isDatePickerShow: false,
+export default {
+  name: "address-info",
+  components: {
+    [Button.name]: Button,
+    [InputItem.name]: InputItem,
+    [DatePicker.name]: DatePicker,
+    [Picker.name]: Picker,
+    [Field.name]: Field,
+    [FieldItem.name]: FieldItem,
+    Split,
+    NavBar
+  },
+  data() {
+    return {
+      raddressDetail: "",
+      rpersonMobile: "",
+      rpersonName: "",
+      rlocationNum: 1,
+      personMobile: "",
+      personName: "",
+      addressDetail: "",
+      goodsTime: "",
+      locationNum: 1,
+      currentDate: new Date(),
+      isDatePickerShow: false
+    };
+  },
+  computed: {
+    ...mapState([
+      "shipping",
+      "receiver",
+      "shippingDistrictDetail",
+      "receiveDistrictDetail"
+    ]),
+    title() {
+      const id = this.$route.params.id;
+      if (id === "shipping") {
+        return "发货地信息";
+      } else if (id === "receiver") {
+        return "收货地信息";
       }
     },
-    computed: {
-      ...mapState(['shipping', 'receiver', 'shippingDistrictDetail', 'receiveDistrictDetail']),
-      title () {
-        const id = this.$route.params.id
-        if (id === 'shipping') {
-          return '发货地信息'
-        } else if (id === 'receiver') {
-          return '收货地信息'
-        }
-      },
-      isShipping () {
-        return this.$route.params.id === 'shipping'
+    isShipping() {
+      return this.$route.params.id === "shipping";
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (to.path === "/user/address-info/shipping") {
+        this.personMobile = this.shipping.personMobile;
+        this.personName = this.shipping.personName;
+        this.addressDetail = this.shipping.addressDetail;
+        this.goodsTime = this.shipping.goodsTime;
+        this.locationNum = this.shipping.locationNum;
+      } else if (to.path === "/user/address-info/receiver") {
+        this.raddressDetail = this.receiver.addressDetail;
+        this.rpersonMobile = this.receiver.personMobile;
+        this.rpersonName = this.receiver.personName;
+        this.rlocationNum = this.receiver.locationNum;
       }
-    },
-    watch: {
-      '$route' (to, from) {
-        if (to.path === '/user/address-info/shipping') {
-          this.personMobile = this.shipping.personMobile
-          this.personName = this.shipping.personName
-          this.addressDetail = this.shipping.addressDetail
-          this.goodsTime = this.shipping.goodsTime
-          this.locationNum = this.shipping.locationNum
-        } else if (to.path === '/user/address-info/receiver') {
-          this.raddressDetail = this.receiver.addressDetail
-          this.rpersonMobile = this.receiver.personMobile
-          this.rpersonName = this.receiver.personName
-          this.rlocationNum = this.receiver.locationNum
-        }
+    }
+  },
+  created() {
+    this.personMobile = this.shipping.personMobile;
+    this.personName = this.shipping.personName;
+    this.addressDetail = this.shipping.addressDetail;
+    this.goodsTime = this.shipping.goodsTime;
+    this.locationNum = this.shipping.locationNum;
+    this.raddressDetail = this.receiver.addressDetail;
+    this.rpersonMobile = this.receiver.personMobile;
+    this.rpersonName = this.receiver.personName;
+    this.rlocationNum = this.receiver.locationNum;
+  },
+  methods: {
+    ...mapMutations({
+      setShipping: "SET_SHIPPING",
+      setReceiver: "SET_RECEIVER"
+    }),
+    confirm() {
+      if (this.isShipping) {
+        console.log("确认发货信息");
+        let addressInfo = {
+          personMobile: this.personMobile,
+          personName: this.personName,
+          addressDetail: this.addressDetail,
+          locationNum: this.locationNum,
+          goodsTime: this.goodsTime
+        };
+        this.setShipping(addressInfo);
+      } else {
+        console.log("确认收货信息");
+        let addressInfo = {
+          personMobile: this.rpersonMobile,
+          personName: this.rpersonName,
+          addressDetail: this.raddressDetail,
+          locationNum: this.rlocationNum
+        };
+        this.setReceiver(addressInfo);
       }
+      this.$router.go(-1);
     },
-    created () {
-      this.personMobile = this.shipping.personMobile
-      this.personName = this.shipping.personName
-      this.addressDetail = this.shipping.addressDetail
-      this.goodsTime = this.shipping.goodsTime
-      this.locationNum = this.shipping.locationNum
-      this.raddressDetail = this.receiver.addressDetail
-      this.rpersonMobile = this.receiver.personMobile
-      this.rpersonName = this.receiver.personName
-      this.rlocationNum = this.receiver.locationNum
-    },
-    methods: {
-      ...mapMutations({
-        setShipping: 'SET_SHIPPING',
-        setReceiver: 'SET_RECEIVER'
-      }),
-      confirm () {
-        if (this.isShipping) {
-          console.log('确认发货信息')
-          let addressInfo = {
-            personMobile: this.personMobile,
-            personName: this.personName,
-            addressDetail: this.addressDetail,
-            locationNum: this.locationNum,
-            goodsTime: this.goodsTime
-          }
-          this.setShipping(addressInfo)
-        } else {
-          console.log('确认收货信息')
-          let addressInfo = {
-            personMobile: this.rpersonMobile,
-            personName: this.rpersonName,
-            addressDetail: this.raddressDetail,
-            locationNum: this.rlocationNum
-          }
-          this.setReceiver(addressInfo)
-        }
-        this.$router.go(-1)
-      },
-      onDatePickerConfirm() {
-        this.goodsTime = this.$refs.datePicker.getFormatDate('yyyy-MM-dd hh:mm:00')
-        console.log(this.goodsTime)
-      },
-    },
+    onDatePickerConfirm() {
+      this.goodsTime = this.$refs.datePicker.getFormatDate(
+        "yyyy-MM-dd hh:mm:00"
+      );
+      console.log(this.goodsTime);
+    }
   }
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .address
-        width 100%
-        height 100%
-        background: #f5f5f9;
-        position fixed
-        top 0
-        left 0
-        right 0
-        bottom 0
-        z-index 10000
-        .footer
-            margin 20px
+.address {
+  width: 100%;
+  height: 100%;
+  background: #f5f5f9;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+
+  .footer {
+    margin: 20px;
+  }
+}
 </style>

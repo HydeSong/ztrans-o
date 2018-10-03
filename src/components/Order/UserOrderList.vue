@@ -58,118 +58,133 @@
 </template>
 
 <script>
-  import {ScrollView, ScrollViewMore, Button, ResultPage} from 'mand-mobile'
-  import Split from '../Base/Split'
-  import NavBar from '../Base/NavBar'
+import { ScrollView, ScrollViewMore, Button, ResultPage } from "mand-mobile";
+import Split from "../Base/Split";
+import NavBar from "../Base/NavBar";
 
-  import {getCustomerOrder} from '@/api/order'
-  import {getCookie} from '@/common/js/cache'
-  import {mapGetters, mapMutations} from 'vuex'
+import { getCustomerOrder } from "@/api/order";
+import { getCookie } from "@/common/js/cache";
+import { mapGetters, mapMutations } from "vuex";
 
-  export default {
-    name: 'user-order-list',
-    components: {
-      [ScrollView.name]: ScrollView,
-      [ScrollViewMore.name]: ScrollViewMore,
-      [Button.name]: Button,
-      [ResultPage.name]: ResultPage,
-      Split,
-      NavBar,
+export default {
+  name: "user-order-list",
+  components: {
+    [ScrollView.name]: ScrollView,
+    [ScrollViewMore.name]: ScrollViewMore,
+    [Button.name]: Button,
+    [ResultPage.name]: ResultPage,
+    Split,
+    NavBar
+  },
+  data() {
+    return {
+      current: 1,
+      orderStatus: 0,
+      routerDetailAliaSearchKey: this.$route.query.routerDetailAliaSearchKey,
+      startTime: this.$route.query.startTime,
+      endTime: this.$route.query.endTime,
+      isFinished: false
+    };
+  },
+  computed: {
+    ...mapGetters(["openId", "customerOrders"]),
+    title() {
+      this.orderStatus = this.$route.query.orderStatus;
+      return this.orderStatus == 0 ? "未完成订单" : "已完成订单";
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.setPageHeight();
+    }, 0);
+  },
+  methods: {
+    ...mapMutations({
+      setCustomerOrders: "SET_CUSTOMERORDERS"
+    }),
+    setPageHeight() {
+      const height = window.screen.availHeight;
+      this.$refs.page.style.height = `${height}px`;
     },
-    data() {
-      return {
-        current: 1,
-        orderStatus: 0,
-        routerDetailAliaSearchKey: this.$route.query.routerDetailAliaSearchKey,
-        startTime: this.$route.query.startTime,
-        endTime: this.$route.query.endTime,
-        isFinished: false
-      }
-    },
-    computed: {
-      ...mapGetters(['openId', 'customerOrders']),
-      title () {
-        this.orderStatus = this.$route.query.orderStatus
-        return this.orderStatus == 0 ? '未完成订单' : '已完成订单'
-      }
-    },
-    mounted () {
-      setTimeout(() => {
-        this.setPageHeight()
-      }, 0)
-    },
-    methods: {
-      ...mapMutations({
-        setCustomerOrders: 'SET_CUSTOMERORDERS'
-      }),
-      setPageHeight () {
-        const height = window.screen.availHeight
-        this.$refs.page.style.height = `${height}px`
-      },
-      _getCustomerOrder (params) {
-        getCustomerOrder(params).then(res => {
+    _getCustomerOrder(params) {
+      getCustomerOrder(params)
+        .then(res => {
           if (res.code === 0) {
-            const customerOrders = res.customerOrders
-            const total = res.total
-            const more =  this.customerOrders.concat(customerOrders)
-            this.setCustomerOrders(more)
+            const customerOrders = res.customerOrders;
+            const total = res.total;
+            const more = this.customerOrders.concat(customerOrders);
+            this.setCustomerOrders(more);
             if (more.length >= total) {
-              this.isFinished = true
+              this.isFinished = true;
             }
-            this.$refs.scrollView.finishLoadMore()
+            this.$refs.scrollView.finishLoadMore();
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      $_onEndReached() {
-        if (this.isFinished) {
-          return
-        }
-        // async data
-        this.current++
-        const params = {
-          openId: this.openId || getCookie('__user__openid'),
-          orderStatus: this.orderStatus,
-          routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
-          startTime: this.startTime,
-          endTime: this.endTime,
-          current: this.current,
-          pageSize: 10
-        }
-        this._getCustomerOrder(params)
-      },
+        .catch(err => {
+          console.log(err);
+        });
     },
+    $_onEndReached() {
+      if (this.isFinished) {
+        return;
+      }
+      // async data
+      this.current++;
+      const params = {
+        openId: this.openId || getCookie("__user__openid"),
+        orderStatus: this.orderStatus,
+        routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        current: this.current,
+        pageSize: 10
+      };
+      this._getCustomerOrder(params);
+    }
   }
-
+};
 </script>
 
 <style lang="stylus">
-    .user-order-list
-        padding 0 0 200px
-        height 700px
-        .md-scroll-view
-            background transparent
-            height 100%
-        .scroll-view-list
-            padding 0 20px
-            margin 30px 0 30px
-        .scroll-view-item
-            width 100%
-            padding 60px 0 60px
-            color #333
-            font-size 24px
-            text-align left
-            background #fff
-            box-sizing border-box
-            line-height 1.5
-            text-indent 2em
-            .ul-inner
-                padding 0 50px
-        .actions-wrapper
-            display flex
-    .md-result-page.customized
-        img
-            width auto
-            height 131px
+.user-order-list {
+  padding: 0 0 200px;
+  height: 700px;
+
+  .md-scroll-view {
+    background: transparent;
+    height: 100%;
+  }
+
+  .scroll-view-list {
+    padding: 0 20px;
+    margin: 30px 0 30px;
+  }
+
+  .scroll-view-item {
+    width: 100%;
+    padding: 60px 0 60px;
+    color: #333;
+    font-size: 24px;
+    text-align: left;
+    background: #fff;
+    box-sizing: border-box;
+    line-height: 1.5;
+    text-indent: 2em;
+
+    .ul-inner {
+      padding: 0 50px;
+    }
+  }
+
+  .actions-wrapper {
+    display: flex;
+  }
+}
+
+.md-result-page.customized {
+  img {
+    width: auto;
+    height: 131px;
+  }
+}
 </style>

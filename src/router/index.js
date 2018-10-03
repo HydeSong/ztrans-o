@@ -10,6 +10,7 @@ import Driver from '@/components/Driver/Driver'
 import RegisterStep from '@/components/Driver/RegisterStep'
 import DriverOrder from '@/components/Order/DriverOrder'
 import DriverOrderList from '@/components/Order/DriverOrderList'
+import DriverOrderApproval from '@/components/Order/DriverOrderApproval'
 import Activate from '@/components/Activate'
 import OrderNew from '@/components/Order/OrderNew'
 import UserOrder from '@/components/Order/UserOrder'
@@ -117,7 +118,13 @@ const router = new Router({
         {
           path: 'driver-order-list',
           name: 'driver-order-list',
-          component: DriverOrderList
+          component: DriverOrderList,
+          children: [
+            {
+              path: 'driver-order-approval',
+              component: DriverOrderApproval
+            },
+          ]
         },
       ]
     },

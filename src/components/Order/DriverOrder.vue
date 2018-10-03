@@ -1,5 +1,5 @@
 <template>
-    <div class="simple-order">
+    <div class="driver-order">
         <nav-bar :arrowLeft="false">
             {{title}}
         </nav-bar>
@@ -56,90 +56,109 @@
 </template>
 
 <script>
-  import { Button, Picker, Field, FieldItem, DatePicker, Toast, TabBar } from 'mand-mobile'
-  import Split from '../Base/Split'
-  import NavBar from '../Base/NavBar'
+import {
+  Button,
+  Picker,
+  Field,
+  FieldItem,
+  DatePicker,
+  Toast,
+  TabBar
+} from "mand-mobile";
+import Split from "../Base/Split";
+import NavBar from "../Base/NavBar";
 
-  import {getDriverOrder} from '@/api/order'
-  import {getCookie} from '@/common/js/cache'
-  import {mapGetters, mapMutations} from 'vuex'
+import { getDriverOrder } from "@/api/order";
+import { getCookie } from "@/common/js/cache";
+import { mapGetters, mapMutations } from "vuex";
 
-  export default {
-    name: 'driver-order',
-    components: {
-      [Button.name]: Button,
-      [DatePicker.name]: DatePicker,
-      [Picker.name]: Picker,
-      [Field.name]: Field,
-      [FieldItem.name]: FieldItem,
-      [TabBar.name]: TabBar,
-      Split,
-      NavBar
-    },
-    data() {
-      return {
-        title: '司机订单管理',
-        isDatePickerShow1: false,
-        isDatePickerShow2: false,
-        pickerData1: [],
-        currentDate: new Date(),
-        titles: ['未完成订单', '已完成订单'],
-        orderStatus: 1,
-        startTime: '',
-        endTime: '',
-      }
-    },
-    computed: {
-      ...mapGetters(['openId', 'customerInfo']),
-    },
-    methods: {
-      ...mapMutations({
-        setDriverOrders: 'SET_DRIVERORDERS'
-      }),
-      _getDriverOrder (params) {
-        Toast.loading('正在查询')
-        getDriverOrder(params).then(res => {
+export default {
+  name: "driver-order",
+  components: {
+    [Button.name]: Button,
+    [DatePicker.name]: DatePicker,
+    [Picker.name]: Picker,
+    [Field.name]: Field,
+    [FieldItem.name]: FieldItem,
+    [TabBar.name]: TabBar,
+    Split,
+    NavBar
+  },
+  data() {
+    return {
+      title: "司机订单管理",
+      isDatePickerShow1: false,
+      isDatePickerShow2: false,
+      pickerData1: [],
+      currentDate: new Date(),
+      titles: ["未完成订单", "已完成订单"],
+      orderStatus: 1,
+      startTime: "",
+      endTime: ""
+    };
+  },
+  computed: {
+    ...mapGetters(["openId", "customerInfo"])
+  },
+  methods: {
+    ...mapMutations({
+      setDriverOrders: "SET_DRIVERORDERS"
+    }),
+    _getDriverOrder(params) {
+      Toast.loading("正在查询");
+      getDriverOrder(params)
+        .then(res => {
           if (res.code === 0) {
-            Toast.hide()
-            const driverOrders = res.driverOrder
-            this.setDriverOrders(driverOrders)
-            this.$router.push(`/driver/driver-order-list?orderStatus=${this.orderStatus}&startTime=${this.startTime}&endTime=${this.endTime}`)
+            Toast.hide();
+            const driverOrders = res.driverOrder;
+            this.setDriverOrders(driverOrders);
+            this.$router.push(
+              `/driver/driver-order-list?orderStatus=${
+                this.orderStatus
+              }&startTime=${this.startTime}&endTime=${this.endTime}`
+            );
           }
-        }).catch(err => {
-          console.log(err)
         })
-      },
-      onDatePickerConfirm1() {
-        this.startTime = this.$refs.datePicker1.getFormatDate('yyyy-MM-dd hh:mm:00')
-      },
-      onDatePickerConfirm2() {
-        this.endTime = this.$refs.datePicker2.getFormatDate('yyyy-MM-dd hh:mm:00')
-      },
-      onIndexTabChange (index) {
-        this.orderStatus = index
-      },
-      onSearch () {
-        console.log('searching')
-        const params = {
-          openId: this.openId || getCookie('__user__openid'),
-          orderStatus: this.orderStatus,
-          routerDetailAliaSearchKey: '',
-          startTime: this.startTime,
-          endTime: this.endTime,
-          current: 1,
-          pageSize: 10
-        }
-        this._getDriverOrder(params)
-      }
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    onDatePickerConfirm1() {
+      this.startTime = this.$refs.datePicker1.getFormatDate(
+        "yyyy-MM-dd hh:mm:00"
+      );
+    },
+    onDatePickerConfirm2() {
+      this.endTime = this.$refs.datePicker2.getFormatDate(
+        "yyyy-MM-dd hh:mm:00"
+      );
+    },
+    onIndexTabChange(index) {
+      this.orderStatus = index;
+    },
+    onSearch() {
+      console.log("searching");
+      const params = {
+        openId: this.openId || getCookie("__user__openid"),
+        orderStatus: this.orderStatus,
+        routerDetailAliaSearchKey: "",
+        startTime: this.startTime,
+        endTime: this.endTime,
+        current: 1,
+        pageSize: 10
+      };
+      this._getDriverOrder(params);
     }
   }
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .content {
-        height 100%
-    }
-    .order-footer {
-        margin: 16px*2 10px*2;
-    }
+.content {
+  height: 100%;
+}
+
+.order-footer {
+  margin: 16px * 2 10px * 2;
+}
 </style>
