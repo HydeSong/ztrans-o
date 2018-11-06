@@ -57,15 +57,15 @@ import {
   InputItem,
   Swiper,
   SwiperItem,
-  Codebox
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
-import { getMobileCode } from "@/api/sms";
-import { mapGetters } from "vuex";
+  Codebox,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
+import {getMobileCode} from '@/api/sms';
+import {mapGetters} from 'vuex';
 
 export default {
-  name: "login",
+  name: 'login',
   components: {
     [Codebox.name]: Codebox,
     [Button.name]: Button,
@@ -75,35 +75,35 @@ export default {
     [FieldItem.name]: FieldItem,
     [InputItem.name]: InputItem,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
-      code: "",
-      phone: "",
-      mobileCode: "",
+      code: '',
+      phone: '',
+      mobileCode: '',
       timeout: 60,
       timer: null,
       disabledVerify: false,
-      btnTxt: "获取验证码",
+      btnTxt: '获取验证码',
       banners: [
         {
-          img: require("../../assets/images/index_banner1.png")
+          img: require('../../assets/images/index_banner1.png'),
         },
         {
-          img: require("../../assets/images/index_banner2.png")
+          img: require('../../assets/images/index_banner2.png'),
         },
         {
-          img: require("../../assets/images/index_banner3.png")
-        }
-      ]
+          img: require('../../assets/images/index_banner3.png'),
+        },
+      ],
     };
   },
   computed: {
-    ...mapGetters(["wxcode", "openId"]),
+    ...mapGetters(['wxcode', 'openId']),
     disabled() {
       return !(this.code && this.phone);
-    }
+    },
   },
   mounted() {
     window.triggerSwiper3 = () => {
@@ -116,7 +116,7 @@ export default {
   methods: {
     getVerify() {
       if (!this.phone) {
-        Toast.failed("请输入手机号！");
+        Toast.failed('请输入手机号！');
         return;
       }
       this.timer = setInterval(() => {
@@ -132,7 +132,7 @@ export default {
           this.timeout = 60;
         }
       }, 1000);
-      getMobileCode({ mobilePhone: this.phone })
+      getMobileCode({mobilePhone: this.phone})
         .then(res => {
           console.log(res);
           if (res.code === 0) {
@@ -148,20 +148,20 @@ export default {
         (document.querySelector(id).innerHTML = value);
     },
     beforeChange(from, to) {
-      this.setValue("#valueSwiper10", from);
-      this.setValue("#valueSwiper11", to);
+      this.setValue('#valueSwiper10', from);
+      this.setValue('#valueSwiper11', to);
     },
     afterChange(from, to) {
-      this.setValue("#valueSwiper12", from);
-      this.setValue("#valueSwiper13", to);
+      this.setValue('#valueSwiper12', from);
+      this.setValue('#valueSwiper13', to);
     },
     goto() {
       this.$refs.swiper.goto(2);
     },
     login() {
-      console.log("login");
-    }
-  }
+      console.log('login');
+    },
+  },
 };
 </script>
 

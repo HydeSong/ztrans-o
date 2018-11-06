@@ -10,24 +10,26 @@
 </template>
 
 <script>
-  import {ResultPage} from 'mand-mobile'
+import {ResultPage} from 'mand-mobile';
 
-  export default {
-    name: 'error-nosure',
-    components: {
-      [ResultPage.name]: ResultPage,
-    },
-  }
-
+export default {
+  name: 'error-nosure',
+  components: {
+    [ResultPage.name]: ResultPage,
+  },
+};
 </script>
 
 <style lang="stylus">
-    .error-nosure
-        display flex
-        height 100%
-        justify-content center
-        align-items center
-        img
-            width auto
-            height 131px
+.error-nosure {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: auto;
+        height: 131px;
+    }
+}
 </style>

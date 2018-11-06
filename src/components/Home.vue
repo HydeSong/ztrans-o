@@ -6,26 +6,27 @@
 </template>
 
 <script>
-import { Button } from "mand-mobile";
-import Split from "./Base/Split";
-import { urlParse } from "@/common/js/utils";
-import { mapMutations } from "vuex";
+import {Button} from 'mand-mobile';
+import Split from './Base/Split';
+import {urlParse} from '@/common/js/utils';
+import {mapMutations} from 'vuex';
 import {
   getCustomerOpenIdByCode,
   getDriverOpenIdByCode,
-  regainCodeByRefreshPage
-} from "@/api/openid";
-import { setCookie } from "@/common/js/cache";
+  getSaleOpenIdByCode,
+  regainCodeByRefreshPage,
+} from '@/api/openid';
+import {setCookie} from '@/common/js/cache';
 
 export default {
-  name: "home",
+  name: 'home',
   components: {
     [Button.name]: Button,
-    Split
+    Split,
   },
   data() {
     return {
-      wxcode: ""
+      wxcode: '',
     };
   },
   mounted() {
@@ -40,32 +41,41 @@ export default {
   methods: {
     ...mapMutations({
       // setWxCode: 'SET_WXCODE',
-      setOpenId: "SET_OPENID",
-      setCustomerInfo: "SET_CUSTOMERINFO"
+      setOpenId: 'SET_OPENID',
+      setCustomerInfo: 'SET_CUSTOMERINFO',
+      setQrCodeImg: 'SET_QRCODEIMG'
     }),
     call() {
-      this.$router.push("/user/order");
+      this.$router.push('/user/order');
     },
     simpleOrder() {
-      this.$router.push("/user/simple-order");
+      this.$router.push('/user/simple-order');
     },
     join() {
-      this.$router.push("/driver/driver-order");
+      this.$router.push('/driver/driver-order');
+    },
+    showQrCodeForSale() {
+      this.$router.push('/saleman/qrcode');
     },
     activate(from) {
       this.$router.push(`/activate?from=${from}`);
     },
     _goto(queryStr) {
       const state = queryStr.state;
-      if (state === "1") {
+      if (state === '1') {
         this._getCustomerOpenIdByCode({
           code: this.wxcode,
-          grantType: "authorization_code"
+          grantType: 'authorization_code',
         });
-      } else if (state === "2") {
+      } else if (state === '2') {
         this._getDriverOpenIdByCode({
           code: this.wxcode,
-          grantType: "authorization_code"
+          grantType: 'authorization_code',
+        });
+      } else if (state === '3') {
+        this._getSaleOpenIdByCode({
+          code: this.wxcode,
+          grantType: 'authorization_code',
         });
       }
     },
@@ -81,10 +91,10 @@ export default {
           if (res.code === 0) {
             if (res.openId) {
               this.setOpenId(res.openId);
-              setCookie("__user__openid", res.openId);
+              setCookie('__user__openid', res.openId);
               // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
               this.setCustomerInfo(res);
-              setCookie("__user__customerinfo", JSON.stringify(res));
+              setCookie('__user__customerinfo', JSON.stringify(res));
               if (res.wetherRegister === 1) {
                 // if (res.wetherSpecialCustomer === 0) {
                 //   this.simpleOrder()
@@ -93,7 +103,7 @@ export default {
                 // }
                 this.call();
               } else if (res.wetherRegister === 0) {
-                this.activate("user");
+                this.activate('user');
               }
             } else {
               this._refreshCode(1);
@@ -111,11 +121,11 @@ export default {
           if (res.code === 0) {
             if (res.openId) {
               this.setOpenId(res.openId);
-              setCookie("__user__openid", res.openId);
+              setCookie('__user__openid', res.openId);
               if (res.wetherRegister === 1) {
                 this.join();
               } else if (res.wetherRegister === 0) {
-                this.activate("driver");
+                this.activate('driver');
               }
             } else {
               this._refreshCode(2);
@@ -126,10 +136,34 @@ export default {
           console.log(err);
         });
     },
+    _getSaleOpenIdByCode(params) {
+      getSaleOpenIdByCode(params)
+        .then(res => {
+          // console.log(res)
+          if (res.code === 0) {
+            if (res.openId) {
+              this.setOpenId(res.openId);
+              this.setQrCodeImg(res.url);
+              setCookie('__user__openid', res.openId);
+              if (res.wetherRegister === 1) {
+                console.log(res);
+                this.showQrCodeForSale();
+              } else if (res.wetherRegister === 0) {
+                this.activate('saleman');
+              }
+            } else {
+              this._refreshCode(3);
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     _refreshCode(state) {
       regainCodeByRefreshPage(state);
-    }
-  }
+    },
+  },
 };
 </script>
 

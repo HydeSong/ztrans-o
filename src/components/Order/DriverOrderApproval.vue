@@ -79,18 +79,18 @@ import {
   ImageReader,
   ImageViewer,
   ActionBar,
-  Dialog
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+  Dialog,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
-import { updateDriverOrder } from "@/api/order";
-import { uploadPicture, getPicture, deletePicture } from "@/api/picture";
-import { getCookie } from "@/common/js/cache";
-import { mapGetters } from "vuex";
+import {updateDriverOrder} from '@/api/order';
+import {uploadPicture, getPicture, deletePicture} from '@/api/picture';
+import {getCookie} from '@/common/js/cache';
+import {mapGetters} from 'vuex';
 
 export default {
-  name: "driver-order-approval",
+  name: 'driver-order-approval',
   components: {
     [ActionBar.name]: ActionBar,
     [Field.name]: Field,
@@ -100,35 +100,35 @@ export default {
     [Icon.name]: Icon,
     [ImageReader.name]: ImageReader,
     Split,
-    NavBar
+    NavBar,
   },
   computed: {
-    ...mapGetters(["openId", "customerInfo"]),
+    ...mapGetters(['openId', 'customerInfo']),
     imageView() {
       let imageView = [];
       const driverReceitp = this.imageList.driverReceitp[0];
       driverReceitp && imageView.push(driverReceitp);
       return imageView;
-    }
+    },
   },
   data() {
     return {
       isViewerShow: false,
       viewerIndex: 0,
       imageList: {
-        driverReceitp: []
+        driverReceitp: [],
       },
       imgUlrs: {
-        driverReceitp: []
+        driverReceitp: [],
       },
-      title: "司机完成订单资料",
+      title: '司机完成订单资料',
       actions: [
         {
-          text: "确认完成该订单"
-        }
+          text: '确认完成该订单',
+        },
       ],
-      driverRemark: "",
-      driverAddFee: ""
+      driverRemark: '',
+      driverAddFee: '',
     };
   },
   methods: {
@@ -137,26 +137,26 @@ export default {
       this.isViewerShow = true;
     },
     onReaderSelect() {
-      Toast.loading("图片读取中...");
+      Toast.loading('图片读取中...');
     },
-    onReaderComplete(name, { dataUrl, blob, file }) {
+    onReaderComplete(name, {dataUrl, blob, file}) {
       if (file.size > 5 * 1024 * 1024) {
-        Toast.failed("文件不能大于5M");
+        Toast.failed('文件不能大于5M');
         return;
       }
       const demoImageList = this.imageList[name] || [];
       demoImageList.push(dataUrl);
       this.$set(this.imageList, name, demoImageList);
 
-      let pictureCode = "5";
+      let pictureCode = '5';
       let customerNumId = this.customerInfo.customerMasterId;
       // 把图片上传到服务器
-      const params = { customerNumId, pictureCode };
+      const params = {customerNumId, pictureCode};
       this._uploadPicture(params, file, name);
 
       Toast.hide();
     },
-    onReaderError(name, { msg }) {
+    onReaderError(name, {msg}) {
       Toast.failed(msg);
     },
     onDeleteImage(name, index) {
@@ -169,7 +169,7 @@ export default {
       this._deletePicture(
         {
           customerNumId: this.customerInfo.customerMasterId,
-          url: imgUlrList[index]
+          url: imgUlrList[index],
         },
         name
       );
@@ -179,7 +179,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.code === 0) {
-            Toast.succeed("删除成功");
+            Toast.succeed('删除成功');
             const imgUlrList = this.imgUlrs[name] || [];
             imgUlrList.splice(0, 1);
             this.$set(this.imgUlrs, name, imgUlrList);
@@ -194,7 +194,7 @@ export default {
         .then(res => {
           console.log(res);
           if (res.code === 0) {
-            Toast.succeed("上传成功");
+            Toast.succeed('上传成功');
             const imgUlrList = this.imgUlrs[name] || [];
             imgUlrList.push(res.url);
             this.$set(this.imgUlrs, name, imgUlrList);
@@ -205,11 +205,11 @@ export default {
         });
     },
     _updateDriverOrder(params) {
-      Toast.loading("正在提交");
+      Toast.loading('正在提交');
       updateDriverOrder(params)
         .then(res => {
           if (res.code === 0) {
-            Toast.succeed("成功");
+            Toast.succeed('成功');
             this.$router.go(-1);
           }
         })
@@ -219,15 +219,15 @@ export default {
     },
     onCompleteOrder(event, action) {
       this._updateDriverOrder({
-        openId: this.openId || getCookie("__user__openid"),
+        openId: this.openId || getCookie('__user__openid'),
         driverRemark: this.driverRemark,
         driverAddFee: this.driverAddFee,
         driverReceitp: this.imgUlrs.driverReceitp[0],
         orderStatus: 5,
-        series: this.$route.query.series
+        series: this.$route.query.series,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

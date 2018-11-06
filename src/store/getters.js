@@ -23,3 +23,5 @@ export const shippingDistrictDetail = state => state.shippingDistrictDetail
 export const receiveDistrictDetail = state => state.receiveDistrictDetail
 
 export const mobilePhone = state => state.mobilePhone
+
+export const qrcodeImg = state => state.qrcodeImg

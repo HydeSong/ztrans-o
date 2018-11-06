@@ -19,44 +19,44 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { Steps } from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
-import Step1 from "@/components/Driver/RegisterStep1";
-import Step2 from "@/components/Driver/RegisterStep2";
-import Step3 from "@/components/Driver/RegisterStep3";
+import {Steps} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
+import Step1 from '@/components/Driver/RegisterStep1';
+import Step2 from '@/components/Driver/RegisterStep2';
+import Step3 from '@/components/Driver/RegisterStep3';
 
 export default {
-  name: "register",
+  name: 'register',
   components: {
     [Steps.name]: Steps,
     Split,
     NavBar,
     Step1,
     Step2,
-    Step3
+    Step3,
   },
   data() {
     return {
       steps: [
         {
-          name: "填写信息"
+          name: '填写信息',
         },
         {
-          name: "上传照片"
+          name: '上传照片',
         },
         {
-          name: "查看结果"
-        }
+          name: '查看结果',
+        },
       ],
-      currentStep: 0
+      currentStep: 0,
     };
   },
   methods: {
     next(step) {
       this.currentStep = step;
-    }
-  }
+    },
+  },
 };
 </script>
 

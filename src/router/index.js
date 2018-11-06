@@ -4,6 +4,8 @@ import Router from 'vue-router'
 import Test from '@/components/Test'
 import UI from '@/components/UI'
 import Home from '@/components/Home'
+import Saleman from '@/components/Saleman/Saleman'
+import SalemanQrCode from '@/components/Saleman/QrCode'
 import User from '@/components/User/User'
 import AddressInfo from '@/components/User/AddressInfo'
 import Driver from '@/components/Driver/Driver'
@@ -125,6 +127,21 @@ const router = new Router({
               component: DriverOrderApproval
             },
           ]
+        },
+      ]
+    },
+    {
+      path: '/saleman',
+      redirect: '/saleman/qrcode'
+    },
+    {
+      path: '/saleman',
+      name: 'saleman',
+      component: Saleman,
+      children:  [
+        {
+          path: 'qrcode',
+          component: SalemanQrCode
         },
       ]
     },

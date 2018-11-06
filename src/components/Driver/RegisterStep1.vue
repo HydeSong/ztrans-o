@@ -65,38 +65,38 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { Picker, Button, Field, FieldItem, InputItem } from "mand-mobile";
-import Split from "../Base/Split";
-import { getAllRouterByCity } from "@/api/road";
+import {Picker, Button, Field, FieldItem, InputItem} from 'mand-mobile';
+import Split from '../Base/Split';
+import {getAllRouterByCity} from '@/api/road';
 import {
   getCarBandList,
   getCarColourList,
   getCarTypeList,
   getCarSizeList,
-  getCarWeightList
-} from "@/api/car";
-import { mapGetters, mapMutations } from "vuex";
+  getCarWeightList,
+} from '@/api/car';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "register-step1",
+  name: 'register-step1',
   data() {
     return {
-      carBrandId: "",
-      carColourId: "",
-      carPlateNumber: "",
-      carTypeId: "",
-      carSizeId: "",
-      carWeightId: "",
-      driverIdentityId: "",
-      driverName: "",
+      carBrandId: '',
+      carColourId: '',
+      carPlateNumber: '',
+      carTypeId: '',
+      carSizeId: '',
+      carWeightId: '',
+      driverIdentityId: '',
+      driverName: '',
       driverWorkCity: [],
-      commandPhone: "",
-      billCity: "",
-      carInfo: "",
+      commandPhone: '',
+      billCity: '',
+      carInfo: '',
       billCityData: [],
       carInfoData: [],
       isOrderCityShow: false,
-      isCarInfoShow: false
+      isCarInfoShow: false,
     };
   },
   components: {
@@ -105,10 +105,10 @@ export default {
     [Field.name]: Field,
     [FieldItem.name]: FieldItem,
     [InputItem.name]: InputItem,
-    Split
+    Split,
   },
   computed: {
-    ...mapGetters(["openId", "customerInfo"]),
+    ...mapGetters(['openId', 'customerInfo']),
     disabled() {
       return !(
         this.driverName &&
@@ -116,26 +116,26 @@ export default {
         this.carInfo &&
         this.carPlateNumber
       );
-    }
+    },
   },
   created() {
     // console.log(this.customerInfo.customerMasterId)
     this._getCarBrandList({
-      customerNumId: this.customerInfo.customerMasterId
+      customerNumId: this.customerInfo.customerMasterId,
     });
-    this._getCarTypeList({ customerNumId: this.customerInfo.customerMasterId });
+    this._getCarTypeList({customerNumId: this.customerInfo.customerMasterId});
     this._getCarColourList({
-      customerNumId: this.customerInfo.customerMasterId
+      customerNumId: this.customerInfo.customerMasterId,
     });
-    this._getCarSizeList({ customerNumId: this.customerInfo.customerMasterId });
+    this._getCarSizeList({customerNumId: this.customerInfo.customerMasterId});
     this._getCarWeightList({
-      customerNumId: this.customerInfo.customerMasterId
+      customerNumId: this.customerInfo.customerMasterId,
     });
-    this._getAllRouterByCity({ openId: this.openId });
+    this._getAllRouterByCity({openId: this.openId});
   },
   methods: {
     ...mapMutations({
-      setStep1Data: "SET_STEP1DATA"
+      setStep1Data: 'SET_STEP1DATA',
     }),
     _getCarBrandList(params) {
       getCarBandList(params)
@@ -146,7 +146,7 @@ export default {
               carBrands.push({
                 text: item.brandName,
                 value: item.brandId,
-                ...item
+                ...item,
               });
             });
             this.carInfoData.push(carBrands);
@@ -165,7 +165,7 @@ export default {
               carColours.push({
                 text: item.colourName,
                 value: item.colourId,
-                ...item
+                ...item,
               });
             });
             this.carInfoData.push(carColours);
@@ -184,7 +184,7 @@ export default {
               carTypes.push({
                 text: item.typeName,
                 value: item.typeId,
-                ...item
+                ...item,
               });
             });
             this.carInfoData.push(carTypes);
@@ -203,7 +203,7 @@ export default {
               carSizes.push({
                 text: `${item.sizeName}米`,
                 value: item.sizeId,
-                ...item
+                ...item,
               });
             });
             this.carInfoData.push(carSizes);
@@ -222,7 +222,7 @@ export default {
               carWeights.push({
                 text: item.weightName,
                 value: item.weightId,
-                ...item
+                ...item,
               });
             });
             this.carInfoData.push(carWeights);
@@ -242,7 +242,7 @@ export default {
               billCityData.push({
                 text: `${item.sourceCityName} -> ${item.destinyCityName}`,
                 value: index + 1,
-                ...item
+                ...item,
               });
             });
             this.billCityData.push(billCityData);
@@ -253,7 +253,7 @@ export default {
         });
     },
     next() {
-      this.$emit("next", 1);
+      this.$emit('next', 1);
       let step1Data = {
         carBrandId: this.carBrandId,
         carColourId: this.carColourId,
@@ -264,23 +264,23 @@ export default {
         driverIdentityId: this.driverIdentityId,
         driverName: this.driverName,
         driverWorkCity: this.driverWorkCity,
-        commandPhone: this.commandPhone
+        commandPhone: this.commandPhone,
       };
       this.setStep1Data(step1Data);
     },
     onPickerConfirm(name) {
       const values = this.$refs[name].getColumnValues();
 
-      let res = "";
+      let res = '';
       values.forEach(value => {
         value && (res += `${value.text || value.label} `);
         console.log(value);
-        if (name === "billCity") {
+        if (name === 'billCity') {
           this.driverWorkCity.push({
             destinyCityId: value.destinyCityId,
-            sourceCityId: value.sourceCityId
+            sourceCityId: value.sourceCityId,
           });
-        } else if (name === "carInfo") {
+        } else if (name === 'carInfo') {
           value.typeId && (this.carTypeId = value.typeId);
           value.brandId && (this.carBrandId = value.brandId);
           value.colourId && (this.carColourId = value.colourId);
@@ -289,8 +289,8 @@ export default {
         }
       });
       this[name] = res;
-    }
-  }
+    },
+  },
 };
 </script>
 

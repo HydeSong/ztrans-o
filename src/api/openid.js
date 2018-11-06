@@ -20,6 +20,15 @@ export function getDriverOpenIdByCode (params) {
   return axios.get(url, {params: data})
 }
 
+export function getSaleOpenIdByCode (params) {
+  const url = `${CONFIG.HOST}/getSaleOpenIdByCode`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
+
 export function refreshToken (params) {
   const url = `${CONFIG.HOST}/refreshToken`
   const data = {

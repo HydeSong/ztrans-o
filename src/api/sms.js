@@ -19,3 +19,12 @@ export function getContactMobileCode (params, sign) {
   }
   return axios.get(url, {params: data})
 }
+
+export function getSaleMobileCode (params, sign) {
+  const url = `${CONFIG.HOST}/getSaleMobileCode`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}

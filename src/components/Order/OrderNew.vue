@@ -118,25 +118,25 @@ import {
   Switch,
   Agree,
   Button,
-  Toast
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+  Toast,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
-import { createOrder } from "@/api/order";
+import {createOrder} from '@/api/order';
 import {
   getRouterPriceByCarTypeAndRouterDetailSeries,
-  getCustomerRouterDetail
-} from "@/api/road";
+  getCustomerRouterDetail,
+} from '@/api/road';
 import {
   getRouterAliaByCustomerMasterId,
-  getPriceAndCarByCustomerIdAndRouterSeries
-} from "@/api/simple-order";
-import { getCookie } from "@/common/js/cache";
-import { mapGetters, mapMutations } from "vuex";
+  getPriceAndCarByCustomerIdAndRouterSeries,
+} from '@/api/simple-order';
+import {getCookie} from '@/common/js/cache';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "user",
+  name: 'user',
   components: {
     [Button.name]: Button,
     [Picker.name]: Picker,
@@ -149,85 +149,85 @@ export default {
     [Switch.name]: Switch,
     [Dialog.name]: Dialog,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
       isPickerShow1: false,
       isPickerShow2: false,
-      routerName: "",
-      carTypeName: "",
+      routerName: '',
+      carTypeName: '',
       pickerData1: [],
       pickerData2: [],
-      shippingDistrictDetail: "",
-      receiveDistrictDetail: "",
+      shippingDistrictDetail: '',
+      receiveDistrictDetail: '',
       bill: {
-        appointmentDate: "",
+        appointmentDate: '',
         appointmentNum: 1,
-        carTypeSeries: "",
-        carSizeSeries: "",
-        deliverGoodsTime: "",
-        initDistance: "",
-        initPrice: "",
-        openId: this.openId || getCookie("__user__openid"),
-        overstepPrice: "",
-        receiveAddressDetail: "",
-        receiveGoodsLocationNum: "",
-        receiveGoodsPersonMobile: "",
-        receiveGoodsPersonName: "",
-        remark: "",
-        routerDetailSeries: "",
-        routerPriceSeries: "",
-        sendAddressDetail: "",
-        sendGoodsLocationNum: "",
-        sendGoodsPersonMobile: "",
-        sendGoodsPersonName: "",
-        goodsRemark: ""
+        carTypeSeries: '',
+        carSizeSeries: '',
+        deliverGoodsTime: '',
+        initDistance: '',
+        initPrice: '',
+        openId: this.openId || getCookie('__user__openid'),
+        overstepPrice: '',
+        receiveAddressDetail: '',
+        receiveGoodsLocationNum: '',
+        receiveGoodsPersonMobile: '',
+        receiveGoodsPersonName: '',
+        remark: '',
+        routerDetailSeries: '',
+        routerPriceSeries: '',
+        sendAddressDetail: '',
+        sendGoodsLocationNum: '',
+        sendGoodsPersonMobile: '',
+        sendGoodsPersonName: '',
+        goodsRemark: '',
       },
       wetherTakeover: false,
       agreeConf: {
         checked: false,
-        name: "wetherTakeover",
-        size: "lg",
+        name: 'wetherTakeover',
+        size: 'lg',
         disabled: false,
-        introduction: "未选中状态"
+        introduction: '未选中状态',
       },
       actDialog: {
         open: false,
         btns: [
           {
-            text: "继续下单",
-            handler: this.onActCancel
+            text: '继续下单',
+            handler: this.onActCancel,
           },
           {
-            text: "查询订单",
-            handler: this.onActConfirm
-          }
-        ]
-      }
+            text: '查询订单',
+            handler: this.onActConfirm,
+          },
+        ],
+      },
     };
   },
   watch: {
     wetherTakeover(val) {
-      let ret = val ? "Y" : "N";
+      let ret = val ? 'Y' : 'N';
       this.bill.wetherTakeover = ret;
     },
     routerName() {
-      Toast.loading("正在查询");
+      Toast.loading('正在查询');
       this._getPriceAndCarByCustomerIdAndRouterSeries({
         customerMasterId: this.customerInfo.customerMasterId,
-        openId: this.openId || getCookie("__user__openid"),
-        routerDetailSeries: this.bill.routerDetailSeries
+        openId: this.openId || getCookie('__user__openid'),
+        routerDetailSeries: this.bill.routerDetailSeries,
       });
       setTimeout(() => {
         Toast.hide();
       }, 3000);
     },
     $route(to, from) {
-      if (to.path === "/user/order") {
-        this.bill.openId = this.openId || getCookie("__user__openid");
+      if (to.path === '/user/order') {
+        this.bill.openId = this.openId || getCookie('__user__openid');
         this.bill.customerMasterId = this.customerInfo.customerMasterId;
-        
+
         this.bill.receiveAddressDetail = this.receiver.addressDetail;
         this.bill.receiveGoodsLocationNum = this.receiver.locationNum;
         this.bill.receiveGoodsPersonMobile = this.receiver.personMobile;
@@ -241,34 +241,34 @@ export default {
         this.bill.deliverGoodsTime = this.shipping.goodsTime;
         this.bill.appointmentDate = this.shipping.goodsTime;
       }
-    }
+    },
   },
   computed: {
-    ...mapGetters(["shipping", "receiver", "openId", "customerInfo"]),
-    "bill.appointmentDate"() {
+    ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
+    'bill.appointmentDate'() {
       return this.shipping.goodsTime;
     },
     isPriceShow() {
       let ret = false;
       ret = Object.values(this.bill).every(item => {
-        return item !== "";
+        return item !== '';
       });
       return ret;
-    }
+    },
   },
   created() {
     this._getRouterAliaByCustomerMasterId({
       customerMasterId: this.customerInfo.customerMasterId,
-      openId: this.openId || getCookie("__user__openid")
+      openId: this.openId || getCookie('__user__openid'),
     });
     this.bill.customerMasterId = this.customerInfo.customerMasterId;
   },
   methods: {
     ...mapMutations({
-      setShipping: "SET_SHIPPING",
-      setReceiver: "SET_RECEIVER",
-      setShippingDistrictDetail: "SET_SHIPPINGDISTRICTDETAIL",
-      setReceiveDistrictDetail: "SET_RECEIVEDISTRICTDETAIL"
+      setShipping: 'SET_SHIPPING',
+      setReceiver: 'SET_RECEIVER',
+      setShippingDistrictDetail: 'SET_SHIPPINGDISTRICTDETAIL',
+      setReceiveDistrictDetail: 'SET_RECEIVEDISTRICTDETAIL',
     }),
     _getCustomerRouterDetail(params) {
       getCustomerRouterDetail(params)
@@ -288,12 +288,12 @@ export default {
             this.shippingDistrictDetail = `${res.sourcePrvName}${
               res.sourceCityName
             }${res.sourceCityAreaName}${
-              res.sourceTownName ? res.sourceTownName : ""
+              res.sourceTownName ? res.sourceTownName : ''
             }`;
             this.receiveDistrictDetail = `${res.destinationPrvName}${
               res.destinationCityName
             }${res.destinationCityAreaName}${
-              res.destinationTownName ? res.destinationTownName : ""
+              res.destinationTownName ? res.destinationTownName : ''
             }`;
 
             this.setShippingDistrictDetail(this.shippingDistrictDetail);
@@ -302,30 +302,30 @@ export default {
             this.setShipping({
               personMobile: res.sendGoodsPersonMobile
                 ? res.sendGoodsPersonMobile
-                : "",
+                : '',
               personName: res.sendGoodsPersonName
                 ? res.sendGoodsPersonName
-                : "",
-              addressDetail: res.sendAddressDetail ? res.sendAddressDetail : "",
+                : '',
+              addressDetail: res.sendAddressDetail ? res.sendAddressDetail : '',
               goodsTime: this.bill.appointmentDate,
               locationNum: res.sendGoodsLocationNum
                 ? res.sendGoodsLocationNum
-                : ""
+                : '',
             });
 
             this.setReceiver({
               personMobile: res.receiveGoodsPersonMobile
                 ? res.receiveGoodsPersonMobile
-                : "",
+                : '',
               personName: res.receiveGoodsPersonName
                 ? res.receiveGoodsPersonName
-                : "",
+                : '',
               addressDetail: res.receiveAddressDetail
                 ? res.receiveAddressDetail
-                : "",
+                : '',
               locationNum: res.receiveGoodsLocationNum
                 ? res.receiveGoodsLocationNum
-                : ""
+                : '',
             });
           }
         })
@@ -340,7 +340,7 @@ export default {
           if (res.code === 0) {
             const routerAliaModels = res.routerAliaModels;
             const ra = routerAliaModels.map(value => {
-              return { text: value.routerAlia, value: value.series, ...value };
+              return {text: value.routerAlia, value: value.series, ...value};
             });
             this.pickerData1 = [ra];
             this.$refs.pickerRouter.refresh();
@@ -357,7 +357,7 @@ export default {
             Toast.hide();
             const carAndPriceModels = res.carAndPriceModels;
             const cp = carAndPriceModels.map(value => {
-              return { text: value.typeName, value: value.series, ...value };
+              return {text: value.typeName, value: value.series, ...value};
             });
             this.pickerData2 = [cp];
             this.$refs.pickerCarType.refresh();
@@ -371,106 +371,106 @@ export default {
       this.onSearchUserOrder();
     },
     onActCancel() {
-      console.log("继续下单");
+      console.log('继续下单');
       this.actDialog.open = false;
       this.bill = {
         customerMasterId: this.customerInfo.customerMasterId,
-        appointmentDate: "",
+        appointmentDate: '',
         appointmentNum: 1,
-        carTypeSeries: "",
-        carSizeSeries: "",
-        deliverGoodsTime: "",
-        initDistance: "",
-        initPrice: "",
-        openId: this.openId || getCookie("__user__openid"),
-        overstepPrice: "",
-        receiveAddressDetail: "",
-        receiveGoodsLocationNum: "",
-        receiveGoodsPersonMobile: "",
-        receiveGoodsPersonName: "",
-        remark: "",
-        routerDetailSeries: "",
-        routerPriceSeries: "",
-        sendAddressDetail: "",
-        sendGoodsLocationNum: "",
-        sendGoodsPersonMobile: "",
-        sendGoodsPersonName: "",
-        goodsRemark: ""
+        carTypeSeries: '',
+        carSizeSeries: '',
+        deliverGoodsTime: '',
+        initDistance: '',
+        initPrice: '',
+        openId: this.openId || getCookie('__user__openid'),
+        overstepPrice: '',
+        receiveAddressDetail: '',
+        receiveGoodsLocationNum: '',
+        receiveGoodsPersonMobile: '',
+        receiveGoodsPersonName: '',
+        remark: '',
+        routerDetailSeries: '',
+        routerPriceSeries: '',
+        sendAddressDetail: '',
+        sendGoodsLocationNum: '',
+        sendGoodsPersonMobile: '',
+        sendGoodsPersonName: '',
+        goodsRemark: '',
       };
       this.wetherTakeover = false;
-      this.routerName = "";
-      this.carTypeName = "";
-      this.shippingDistrictDetail = "";
-      this.receiveDistrictDetail = "";
+      this.routerName = '';
+      this.carTypeName = '';
+      this.shippingDistrictDetail = '';
+      this.receiveDistrictDetail = '';
       // 解决重新下单不能选择路线和车型问题
       this.$refs.pickerRouter.refresh();
       this.$refs.pickerCarType.refresh();
     },
     onSearchUserOrder() {
       this.actDialog.open = false;
-      this.$router.push("/user/user-order");
+      this.$router.push('/user/user-order');
     },
     booking() {
       this._createOrder();
     },
     fillShipping() {
-      this.$router.push("/user/address-info/shipping");
+      this.$router.push('/user/address-info/shipping');
     },
     fillReceiver() {
-      this.$router.push("/user/address-info/receiver");
+      this.$router.push('/user/address-info/receiver');
     },
     _createOrder() {
       let params = this.bill;
-      console.log(params)
+      console.log(params);
       // 字段非空校验
       // 线路，车型，发货人 电话，发货人名字，发货人地址，收货人地址，收货人名字，收货人电话，货物描述，用车时间
       if (!params.routerDetailSeries) {
-        Toast.failed("线路不可以为空！");
+        Toast.failed('线路不可以为空！');
         return;
       }
 
       if (!params.carTypeSeries) {
-        Toast.failed("车型不可以为空！");
+        Toast.failed('车型不可以为空！');
         return;
       }
 
       if (!params.sendGoodsPersonMobile) {
-        Toast.failed("发货人电话不可以为空！");
+        Toast.failed('发货人电话不可以为空！');
         return;
       }
 
       if (!params.sendGoodsPersonName) {
-        Toast.failed("发货人名字不可以为空！");
+        Toast.failed('发货人名字不可以为空！');
         return;
       }
 
       if (!params.sendAddressDetail) {
-        Toast.failed("发货人地址不可以为空！");
+        Toast.failed('发货人地址不可以为空！');
         return;
       }
 
       if (!params.receiveAddressDetail) {
-        Toast.failed("收货人地址不可以为空！");
+        Toast.failed('收货人地址不可以为空！');
         return;
       }
 
       if (!params.receiveGoodsPersonName) {
-        Toast.failed("收货人名字不可以为空！");
+        Toast.failed('收货人名字不可以为空！');
         return;
       }
 
       if (!params.receiveGoodsPersonMobile) {
-        Toast.failed("收货人电话不可以为空！");
+        Toast.failed('收货人电话不可以为空！');
         return;
       }
 
-      if (!params.goodsRemark) {
-        Toast.failed("货物描述不可以为空！");
-        return;
-      }
+      // if (!params.goodsRemark) {
+      //   Toast.failed("货物描述不可以为空！");
+      //   return;
+      // }
 
       if (!params.appointmentDate) {
-        Toast.failed("用车时间不可以为空！");
+        Toast.failed('用车时间不可以为空！');
         return;
       }
 
@@ -478,7 +478,7 @@ export default {
         .then(res => {
           // console.log(res)
           if (res.code === 0) {
-            console.log("下单成功");
+            console.log('下单成功');
             this.actDialog.open = true;
           }
         })
@@ -488,8 +488,8 @@ export default {
     },
     onPickerRouterConfirm() {
       const values = this.$refs.pickerRouter.getColumnValues();
-      let res = "";
-      let val = "";
+      let res = '';
+      let val = '';
       values.forEach(value => {
         if (value) {
           res += `${value.text || value.label} `;
@@ -498,16 +498,16 @@ export default {
       });
       this.routerName = res;
       // 清空车型
-      this.carTypeName = "";
+      this.carTypeName = '';
       // console.log(val)
       this._getCustomerRouterDetail({
-        routerDetailSeries: val.series
+        routerDetailSeries: val.series,
       });
       this.bill.routerDetailSeries = val.series;
     },
     onPickerCarTypeConfirm() {
       const values = this.$refs.pickerCarType.getColumnValues();
-      let res = "";
+      let res = '';
       values.forEach(value => {
         value && (res = value);
       });
@@ -519,8 +519,8 @@ export default {
       this.bill.overstepPrice = res.overstepPrice;
       this.bill.routerPriceSeries = res.routerPriceId;
       // console.log(res)
-    }
-  }
+    },
+  },
 };
 </script>
 

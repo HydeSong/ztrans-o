@@ -39,6 +39,9 @@ const mutations = {
   },
   [types.SET_DRIVERMOBILEPHONE] (state, data) {
     state.mobilePhone = data
+  },
+  [types.SET_QRCODEIMG] (state, data) {
+    state.qrcodeImg = data
   }
 }
 

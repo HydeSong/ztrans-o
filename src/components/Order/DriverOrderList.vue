@@ -64,24 +64,24 @@ import {
   ScrollViewMore,
   Button,
   ResultPage,
-  Toast
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+  Toast,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
-import { updateDriverOrder, getDriverOrder } from "@/api/order";
-import { getCookie } from "@/common/js/cache";
-import { mapGetters, mapMutations } from "vuex";
+import {updateDriverOrder, getDriverOrder} from '@/api/order';
+import {getCookie} from '@/common/js/cache';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "driver-order-list",
+  name: 'driver-order-list',
   components: {
     [ScrollView.name]: ScrollView,
     [ScrollViewMore.name]: ScrollViewMore,
     [Button.name]: Button,
     [ResultPage.name]: ResultPage,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
@@ -90,32 +90,32 @@ export default {
       orderStatus: this.$route.query.orderStatus,
       startTime: this.$route.query.startTime,
       endTime: this.$route.query.endTime,
-      isFinished: false
+      isFinished: false,
     };
   },
   watch: {
     $route(to, from) {
-      if (to.path === "/driver/driver-order-list") {
+      if (to.path === '/driver/driver-order-list') {
         const params = {
-          openId: this.openId || getCookie("__user__openid"),
+          openId: this.openId || getCookie('__user__openid'),
           orderStatus: this.orderStatus,
-          routerDetailAliaSearchKey: "",
+          routerDetailAliaSearchKey: '',
           startTime: this.startTime,
           endTime: this.endTime,
           current: this.current,
-          pageSize: 10
+          pageSize: 10,
         };
-        console.log(params)
+        console.log(params);
         this._getDriverOrder(params);
       }
-    }
+    },
   },
   computed: {
-    ...mapGetters(["openId", "driverOrders"]),
+    ...mapGetters(['openId', 'driverOrders']),
     title() {
       this.orderStatus = this.$route.query.orderStatus;
-      return this.orderStatus == 0 ? "未完成订单" : "已完成订单";
-    }
+      return this.orderStatus == 0 ? '未完成订单' : '已完成订单';
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -124,7 +124,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setDriverOrders: "SET_DRIVERORDERS"
+      setDriverOrders: 'SET_DRIVERORDERS',
     }),
     setPageHeight() {
       const height = window.screen.availHeight;
@@ -155,22 +155,22 @@ export default {
       // async data
       this.current++;
       const params = {
-        openId: this.openId || getCookie("__user__openid"),
+        openId: this.openId || getCookie('__user__openid'),
         orderStatus: this.orderStatus,
-        routerDetailAliaSearchKey: "",
+        routerDetailAliaSearchKey: '',
         startTime: this.startTime,
         endTime: this.endTime,
         current: this.current,
-        pageSize: 10
+        pageSize: 10,
       };
       this._getDriverOrder(params);
     },
     _updateDriverOrder(params) {
-      Toast.loading("正在提交");
+      Toast.loading('正在提交');
       updateDriverOrder(params)
         .then(res => {
           if (res.code === 0) {
-            Toast.succeed("成功");
+            Toast.succeed('成功');
             this.isClicked = false;
           }
         })
@@ -180,18 +180,18 @@ export default {
     },
     onComfirmOrder(item) {
       this._updateDriverOrder({
-        openId: this.openId || getCookie("__user__openid"),
+        openId: this.openId || getCookie('__user__openid'),
         orderStatus: 2,
-        series: item.series
+        series: item.series,
       });
     },
     onCompleteOrder(item) {
       this.$router.push({
-        path: "/driver/driver-order-list/driver-order-approval",
-        query: { series: item.series }
+        path: '/driver/driver-order-list/driver-order-approval',
+        query: {series: item.series},
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

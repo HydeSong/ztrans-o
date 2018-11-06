@@ -20,3 +20,12 @@ export function alivedDriver (params) {
   return axios.get(url, {params: data})
 }
 
+export function registSale (params) {
+  const url = `${CONFIG.HOST}/registSale`
+  const data = {
+    params: paramsify(params),
+    sign: signify(params)
+  }
+  return axios.get(url, {params: data})
+}
+

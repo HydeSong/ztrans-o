@@ -99,15 +99,15 @@ import {
   FieldItem,
   DatePicker,
   InputItem,
-  Button
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
-import { mapState, mapMutations } from "vuex";
-import { getRouterByCityAreaTown } from "@/api/road";
+  Button,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
+import {mapState, mapMutations} from 'vuex';
+import {getRouterByCityAreaTown} from '@/api/road';
 
 export default {
-  name: "address-info",
+  name: 'address-info',
   components: {
     [Button.name]: Button,
     [InputItem.name]: InputItem,
@@ -116,57 +116,57 @@ export default {
     [Field.name]: Field,
     [FieldItem.name]: FieldItem,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
-      raddressDetail: "",
-      rpersonMobile: "",
-      rpersonName: "",
+      raddressDetail: '',
+      rpersonMobile: '',
+      rpersonName: '',
       rlocationNum: 1,
-      personMobile: "",
-      personName: "",
-      addressDetail: "",
-      goodsTime: "",
+      personMobile: '',
+      personName: '',
+      addressDetail: '',
+      goodsTime: '',
       locationNum: 1,
       currentDate: new Date(),
-      isDatePickerShow: false
+      isDatePickerShow: false,
     };
   },
   computed: {
     ...mapState([
-      "shipping",
-      "receiver",
-      "shippingDistrictDetail",
-      "receiveDistrictDetail"
+      'shipping',
+      'receiver',
+      'shippingDistrictDetail',
+      'receiveDistrictDetail',
     ]),
     title() {
       const id = this.$route.params.id;
-      if (id === "shipping") {
-        return "发货地信息";
-      } else if (id === "receiver") {
-        return "收货地信息";
+      if (id === 'shipping') {
+        return '发货地信息';
+      } else if (id === 'receiver') {
+        return '收货地信息';
       }
     },
     isShipping() {
-      return this.$route.params.id === "shipping";
-    }
+      return this.$route.params.id === 'shipping';
+    },
   },
   watch: {
     $route(to, from) {
-      if (to.path === "/user/address-info/shipping") {
+      if (to.path === '/user/address-info/shipping') {
         this.personMobile = this.shipping.personMobile;
         this.personName = this.shipping.personName;
         this.addressDetail = this.shipping.addressDetail;
         this.goodsTime = this.shipping.goodsTime;
         this.locationNum = this.shipping.locationNum;
-      } else if (to.path === "/user/address-info/receiver") {
+      } else if (to.path === '/user/address-info/receiver') {
         this.raddressDetail = this.receiver.addressDetail;
         this.rpersonMobile = this.receiver.personMobile;
         this.rpersonName = this.receiver.personName;
         this.rlocationNum = this.receiver.locationNum;
       }
-    }
+    },
   },
   created() {
     this.personMobile = this.shipping.personMobile;
@@ -181,27 +181,27 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setShipping: "SET_SHIPPING",
-      setReceiver: "SET_RECEIVER"
+      setShipping: 'SET_SHIPPING',
+      setReceiver: 'SET_RECEIVER',
     }),
     confirm() {
       if (this.isShipping) {
-        console.log("确认发货信息");
+        console.log('确认发货信息');
         let addressInfo = {
           personMobile: this.personMobile,
           personName: this.personName,
           addressDetail: this.addressDetail,
           locationNum: this.locationNum,
-          goodsTime: this.goodsTime
+          goodsTime: this.goodsTime,
         };
         this.setShipping(addressInfo);
       } else {
-        console.log("确认收货信息");
+        console.log('确认收货信息');
         let addressInfo = {
           personMobile: this.rpersonMobile,
           personName: this.rpersonName,
           addressDetail: this.raddressDetail,
-          locationNum: this.rlocationNum
+          locationNum: this.rlocationNum,
         };
         this.setReceiver(addressInfo);
       }
@@ -209,11 +209,11 @@ export default {
     },
     onDatePickerConfirm() {
       this.goodsTime = this.$refs.datePicker.getFormatDate(
-        "yyyy-MM-dd hh:mm:00"
+        'yyyy-MM-dd hh:mm:00'
       );
       console.log(this.goodsTime);
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -96,21 +96,21 @@ import {
   DatePicker,
   InputItem,
   Toast,
-  Dialog
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+  Dialog,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
 import {
   getRouterAliaByCustomerMasterId,
   getPriceAndCarByCustomerIdAndRouterSeries,
-  createSpecialCustomerOrder
-} from "@/api/simple-order";
-import { getCookie } from "@/common/js/cache";
-import { mapGetters } from "vuex";
+  createSpecialCustomerOrder,
+} from '@/api/simple-order';
+import {getCookie} from '@/common/js/cache';
+import {mapGetters} from 'vuex';
 
 export default {
-  name: "simple-order",
+  name: 'simple-order',
   components: {
     [Button.name]: Button,
     [InputItem.name]: InputItem,
@@ -120,30 +120,30 @@ export default {
     [FieldItem.name]: FieldItem,
     [Dialog.name]: Dialog,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
-      title: "简易下单",
+      title: '简易下单',
       isPickerShow1: false,
       isPickerShow2: false,
       isDatePickerShow: false,
       currentDate: new Date(),
-      routerName: "",
-      carTypeName: "",
+      routerName: '',
+      carTypeName: '',
       bill: {
-        appointmentDate: "",
-        carTypeSeries: "",
-        contactName: "",
-        customerMasterId: "",
-        initDistance: "",
-        initPrice: "",
-        mobilePhone: "",
-        openId: "",
-        overstepPrice: "",
-        remark: "",
-        routerDetailSeries: "",
-        routerPriceSeries: ""
+        appointmentDate: '',
+        carTypeSeries: '',
+        contactName: '',
+        customerMasterId: '',
+        initDistance: '',
+        initPrice: '',
+        mobilePhone: '',
+        openId: '',
+        overstepPrice: '',
+        remark: '',
+        routerDetailSeries: '',
+        routerPriceSeries: '',
       },
       pickerData1: [],
       pickerData2: [],
@@ -151,76 +151,76 @@ export default {
         open: false,
         btns: [
           {
-            text: "继续下单",
-            handler: this.onActCancel
+            text: '继续下单',
+            handler: this.onActCancel,
           },
           {
-            text: "查询订单",
-            handler: this.onActConfirm
-          }
-        ]
-      }
+            text: '查询订单',
+            handler: this.onActConfirm,
+          },
+        ],
+      },
     };
   },
   created() {
     this._getRouterAliaByCustomerMasterId({
       customerMasterId: this.customerInfo.customerMasterId,
-      openId: this.openId || getCookie("__user__openid")
+      openId: this.openId || getCookie('__user__openid'),
     });
   },
   computed: {
-    ...mapGetters(["openId", "customerInfo"]),
+    ...mapGetters(['openId', 'customerInfo']),
     isBillOk() {
       return !(
         this.routerName &&
         this.carTypeName &&
         this.bill.appointmentDate
       );
-    }
+    },
   },
   watch: {
     routerName() {
-      Toast.loading("正在查询");
+      Toast.loading('正在查询');
       this._getPriceAndCarByCustomerIdAndRouterSeries({
         customerMasterId: this.customerInfo.customerMasterId,
-        openId: this.openId || getCookie("__user__openid"),
-        routerDetailSeries: this.bill.routerDetailSeries
+        openId: this.openId || getCookie('__user__openid'),
+        routerDetailSeries: this.bill.routerDetailSeries,
       });
       setTimeout(() => {
         Toast.hide();
       }, 3000);
-    }
+    },
   },
   methods: {
     onActConfirm() {
       this.onSearchUserOrder();
     },
     onActCancel() {
-      console.log("继续下单");
+      console.log('继续下单');
       this.actDialog.open = false;
       this.bill = {
-        appointmentDate: "",
-        carTypeSeries: "",
-        contactName: "",
-        customerMasterId: "",
-        initDistance: "",
-        initPrice: "",
-        mobilePhone: "",
-        openId: "",
-        overstepPrice: "",
-        remark: "",
-        routerDetailSeries: "",
-        routerPriceSeries: ""
+        appointmentDate: '',
+        carTypeSeries: '',
+        contactName: '',
+        customerMasterId: '',
+        initDistance: '',
+        initPrice: '',
+        mobilePhone: '',
+        openId: '',
+        overstepPrice: '',
+        remark: '',
+        routerDetailSeries: '',
+        routerPriceSeries: '',
       };
-      this.routerName = "";
-      this.carTypeName = "";
+      this.routerName = '';
+      this.carTypeName = '';
     },
     onSearchUserOrder() {
-      this.$router.push("/user/user-order");
+      this.$router.push('/user/user-order');
     },
     booking() {
       const params = {
-        openId: this.openId || getCookie("__user__openid"),
+        openId: this.openId || getCookie('__user__openid'),
         contactName: this.customerInfo.contactName,
         customerMasterId: this.customerInfo.customerMasterId,
         mobilePhone: this.customerInfo.mobilePhone,
@@ -231,7 +231,7 @@ export default {
         initDistance: this.bill.initDistance,
         initPrice: this.bill.initPrice,
         overstepPrice: this.bill.overstepPrice,
-        routerPriceSeries: this.bill.routerPriceSeries
+        routerPriceSeries: this.bill.routerPriceSeries,
       };
       // console.log(params)
       this._createSpecialCustomerOrder(params);
@@ -241,7 +241,7 @@ export default {
         .then(res => {
           // console.log(res)
           if (res.code === 0) {
-            console.log("下单成功");
+            console.log('下单成功');
             // Toast.succeed('下单成功')
             this.actDialog.open = true;
           }
@@ -257,7 +257,7 @@ export default {
             Toast.hide();
             const carAndPriceModels = res.carAndPriceModels;
             const cp = carAndPriceModels.map(value => {
-              return { text: value.typeName, value: value.series, ...value };
+              return {text: value.typeName, value: value.series, ...value};
             });
             // console.log('cp', cp)
             this.pickerData2 = [cp];
@@ -273,7 +273,7 @@ export default {
           if (res.code === 0) {
             const routerAliaModels = res.routerAliaModels;
             const ra = routerAliaModels.map(value => {
-              return { text: value.routerAlia, value: value.series, ...value };
+              return {text: value.routerAlia, value: value.series, ...value};
             });
             // console.log('ra', ra)
             this.pickerData1 = [ra];
@@ -285,14 +285,14 @@ export default {
     },
     onDatePickerConfirm() {
       this.bill.appointmentDate = this.$refs.datePicker.getFormatDate(
-        "yyyy-MM-dd hh:mm:00"
+        'yyyy-MM-dd hh:mm:00'
       );
     },
     onPickerRouterConfirm() {
       const values = this.$refs.pickerRouter.getColumnValues();
       // console.log(values)
-      let res = "";
-      let val = "";
+      let res = '';
+      let val = '';
       values.forEach(value => {
         if (value) {
           res += `${value.text || value.label} `;
@@ -307,7 +307,7 @@ export default {
     onPickerCarTypeConfirm() {
       const values = this.$refs.pickerCarType.getColumnValues();
       // console.log(values)
-      let res = "";
+      let res = '';
       values.forEach(value => {
         value && (res = value);
       });
@@ -318,8 +318,8 @@ export default {
       this.bill.initPrice = res.initPrice;
       this.bill.overstepPrice = res.overstepPrice;
       this.bill.routerPriceSeries = res.routerPriceId;
-    }
-  }
+    },
+  },
 };
 </script>
 

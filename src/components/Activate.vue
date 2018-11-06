@@ -57,18 +57,22 @@ import {
   InputItem,
   Swiper,
   SwiperItem,
-  Codebox
-} from "mand-mobile";
-import Split from "./Base/Split";
-import NavBar from "./Base/NavBar";
-import { getMobileCode, getContactMobileCode } from "@/api/sms";
-import { registContact, alivedDriver } from "@/api/activate";
-import { getCookie } from "@/common/js/cache";
-import { regainCodeByRefreshPage } from "@/api/openid";
-import { mapGetters, mapMutations } from "vuex";
+  Codebox,
+} from 'mand-mobile';
+import Split from './Base/Split';
+import NavBar from './Base/NavBar';
+import {
+  getMobileCode,
+  getContactMobileCode,
+  getSaleMobileCode,
+} from '@/api/sms';
+import {registContact, alivedDriver, registSale} from '@/api/activate';
+import {getCookie} from '@/common/js/cache';
+import {regainCodeByRefreshPage} from '@/api/openid';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "activate",
+  name: 'activate',
   components: {
     [Codebox.name]: Codebox,
     [Button.name]: Button,
@@ -78,35 +82,35 @@ export default {
     [FieldItem.name]: FieldItem,
     [InputItem.name]: InputItem,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
-      code: "",
-      phone: "",
-      mobileCode: "",
+      code: '',
+      phone: '',
+      mobileCode: '',
       timeout: 60,
       timer: null,
       disabledVerify: false,
-      btnTxt: "获取验证码",
+      btnTxt: '获取验证码',
       banners: [
         {
-          img: require("../assets/images/index_banner1.png")
+          img: require('../assets/images/index_banner1.png'),
         },
         {
-          img: require("../assets/images/index_banner2.png")
+          img: require('../assets/images/index_banner2.png'),
         },
         {
-          img: require("../assets/images/index_banner3.png")
-        }
-      ]
+          img: require('../assets/images/index_banner3.png'),
+        },
+      ],
     };
   },
   computed: {
-    ...mapGetters(["openId"]),
+    ...mapGetters(['openId']),
     disabled() {
       return !(this.code && this.phone);
-    }
+    },
   },
   mounted() {
     window.triggerSwiper3 = () => {
@@ -118,8 +122,9 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setCustomerInfo: "SET_CUSTOMERINFO",
-      setDriverMobilePhone: "SET_DRIVERMOBILEPHONE"
+      setCustomerInfo: 'SET_CUSTOMERINFO',
+      setDriverMobilePhone: 'SET_DRIVERMOBILEPHONE',
+      setQrCodeImg: 'SET_QRCODEIMG',
     }),
     _alivedDriver(params) {
       alivedDriver(params)
@@ -127,11 +132,11 @@ export default {
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
-            Toast.succeed("激活成功");
-            if (res.wetherRegister === "Y") {
-              this.$router.push("/driver/driver-order");
-            } else if (res.wetherRegister === "N") {
-              this.$router.push("/driver/register-step");
+            Toast.succeed('激活成功');
+            if (res.wetherRegister === 'Y') {
+              this.$router.push('/driver/driver-order');
+            } else if (res.wetherRegister === 'N') {
+              this.$router.push('/driver/register-step');
               this.setDriverMobilePhone(this.phone);
             }
           }
@@ -147,7 +152,7 @@ export default {
           if (res.code === 0) {
             // 保存contactName， customerMasterId， mobilePhone 供简易下单使用
             // this.setCustomerInfo(res)
-            Toast.succeed("激活成功");
+            Toast.succeed('激活成功');
             this._refreshCode(1);
             // let from = this.$route.query.from
             // this.$router.push(from)
@@ -157,9 +162,23 @@ export default {
           console.log(err);
         });
     },
+    _registSale(params) {
+      // console.log(params)
+      registSale(params)
+        .then(res => {
+          if (res.code === 0) {
+            this.setQrCodeImg(res.url);
+            Toast.succeed('激活成功');
+            this.$router.push('/saleman/qrcode');
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     getVerify() {
       if (!this.phone) {
-        Toast.failed("请输入手机号！");
+        Toast.failed('请输入手机号！');
         return;
       }
       this.timer = setInterval(() => {
@@ -177,8 +196,8 @@ export default {
       }, 1000);
 
       let from = this.$route.query.from;
-      if (from === "driver") {
-        getMobileCode({ mobilePhone: this.phone })
+      if (from === 'driver') {
+        getMobileCode({mobilePhone: this.phone})
           .then(res => {
             console.log(res);
             if (res.code === 0) {
@@ -188,8 +207,19 @@ export default {
           .catch(err => {
             console.log(err);
           });
-      } else if (from === "user") {
-        getContactMobileCode({ mobilePhone: this.phone })
+      } else if (from === 'user') {
+        getContactMobileCode({mobilePhone: this.phone})
+          .then(res => {
+            console.log(res);
+            if (res.code === 0) {
+              this.mobileCode = res.mobileCode;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else if (from === 'saleman') {
+        getSaleMobileCode({mobilePhone: this.phone})
           .then(res => {
             console.log(res);
             if (res.code === 0) {
@@ -206,39 +236,45 @@ export default {
         (document.querySelector(id).innerHTML = value);
     },
     beforeChange(from, to) {
-      this.setValue("#valueSwiper10", from);
-      this.setValue("#valueSwiper11", to);
+      this.setValue('#valueSwiper10', from);
+      this.setValue('#valueSwiper11', to);
     },
     afterChange(from, to) {
-      this.setValue("#valueSwiper12", from);
-      this.setValue("#valueSwiper13", to);
+      this.setValue('#valueSwiper12', from);
+      this.setValue('#valueSwiper13', to);
     },
     goto() {
       this.$refs.swiper.goto(2);
     },
     activate() {
       let from = this.$route.query.from;
-      if (from === "driver") {
+      if (from === 'driver') {
         this._alivedDriver({
           mobileCode: this.code,
           mobilePhone: this.phone,
-          openId: this.openId || getCookie("__user__openid")
+          openId: this.openId || getCookie('__user__openid'),
         });
-      } else if (from === "user") {
+      } else if (from === 'user') {
         this._registContact({
           mobileCode: this.code,
           mobilePhone: this.phone,
-          openId: this.openId || getCookie("__user__openid")
+          openId: this.openId || getCookie('__user__openid'),
+        });
+      } else if (from === 'saleman') {
+        this._registSale({
+          mobileCode: this.code,
+          mobilePhone: this.phone,
+          openId: this.openId || getCookie('__user__openid'),
         });
       }
     },
     login() {
-      console.log("login");
+      console.log('login');
     },
     _refreshCode(state) {
       regainCodeByRefreshPage(state);
-    }
-  }
+    },
+  },
 };
 </script>
 

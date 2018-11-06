@@ -13,51 +13,62 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import {Icon} from 'mand-mobile'
+import {Icon} from 'mand-mobile';
 
-  export default {
-    name: 'nav-bar',
-    components: {
-      [Icon.name]: Icon,
+export default {
+  name: 'nav-bar',
+  components: {
+    [Icon.name]: Icon,
+  },
+  props: {
+    arrowLeft: {
+      type: Boolean,
+      default: true,
     },
-    props: {
-      arrowLeft: {
-        type: Boolean,
-        default: true
+  },
+  methods: {
+    back() {
+      if (this.arrowLeft) {
+        this.$router.go(-1);
       }
     },
-    methods: {
-      back () {
-        if (this.arrowLeft) {
-          this.$router.go(-1)
-        }
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .nav-bar
-        height 90px
-        background #fff
-        padding 0 30px
-        display flex
-        div
-            flex 0 1 33.33%
-        .navbar-left
-            display flex
-            align-items center
-            justify-content flex-start
-        .navbar-title
-            position relative
-            display flex
-            align-items center
-            justify-content center
-            & > div
-                width 33.33%
-                left 33.33%
-        .navbar-right
-            display flex
-            align-items center
-            justify-content flex-end
+.nav-bar {
+    height: 90px;
+    background: #fff;
+    padding: 0 30px;
+    display: flex;
+
+    div {
+        flex: 0 1 33.33%;
+    }
+
+    .navbar-left {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .navbar-title {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & > div {
+            width: 33.33%;
+            left: 33.33%;
+        }
+    }
+
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+}
 </style>

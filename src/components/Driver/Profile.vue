@@ -11,28 +11,29 @@
 </template>
 
 <script>
-  import { Button } from 'mand-mobile'
-  import Split from '../Base/Split'
+import {Button} from 'mand-mobile';
+import Split from '../Base/Split';
 
-  export default {
-    name: 'profile',
-    components: {
-      [Button.name]: Button,
-      Split,
+export default {
+  name: 'profile',
+  components: {
+    [Button.name]: Button,
+    Split,
+  },
+  methods: {
+    onSearchDriverOrder() {
+      this.$router.push('/driver/driver-order');
     },
-    methods: {
-      onSearchDriverOrder () {
-        this.$router.push('/driver/driver-order')
-      },
-    }
-  }
+  },
+};
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .content {
-        height 100%
-    }
-    .order-footer {
-        margin: 16px*2 10px*2;
-    }
+.content {
+    height: 100%;
+}
+
+.order-footer {
+    margin: 16px * 2 10px * 2;
+}
 </style>

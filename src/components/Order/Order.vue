@@ -115,25 +115,25 @@ import {
   InputItem,
   Switch,
   Agree,
-  Button
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+  Button,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
-import { createOrder } from "@/api/order";
+import {createOrder} from '@/api/order';
 import {
   getAllRouterByCity,
   getCarTypeByAllRouter,
   getRouterPriceByCarTypeAndRouterDetailSeries,
-  getCityByOpenId
-} from "@/api/road";
-import { getCustomerOpenIdByCode } from "@/api/openid";
-import { getCookie } from "@/common/js/cache";
-import { getPicture } from "@/api/picture";
-import { mapGetters, mapMutations } from "vuex";
+  getCityByOpenId,
+} from '@/api/road';
+import {getCustomerOpenIdByCode} from '@/api/openid';
+import {getCookie} from '@/common/js/cache';
+import {getPicture} from '@/api/picture';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "user",
+  name: 'user',
   components: {
     [Button.name]: Button,
     [Agree.name]: Agree,
@@ -145,103 +145,103 @@ export default {
     [Switch.name]: Switch,
     [Dialog.name]: Dialog,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
       bill: {
-        appointmentDate: "",
+        appointmentDate: '',
         appointmentNum: 1,
-        carTypeSeries: "",
-        deliverGoodsTime: "",
-        initDistance: "",
+        carTypeSeries: '',
+        deliverGoodsTime: '',
+        initDistance: '',
         initPrice: 0,
-        openId: "",
+        openId: '',
         overstepPrice: 0,
-        receiveAddressDetail: "",
+        receiveAddressDetail: '',
         receiveGoodsLocationNum: 0,
-        receiveGoodsPersonMobile: "",
-        receiveGoodsPersonName: "",
-        remark: "",
+        receiveGoodsPersonMobile: '',
+        receiveGoodsPersonName: '',
+        remark: '',
         routerDetailSeries: 0,
         routerPriceSeries: 0,
-        sendAddressDetail: "",
+        sendAddressDetail: '',
         sendGoodsLocationNum: 0,
-        sendGoodsPersonMobile: "",
-        sendGoodsPersonName: "",
-        goodsRemark: "",
-        wetherSpecialCustomerPrice: ""
+        sendGoodsPersonMobile: '',
+        sendGoodsPersonName: '',
+        goodsRemark: '',
+        wetherSpecialCustomerPrice: '',
       },
       wetherTakeover: false,
       tabs: [],
       agreeConf: {
         checked: false,
-        name: "wetherTakeover",
-        size: "lg",
+        name: 'wetherTakeover',
+        size: 'lg',
         disabled: false,
-        introduction: "未选中状态"
+        introduction: '未选中状态',
       },
       isPriceShow: false,
       pathData: [
         {
-          text: "请选择路线",
-          options: []
-        }
+          text: '请选择路线',
+          options: [],
+        },
       ],
       defaultPath: [],
       actDialog: {
         open: false,
         btns: [
           {
-            text: "继续下单",
-            handler: this.onActCancel
+            text: '继续下单',
+            handler: this.onActCancel,
           },
           {
-            text: "查询订单",
-            handler: this.onActConfirm
-          }
-        ]
-      }
+            text: '查询订单',
+            handler: this.onActConfirm,
+          },
+        ],
+      },
     };
   },
   watch: {
     wetherTakeover(val) {
-      let ret = val ? "Y" : "N";
+      let ret = val ? 'Y' : 'N';
       this.bill.wetherTakeover = ret;
-    }
+    },
   },
   computed: {
-    ...mapGetters(["shipping", "receiver", "wxcode", "openId"]),
+    ...mapGetters(['shipping', 'receiver', 'wxcode', 'openId']),
     tabTitles() {
       let titles = [];
       this.tabs.forEach(item => {
         titles.push(item.typeName);
       });
       return titles;
-    }
+    },
   },
   mounted() {
     window.DropMenuTrigger = () => {
-      this.getSelectedValue("selectRoad", 0);
+      this.getSelectedValue('selectRoad', 0);
     };
   },
   created() {
     this._getCityByOpenId({
-      openId: this.openId || getCookie("__user__openid")
+      openId: this.openId || getCookie('__user__openid'),
     });
     this._getAllRouterByCity({
-      openId: this.openId || getCookie("__user__openid")
+      openId: this.openId || getCookie('__user__openid'),
     });
   },
   beforeRouteUpdate(to, from, next) {
-    if (to.path === "/user/order") {
+    if (to.path === '/user/order') {
       this._getRouterPriceByCarTypeAndRouterDetailSeries({
         carTypeSeries: this.bill.carTypeSeries,
-        openId: this.openId || getCookie("__user__openid"),
-        routerDetailSeries: this.shipping.routerDetailSeries
+        openId: this.openId || getCookie('__user__openid'),
+        routerDetailSeries: this.shipping.routerDetailSeries,
       });
       this.bill.deliverGoodsTime = this.shipping.goodsTime;
-      this.bill.openId = this.openId || getCookie("__user__openid");
+      this.bill.openId = this.openId || getCookie('__user__openid');
       this.bill.receiveAddressDetail = this.receiver.addressDetail;
       this.bill.receiveGoodsLocationNum = this.receiver.locationNum;
       this.bill.receiveGoodsPersonMobile = this.receiver.personMobile;
@@ -257,42 +257,42 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setCityIds: "SET_CITYIDS",
-      setOpenId: "SET_OPENID"
+      setCityIds: 'SET_CITYIDS',
+      setOpenId: 'SET_OPENID',
     }),
     onActConfirm() {
       this.onSearchUserOrder();
     },
     onActCancel() {
-      console.log("继续下单");
+      console.log('继续下单');
       this.actDialog.open = false;
       this.bill = {
-        appointmentDate: "",
+        appointmentDate: '',
         appointmentNum: 1,
-        carTypeSeries: "",
-        deliverGoodsTime: "",
-        initDistance: "",
+        carTypeSeries: '',
+        deliverGoodsTime: '',
+        initDistance: '',
         initPrice: 0,
-        openId: "",
+        openId: '',
         overstepPrice: 0,
-        receiveAddressDetail: "",
+        receiveAddressDetail: '',
         receiveGoodsLocationNum: 0,
-        receiveGoodsPersonMobile: "",
-        receiveGoodsPersonName: "",
-        remark: "",
+        receiveGoodsPersonMobile: '',
+        receiveGoodsPersonName: '',
+        remark: '',
         routerDetailSeries: 0,
         routerPriceSeries: 0,
-        sendAddressDetail: "",
+        sendAddressDetail: '',
         sendGoodsLocationNum: 0,
-        sendGoodsPersonMobile: "",
-        sendGoodsPersonName: "",
-        goodsRemark: "",
-        wetherSpecialCustomerPrice: ""
+        sendGoodsPersonMobile: '',
+        sendGoodsPersonName: '',
+        goodsRemark: '',
+        wetherSpecialCustomerPrice: '',
       };
-      this.wetherTakeover = "";
+      this.wetherTakeover = '';
     },
     onSearchUserOrder() {
-      this.$router.push("/user/user-order");
+      this.$router.push('/user/user-order');
     },
     booking() {
       this._createOrder();
@@ -302,8 +302,8 @@ export default {
       if (this.bill.carTypeSeries && this.shipping.routerDetailSeries) {
         this._getRouterPriceByCarTypeAndRouterDetailSeries({
           carTypeSeries: this.bill.carTypeSeries,
-          openId: this.openId || getCookie("__user__openid"),
-          routerDetailSeries: this.shipping.routerDetailSeries
+          openId: this.openId || getCookie('__user__openid'),
+          routerDetailSeries: this.shipping.routerDetailSeries,
         });
       }
     },
@@ -313,26 +313,26 @@ export default {
       this._getCarTypeByAllRouter({
         openId: this.openId,
         sourceCityId: listItem.sourceCityId,
-        destinyCityId: listItem.destinyCityId
+        destinyCityId: listItem.destinyCityId,
       });
       if (this.bill.carTypeSeries && this.shipping.routerDetailSeries) {
         this._getRouterPriceByCarTypeAndRouterDetailSeries({
           carTypeSeries: this.bill.carTypeSeries,
-          openId: this.openId || getCookie("__user__openid"),
-          routerDetailSeries: this.shipping.routerDetailSeries
+          openId: this.openId || getCookie('__user__openid'),
+          routerDetailSeries: this.shipping.routerDetailSeries,
         });
       }
     },
     fillShipping() {
-      this.$router.push("/user/address-info/shipping");
+      this.$router.push('/user/address-info/shipping');
     },
     fillReceiver() {
-      this.$router.push("/user/address-info/receiver");
+      this.$router.push('/user/address-info/receiver');
     },
     getSelectedValue(selector, index) {
       const value = this.$refs[selector].getSelectedValue(index);
       Dialog.alert({
-        content: `<pre>${JSON.stringify(value)}</pre>`
+        content: `<pre>${JSON.stringify(value)}</pre>`,
       });
     },
     _createOrder() {
@@ -342,7 +342,7 @@ export default {
         .then(res => {
           // console.log(res)
           if (res.code === 0) {
-            console.log("下单成功");
+            console.log('下单成功');
             this.actDialog.open = true;
           }
         })
@@ -402,7 +402,7 @@ export default {
             res.wxRouterCityRelationModel.forEach(item => {
               pathDataOptions.push({
                 text: `${item.sourceCityName} -> ${item.destinyCityName}`,
-                ...item
+                ...item,
               });
             });
             this.pathData[0].options = pathDataOptions;
@@ -432,7 +432,7 @@ export default {
             this._getCarTypeByAllRouter({
               openId: this.openId,
               sourceCityId: item.sourceCityId,
-              destinyCityId: item.destinyCityId
+              destinyCityId: item.destinyCityId,
             });
           }
         })
@@ -451,8 +451,8 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

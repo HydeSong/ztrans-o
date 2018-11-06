@@ -58,23 +58,23 @@
 </template>
 
 <script>
-import { ScrollView, ScrollViewMore, Button, ResultPage } from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+import {ScrollView, ScrollViewMore, Button, ResultPage} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
-import { getCustomerOrder } from "@/api/order";
-import { getCookie } from "@/common/js/cache";
-import { mapGetters, mapMutations } from "vuex";
+import {getCustomerOrder} from '@/api/order';
+import {getCookie} from '@/common/js/cache';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "user-order-list",
+  name: 'user-order-list',
   components: {
     [ScrollView.name]: ScrollView,
     [ScrollViewMore.name]: ScrollViewMore,
     [Button.name]: Button,
     [ResultPage.name]: ResultPage,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
@@ -83,15 +83,15 @@ export default {
       routerDetailAliaSearchKey: this.$route.query.routerDetailAliaSearchKey,
       startTime: this.$route.query.startTime,
       endTime: this.$route.query.endTime,
-      isFinished: false
+      isFinished: false,
     };
   },
   computed: {
-    ...mapGetters(["openId", "customerOrders"]),
+    ...mapGetters(['openId', 'customerOrders']),
     title() {
       this.orderStatus = this.$route.query.orderStatus;
-      return this.orderStatus == 0 ? "未完成订单" : "已完成订单";
-    }
+      return this.orderStatus == 0 ? '未完成订单' : '已完成订单';
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -100,7 +100,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setCustomerOrders: "SET_CUSTOMERORDERS"
+      setCustomerOrders: 'SET_CUSTOMERORDERS',
     }),
     setPageHeight() {
       const height = window.screen.availHeight;
@@ -131,17 +131,17 @@ export default {
       // async data
       this.current++;
       const params = {
-        openId: this.openId || getCookie("__user__openid"),
+        openId: this.openId || getCookie('__user__openid'),
         orderStatus: this.orderStatus,
         routerDetailAliaSearchKey: this.routerDetailAliaSearchKey,
         startTime: this.startTime,
         endTime: this.endTime,
         current: this.current,
-        pageSize: 10
+        pageSize: 10,
       };
       this._getCustomerOrder(params);
-    }
-  }
+    },
+  },
 };
 </script>
 

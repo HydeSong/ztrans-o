@@ -63,17 +63,17 @@ import {
   FieldItem,
   DatePicker,
   Toast,
-  TabBar
-} from "mand-mobile";
-import Split from "../Base/Split";
-import NavBar from "../Base/NavBar";
+  TabBar,
+} from 'mand-mobile';
+import Split from '../Base/Split';
+import NavBar from '../Base/NavBar';
 
-import { getDriverOrder } from "@/api/order";
-import { getCookie } from "@/common/js/cache";
-import { mapGetters, mapMutations } from "vuex";
+import {getDriverOrder} from '@/api/order';
+import {getCookie} from '@/common/js/cache';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
-  name: "driver-order",
+  name: 'driver-order',
   components: {
     [Button.name]: Button,
     [DatePicker.name]: DatePicker,
@@ -82,30 +82,30 @@ export default {
     [FieldItem.name]: FieldItem,
     [TabBar.name]: TabBar,
     Split,
-    NavBar
+    NavBar,
   },
   data() {
     return {
-      title: "司机订单管理",
+      title: '司机订单管理',
       isDatePickerShow1: false,
       isDatePickerShow2: false,
       pickerData1: [],
       currentDate: new Date(),
-      titles: ["未完成订单", "已完成订单"],
+      titles: ['未完成订单', '已完成订单'],
       orderStatus: 1,
-      startTime: "",
-      endTime: ""
+      startTime: '',
+      endTime: '',
     };
   },
   computed: {
-    ...mapGetters(["openId", "customerInfo"])
+    ...mapGetters(['openId', 'customerInfo']),
   },
   methods: {
     ...mapMutations({
-      setDriverOrders: "SET_DRIVERORDERS"
+      setDriverOrders: 'SET_DRIVERORDERS',
     }),
     _getDriverOrder(params) {
-      Toast.loading("正在查询");
+      Toast.loading('正在查询');
       getDriverOrder(params)
         .then(res => {
           if (res.code === 0) {
@@ -125,31 +125,31 @@ export default {
     },
     onDatePickerConfirm1() {
       this.startTime = this.$refs.datePicker1.getFormatDate(
-        "yyyy-MM-dd hh:mm:00"
+        'yyyy-MM-dd hh:mm:00'
       );
     },
     onDatePickerConfirm2() {
       this.endTime = this.$refs.datePicker2.getFormatDate(
-        "yyyy-MM-dd hh:mm:00"
+        'yyyy-MM-dd hh:mm:00'
       );
     },
     onIndexTabChange(index) {
       this.orderStatus = index;
     },
     onSearch() {
-      console.log("searching");
+      console.log('searching');
       const params = {
-        openId: this.openId || getCookie("__user__openid"),
+        openId: this.openId || getCookie('__user__openid'),
         orderStatus: this.orderStatus,
-        routerDetailAliaSearchKey: "",
+        routerDetailAliaSearchKey: '',
         startTime: this.startTime,
         endTime: this.endTime,
         current: 1,
-        pageSize: 10
+        pageSize: 10,
       };
       this._getDriverOrder(params);
-    }
-  }
+    },
+  },
 };
 </script>
 
