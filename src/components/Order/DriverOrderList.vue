@@ -17,35 +17,36 @@
                     :scrolling-x="false"
                     @endReached="$_onEndReached">
                 <div
-                        v-for="(item, index) in driverOrders"
-                        :key="index"
-                        class="scroll-view-list">
+                    v-for="(item, index) in driverOrders"
+                    :key="index"
+                    class="scroll-view-list">
                     <p class="scroll-view-item">
-                    <ul>
-                        <li>订单号：{{item.series}}</li>
-                        <li>司机真实价：{{item.driverRealPrice}}元</li>
-                        <li>客户名字：{{item.customerName}}</li>
-                        <li>线路别名：{{item.routerAlia}}</li>
-                        <li>用车时间：{{item.appointmentDate}}</li>
-                        <li>订单状态：{{item.orderStatusName}}</li>
-                        <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
-                        <li>发货人地址：{{item.sendAddressDetail}}</li>
-                        <li>发货点个数：{{item.sendGoodsLocationNum}}</li>
-                        <li>发货人电话：{{item.sendGoodsPersonMobile}}</li>
-                        <li>发货人名字：{{item.sendGoodsPersonName}}</li>
-                        <li>收件人地址：{{item.receiveAddressDetail}}</li>
-                        <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
-                        <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
-                        <li>路经其他站点：<ul class="ul-inner">
-                            <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
-                        </ul>
-                        </li>
-                        <li>备注：{{item.remark}}</li>
-                    </ul>
-                    <div class="actions-wrapper" v-show="isClicked">
-                        <md-button type="link" @click.native="onComfirmOrder(item)">确认接单</md-button>
-                        <md-button type="link" @click.native="onCompleteOrder(item)">完成送货</md-button>
-                    </div>
+                      <ul>
+                          <li>订单号：{{item.series}}</li>
+                          <li>司机真实价：{{item.driverRealPrice}}元</li>
+                          <li>客户名字：{{item.customerName}}</li>
+                          <li>线路别名：{{item.routerAlia}}</li>
+                          <li>用车时间：{{item.appointmentDate}}</li>
+                          <li>订单状态：{{item.orderStatusName}}</li>
+                          <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
+                          <li>发货人地址：{{item.sendAddressDetail}}</li>
+                          <li>发货点个数：{{item.sendGoodsLocationNum}}</li>
+                          <li>发货人电话：{{item.sendGoodsPersonMobile}}</li>
+                          <li>发货人名字：{{item.sendGoodsPersonName}}</li>
+                          <li>收件人地址：{{item.receiveAddressDetail}}</li>
+                          <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
+                          <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
+                          <li>路经其他站点：<ul class="ul-inner">
+                              <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
+                          </ul>
+                          </li>
+                          <li>备注：{{item.remark}}</li>
+                      </ul>
+                      <div class="actions-wrapper" v-if="orderStatus == 0">
+                          <md-button type="link" v-if="item.orderStatusName === '已接单'" disabled>已接单</md-button>
+                          <md-button type="link" v-else @click.native="onComfirmOrder(item)">确认接单</md-button>
+                          <md-button type="link" @click.native="onCompleteOrder(item)">完成订单</md-button>
+                      </div>
                     </p>
                 </div>
                 <md-scroll-view-more
@@ -70,7 +71,7 @@ import Split from '../Base/Split';
 import NavBar from '../Base/NavBar';
 
 import {updateDriverOrder, getDriverOrder} from '@/api/order';
-import {getCookie} from '@/common/js/cache';
+import {getCookie, setCookie} from '@/common/js/cache';
 import {mapGetters, mapMutations} from 'vuex';
 
 export default {
@@ -85,7 +86,6 @@ export default {
   },
   data() {
     return {
-      isClicked: true,
       current: 1,
       orderStatus: this.$route.query.orderStatus,
       startTime: this.$route.query.startTime,
@@ -96,12 +96,16 @@ export default {
   watch: {
     $route(to, from) {
       if (to.path === '/driver/driver-order-list') {
+        // fix: 查询订单时返回后会报错
+        const orderStatus = getCookie('__user__orderstatus')
+        const startTime = getCookie('__user__starttime')
+        const endTime = getCookie('__user__endtime')
         const params = {
           openId: this.openId || getCookie('__user__openid'),
-          orderStatus: this.orderStatus,
+          orderStatus: orderStatus,
           routerDetailAliaSearchKey: '',
-          startTime: this.startTime,
-          endTime: this.endTime,
+          startTime: startTime,
+          endTime: endTime,
           current: this.current,
           pageSize: 10,
         };
@@ -171,7 +175,17 @@ export default {
         .then(res => {
           if (res.code === 0) {
             Toast.succeed('成功');
-            this.isClicked = false;
+            // 重新获取司机订单
+            const params = {
+              openId: this.openId || getCookie('__user__openid'),
+              orderStatus: this.orderStatus,
+              routerDetailAliaSearchKey: '',
+              startTime: this.startTime,
+              endTime: this.endTime,
+              current: this.current,
+              pageSize: 10,
+            };
+            this._getDriverOrder(params);
           }
         })
         .catch(err => {
@@ -186,9 +200,18 @@ export default {
       });
     },
     onCompleteOrder(item) {
+      // fix: 查询订单时返回后会报错
+      setCookie('__user__orderstatus', this.orderStatus)
+      setCookie('__user__starttime', this.startTime)
+      setCookie('__user__endtime', this.endTime)
       this.$router.push({
         path: '/driver/driver-order-list/driver-order-approval',
-        query: {series: item.series},
+        query: {
+          series: item.series,
+          orderStatus: this.orderStatus,
+          startTime: this.startTime,
+          endTime: this.endTime,
+        },
       });
     },
   },
