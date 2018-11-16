@@ -48,7 +48,7 @@
                                         @complete="onReaderComplete"
                                         @error="onReaderError"
                                 ></md-image-reader>
-                                <span class="btn-upload-identity-card" :disabled="disabled">点击上传交接单</span>
+                                <span class="btn-upload-identity-card">点击上传交接单</span>
                             </div>
                         </div>
                     </div>
@@ -126,6 +126,7 @@ export default {
       actions: [
         {
           text: '确认完成该订单',
+          disabled: true,
         },
       ],
       driverRemark: '',
@@ -184,7 +185,7 @@ export default {
             const imgUlrList = this.imgUlrs[name] || [];
             imgUlrList.splice(0, 1);
             this.$set(this.imgUlrs, name, imgUlrList);
-            this.disabled = true;
+            this.actions[0].disabled = true;
           }
         })
         .catch(err => {
@@ -200,7 +201,7 @@ export default {
             const imgUlrList = this.imgUlrs[name] || [];
             imgUlrList.push(res.url);
             this.$set(this.imgUlrs, name, imgUlrList);
-            this.disabled = false;
+            this.actions[0].disabled = false;
           }
         })
         .catch(err => {
