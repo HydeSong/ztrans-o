@@ -39,5 +39,5 @@ export function refreshToken (params) {
 }
 
 export function regainCodeByRefreshPage (state) {
-  window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7b0e2306f65b18cc&redirect_uri=http%3A%2F%2Fss.mofter.com&response_type=code&scope=snsapi_base&state=${state}#wechat_redirect`
+  window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxdfee8ad3a74b9f10&redirect_uri=http%3A%2F%2Fss.mofter.com&response_type=code&scope=snsapi_base&state=${state}#wechat_redirect`
 }
