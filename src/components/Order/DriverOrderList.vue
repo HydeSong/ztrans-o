@@ -43,15 +43,14 @@
                           <li>备注：{{item.remark}}</li>
                       </ul>
                       <div class="actions-wrapper" v-if="orderStatus == 0">
-                          <md-button type="link" v-if="item.orderStatusName === '已接单'" disabled>已接单</md-button>
-                          <md-button type="link" v-else @click.native="onComfirmOrder(item)">确认接单</md-button>
                           <md-button type="link" @click.native="onKaoche(item)">靠车</md-button>
                           <md-button type="link" @click.native="onFache(item)">发车</md-button>
                           <md-button type="link" @click.native="onDaoda(item)">到达</md-button>
                       </div>
-                    <div class="actions-wrapper" >
+                    <div class="actions-wrapper" v-if="orderStatus == 0">
+                        <md-button type="link" v-if="item.orderStatusName === '已接单'" disabled>已接单</md-button>
+                        <md-button type="link" v-else @click.native="onComfirmOrder(item)">确认接单</md-button>
                         <md-button type="link" @click.native="onCompleteOrder(item)">完成订单</md-button>
-                        <md-button type="link" @click.native="onFeiqi(item)">废弃订单</md-button>
                     </div>
                     </p>
                 </div>
@@ -259,20 +258,6 @@ export default {
                 this._updateDriverOrder({
                     openId: this.openId || getCookie('__user__openid'),
                     orderStatus: 5,
-                    series: item.series,
-                });
-            },
-        })
-    },
-    onFeiqi(item) {
-        Dialog.confirm({
-            title: '确认废弃',
-            content: '请确认是否废弃',
-            confirmText: '确定',
-            onConfirm: () => {
-                this._updateDriverOrder({
-                    openId: this.openId || getCookie('__user__openid'),
-                    orderStatus: 7,
                     series: item.series,
                 });
             },

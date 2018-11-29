@@ -227,7 +227,7 @@ export default {
         driverRemark: this.driverRemark,
         driverAddFee: this.driverAddFee,
         driverReceitp: this.imgUlrs.driverReceitp[0],
-        orderStatus: 5,
+        orderStatus: 6,
         series: this.$route.query.series,
       });
     },
