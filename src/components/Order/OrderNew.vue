@@ -32,6 +32,14 @@
                         :class="[receiveDistrictDetail?'':'saddress']"
                         @click="fillReceiver">
                 </md-field-item>
+                <md-field-item
+                        name="name"
+                        title="发货时间"
+                        arrow="arrow-right"
+                        align="right"
+                        :value="goodsTime"
+                        @click.native="isDatePickerShow = true">
+                </md-field-item>
             </md-field>
             <split></split>
             <md-field>
@@ -103,6 +111,15 @@
                 @confirm="onPickerCarTypeConfirm"
                 title="选择车型">
         </md-picker>
+        <md-date-picker
+                ref="datePicker"
+                v-model="isDatePickerShow"
+                type="datetime"
+                today-text="(今天)"
+                title="选择发货时间"
+                :default-date="currentDate"
+                @confirm="onDatePickerConfirm"
+        ></md-date-picker>
     </div>
 </template>
 
@@ -153,8 +170,11 @@ export default {
   },
   data() {
     return {
+      goodsTime: '',
       isPickerShow1: false,
       isPickerShow2: false,
+      currentDate: new Date(),
+      isDatePickerShow: false,
       routerName: '',
       carTypeName: '',
       pickerData1: [],
@@ -237,16 +257,16 @@ export default {
         this.bill.sendGoodsLocationNum = this.shipping.locationNum;
         this.bill.sendGoodsPersonMobile = this.shipping.personMobile;
         this.bill.sendGoodsPersonName = this.shipping.personName;
-
-        this.bill.deliverGoodsTime = this.shipping.goodsTime;
-        this.bill.appointmentDate = this.shipping.goodsTime;
       }
     },
   },
   computed: {
     ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
     'bill.appointmentDate'() {
-      return this.shipping.goodsTime;
+      return this.goodsTime;
+    },
+    'bill.deliverGoodsTime'() {
+      return this.goodsTime;
     },
     isPriceShow() {
       let ret = false;
@@ -307,7 +327,6 @@ export default {
                 ? res.sendGoodsPersonName
                 : '',
               addressDetail: res.sendAddressDetail ? res.sendAddressDetail : '',
-              goodsTime: this.bill.appointmentDate,
               locationNum: res.sendGoodsLocationNum
                 ? res.sendGoodsLocationNum
                 : '',
@@ -421,7 +440,7 @@ export default {
     },
     _createOrder() {
       let params = this.bill;
-      console.log(params);
+      // console.log(params);
       // 字段非空校验
       // 线路，车型，发货人 电话，发货人名字，发货人地址，收货人地址，收货人名字，收货人电话，货物描述，用车时间
       if (!params.routerDetailSeries) {
@@ -519,6 +538,11 @@ export default {
       this.bill.overstepPrice = res.overstepPrice;
       this.bill.routerPriceSeries = res.routerPriceId;
       // console.log(res)
+    },
+    onDatePickerConfirm() {
+      this.goodsTime = this.$refs.datePicker.getFormatDate(
+          'yyyy-MM-dd hh:mm:00'
+      );
     },
   },
 };

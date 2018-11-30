@@ -28,14 +28,6 @@
                         title="发货人姓名"
                         placeholder="请填写发货人姓名(可选填)"
                 ></md-input-item>
-                <md-field-item
-                        name="name"
-                        title="发货时间"
-                        arrow="arrow-right"
-                        align="right"
-                        :value="goodsTime"
-                        @click.native="isDatePickerShow = true">
-                </md-field-item>
                 <md-input-item
                         title="发货点个数"
                         type="digit"
@@ -80,15 +72,6 @@
         <div class="footer">
             <md-button @click.native="confirm">确 认</md-button>
         </div>
-        <md-date-picker
-                ref="datePicker"
-                v-model="isDatePickerShow"
-                type="datetime"
-                today-text="(今天)"
-                title="选择发货时间"
-                :default-date="currentDate"
-                @confirm="onDatePickerConfirm"
-        ></md-date-picker>
     </div>
 </template>
 
@@ -127,10 +110,7 @@ export default {
       personMobile: '',
       personName: '',
       addressDetail: '',
-      goodsTime: '',
       locationNum: 1,
-      currentDate: new Date(),
-      isDatePickerShow: false,
     };
   },
   computed: {
@@ -158,7 +138,6 @@ export default {
         this.personMobile = this.shipping.personMobile;
         this.personName = this.shipping.personName;
         this.addressDetail = this.shipping.addressDetail;
-        this.goodsTime = this.shipping.goodsTime;
         this.locationNum = this.shipping.locationNum;
       } else if (to.path === '/user/address-info/receiver') {
         this.raddressDetail = this.receiver.addressDetail;
@@ -172,7 +151,6 @@ export default {
     this.personMobile = this.shipping.personMobile;
     this.personName = this.shipping.personName;
     this.addressDetail = this.shipping.addressDetail;
-    this.goodsTime = this.shipping.goodsTime;
     this.locationNum = this.shipping.locationNum;
     this.raddressDetail = this.receiver.addressDetail;
     this.rpersonMobile = this.receiver.personMobile;
@@ -191,8 +169,7 @@ export default {
           personMobile: this.personMobile,
           personName: this.personName,
           addressDetail: this.addressDetail,
-          locationNum: this.locationNum,
-          goodsTime: this.goodsTime,
+          locationNum: this.locationNum
         };
         this.setShipping(addressInfo);
       } else {
@@ -206,12 +183,6 @@ export default {
         this.setReceiver(addressInfo);
       }
       this.$router.go(-1);
-    },
-    onDatePickerConfirm() {
-      this.goodsTime = this.$refs.datePicker.getFormatDate(
-        'yyyy-MM-dd hh:mm:00'
-      );
-      console.log(this.goodsTime);
     },
   },
 };
