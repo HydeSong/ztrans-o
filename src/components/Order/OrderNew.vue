@@ -125,6 +125,7 @@
 
 <script>
 import {
+  DatePicker,
   DropMenu,
   Picker,
   Dialog,
@@ -155,6 +156,7 @@ import {mapGetters, mapMutations} from 'vuex';
 export default {
   name: 'user',
   components: {
+    [DatePicker.name]: DatePicker,
     [Button.name]: Button,
     [Picker.name]: Picker,
     [Agree.name]: Agree,
@@ -232,6 +234,10 @@ export default {
       let ret = val ? 'Y' : 'N';
       this.bill.wetherTakeover = ret;
     },
+    goodsTime(val) {
+      this.bill.appointmentDate = val;
+      this.bill.deliverGoodsTime = val;
+    },
     routerName() {
       Toast.loading('正在查询');
       this._getPriceAndCarByCustomerIdAndRouterSeries({
@@ -262,12 +268,6 @@ export default {
   },
   computed: {
     ...mapGetters(['shipping', 'receiver', 'openId', 'customerInfo']),
-    'bill.appointmentDate'() {
-      return this.goodsTime;
-    },
-    'bill.deliverGoodsTime'() {
-      return this.goodsTime;
-    },
     isPriceShow() {
       let ret = false;
       ret = Object.values(this.bill).every(item => {

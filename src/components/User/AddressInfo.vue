@@ -80,7 +80,6 @@ import {
   Picker,
   Field,
   FieldItem,
-  DatePicker,
   InputItem,
   Button,
 } from 'mand-mobile';
@@ -94,7 +93,7 @@ export default {
   components: {
     [Button.name]: Button,
     [InputItem.name]: InputItem,
-    [DatePicker.name]: DatePicker,
+
     [Picker.name]: Picker,
     [Field.name]: Field,
     [FieldItem.name]: FieldItem,
