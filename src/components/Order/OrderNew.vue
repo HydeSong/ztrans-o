@@ -172,7 +172,7 @@ export default {
   },
   data() {
     return {
-      goodsTime: '',
+      goodsTime: new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, ''),
       isPickerShow1: false,
       isPickerShow2: false,
       currentDate: new Date(),
@@ -184,11 +184,11 @@ export default {
       shippingDistrictDetail: '',
       receiveDistrictDetail: '',
       bill: {
-        appointmentDate: '',
+        appointmentDate: new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, ''),
         appointmentNum: 1,
         carTypeSeries: '',
         carSizeSeries: '',
-        deliverGoodsTime: '',
+        deliverGoodsTime: new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, ''),
         initDistance: '',
         initPrice: '',
         openId: this.openId || getCookie('__user__openid'),
