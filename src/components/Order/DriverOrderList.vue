@@ -24,6 +24,7 @@
                       <ul>
                           <li>订单号：{{item.series}}</li>
                           <li>司机真实价：{{item.driverRealPrice}}元</li>
+                          <li>司机额外费用：{{item.driverAddFee}}元</li>
                           <li>客户名字：{{item.customerName}}</li>
                           <li>线路别名：{{item.routerAlia}}</li>
                           <li>用车时间：{{item.appointmentDate}}</li>
