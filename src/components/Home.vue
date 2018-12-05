@@ -108,6 +108,8 @@ export default {
             } else {
               this._refreshCode(1);
             }
+          } else if (res.code === -5044) {
+              this._refreshCode(1);
           }
         })
         .catch(err => {
@@ -130,6 +132,8 @@ export default {
             } else {
               this._refreshCode(2);
             }
+          } else if (res.code === -5044) {
+              this._refreshCode(2);
           }
         })
         .catch(err => {
@@ -154,6 +158,8 @@ export default {
             } else {
               this._refreshCode(3);
             }
+          } else if (res.code === -5044) {
+            this._refreshCode(3);
           }
         })
         .catch(err => {
