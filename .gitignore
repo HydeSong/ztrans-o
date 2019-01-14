@@ -66,3 +66,4 @@ typings/
 *.tar
 .idea/
 deploy.md
+package-lock.json
