@@ -11,6 +11,6 @@
 //}
 
 export const CONFIG = {
-  HOST: 'http://47.97.168.223:8080/cx/wx',
+  HOST: 'tms.mofter.com/cx/wx',
   appsecret: 'ChuangXun@!!!'
 }
