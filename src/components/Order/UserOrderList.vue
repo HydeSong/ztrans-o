@@ -21,7 +21,7 @@
                         :key="index"
                         class="scroll-view-list">
                     <p class="scroll-view-item">
-                    <ul>
+                    <ul class="bill-list">
                         <li>订单号：{{item.series}}</li>
                         <li>订单报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
                         <li>订单状态：{{item.orderStatusName}}</li>
@@ -173,14 +173,13 @@
             text-indent: 2em;
             border: 4px solid #FFE2B5;
 
-            .ul-inner {
+            ul.ul-inner {
                 padding: 0 50px;
             }
 
-            ul {
+            ul.bill-list {
                 li {
-                    height: 20px;
-                    line-height: 20px;
+                    padding: 5px 0;
                     border-bottom: 1px dashed #ccc;
 
                     span {

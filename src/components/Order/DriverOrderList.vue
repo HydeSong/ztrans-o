@@ -21,7 +21,7 @@
                         :key="index"
                         class="scroll-view-list">
                     <p class="scroll-view-item">
-                    <ul>
+                    <ul class="bill-list">
                         <li><span>订单号：</span>{{item.series}}</li>
                         <li><span>司机真实价：</span>{{item.driverRealPrice}}元</li>
                         <li><span>司机额外费用：</span>{{item.driverAddFee}}元</li>
@@ -44,17 +44,17 @@
                         </li>
                         <li><span>备注：</span>{{item.remark}}</li>
                     </ul>
+                    <div class="actions-wrapper" v-if="orderStatus == 0">
+                        <md-button type="ghost-primary" v-if="item.orderStatusName === '已接单'" disabled>已接单</md-button>
+                        <md-button type="ghost-primary" v-else @click.native="onComfirmOrder(item)">确认接单</md-button>
+                        <md-button type="ghost-primary" @click.native="onCompleteOrder(item)">完成订单</md-button>
+                    </div>
+                    <div class="actions-wrapper" v-if="orderStatus == 0">
+                        <md-button type="ghost-primary" @click.native="onKaoche(item)">靠车</md-button>
+                        <md-button type="ghost-primary" @click.native="onFache(item)">发车</md-button>
+                        <md-button type="ghost-primary" @click.native="onDaoda(item)">到达</md-button>
+                    </div>
                     </p>
-                    <div class="actions-wrapper" v-if="orderStatus == 0">
-                        <md-button type="ghost" v-if="item.orderStatusName === '已接单'" disabled>已接单</md-button>
-                        <md-button type="ghost" v-else @click.native="onComfirmOrder(item)">确认接单</md-button>
-                        <md-button type="ghost" @click.native="onCompleteOrder(item)">完成订单</md-button>
-                    </div>
-                    <div class="actions-wrapper" v-if="orderStatus == 0">
-                        <md-button type="ghost" @click.native="onKaoche(item)">靠车</md-button>
-                        <md-button type="ghost" @click.native="onFache(item)">发车</md-button>
-                        <md-button type="ghost" @click.native="onDaoda(item)">到达</md-button>
-                    </div>
                 </div>
                 <md-scroll-view-more
                         slot="more"
@@ -271,7 +271,7 @@
 
 <style lang="stylus">
     .driver-order-list {
-        padding: 0 0 200px;
+        padding: 0 0 2000px;
         height: 700px;
 
         .md-scroll-view {
@@ -296,14 +296,13 @@
             text-indent: 2em;
             border: 4px solid #FFE2B5;
 
-            .ul-inner {
+            ul.ul-inner {
                 padding: 0 50px;
             }
 
-            ul {
+            ul.bill-list {
                 li {
-                    height: 20px;
-                    line-height: 20px;
+                    padding: 5px 0;
                     border-bottom: 1px dashed #ccc;
 
                     span {
@@ -320,7 +319,7 @@
 
             .md-button {
                 flex: 1;
-                margin: 5px;
+                margin: 2px 5px;
             }
         }
     }
