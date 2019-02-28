@@ -286,7 +286,7 @@
 
         .scroll-view-item {
             width: 100%;
-            padding: 60px 0 60px;
+            padding: 10px 0 0;
             color: #333;
             font-size: 24px;
             text-align: left;
@@ -319,7 +319,7 @@
 
             .md-button {
                 flex: 1;
-                margin: 2px 5px;
+                margin: 2px;
             }
         }
     }
