@@ -3,7 +3,7 @@
         <nav-bar>
             订单详情
         </nav-bar>
-        <div class="order-detail">
+        <div class="order-detail" ref="page">
             <h1>{{orderDetail.orderStatusName}}</h1>
             <ul class="bill-list">
                 <li><span>订单号：</span><span>{{orderDetail.series}}</span></li>
@@ -13,7 +13,7 @@
                 <li><span>线路别名：</span><span>{{orderDetail.routerAlia}}</span></li>
                 <li><span>用车时间：</span><span>{{orderDetail.appointmentDate}}</span></li>
                 <li><span>订单状态：</span><span>{{orderDetail.orderStatusName}}</span></li>
-                <li><span>订单状态最后变化时间：</span><span>{{orderDetail.orderStatusDate}}</span></li>
+                <li><span>更新时间：</span><span>{{orderDetail.orderStatusDate}}</span></li>
                 <li><span>发货人地址：</span><span>{{orderDetail.sendAddressDetail}}</span></li>
                 <li><span>发货点个数：</span><span>{{orderDetail.sendGoodsLocationNum}}</span></li>
                 <li><span>发货人电话：</span><span>{{orderDetail.sendGoodsPersonMobile}}</span></li>
@@ -88,7 +88,16 @@
         computed: {
             ...mapGetters(['orderDetail', 'openId', 'driverOrders'])
         },
+        mounted() {
+            setTimeout(() => {
+                this.setPageHeight();
+            }, 0);
+        },
         methods: {
+            setPageHeight() {
+                const height = window.screen.availHeight;
+                this.$refs.page.style.height = `${height}px`;
+            },
             _updateDriverOrder(params) {
                 Toast.loading('正在提交');
                 updateDriverOrder(params)
@@ -176,6 +185,8 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
     .order-detail {
+        padding: 0 20px 200px;
+        height: 700px;
         background #fff;
 
         h1 {

@@ -20,7 +20,7 @@
                      :key="index"
                      class="scroll-view-list">
                     <div class="scroll-view-item">
-                        <ul class="bill-list" @click="_detail(item)">
+                        <ul class="bill-list">
                             <li><span>订单号：</span>{{item.series}}</li>
                             <li><span>司机真实价：</span>{{item.driverRealPrice}}元</li>
                             <li><span>司机额外费用：</span>{{item.driverAddFee}}元</li>
@@ -28,21 +28,9 @@
                             <li><span>线路别名：</span>{{item.routerAlia}}</li>
                             <li><span>用车时间：</span>{{item.appointmentDate}}</li>
                             <li><span>订单状态：</span>{{item.orderStatusName}}</li>
-                            <li><span>订单状态最后变化时间：</span>{{item.orderStatusDate}}</li>
-                            <li><span>发货人地址：</span>{{item.sendAddressDetail}}</li>
-                            <li><span>发货点个数：</span>{{item.sendGoodsLocationNum}}</li>
-                            <li><span>发货人电话：</span>{{item.sendGoodsPersonMobile}}</li>
-                            <li><span>发货人名字：</span>{{item.sendGoodsPersonName}}</li>
-                            <li><span>收件人地址：</span>{{item.receiveAddressDetail}}</li>
-                            <li><span>收货人电话：</span>{{item.receiveGoodsPersonMobile}}</li>
-                            <li><span>收货人名字：</span>{{item.receiveGoodsPersonName}}</li>
-                            <li><span>路经其他站点：</span>
-                                <ul class="ul-inner">
-                                    <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
-                                </ul>
-                            </li>
-                            <li><span>备注：</span>{{item.remark}}</li>
+                            <li><span>更新时间：</span>{{item.orderStatusDate}}</li>
                         </ul>
+                        <md-button type="link" @click="_detail(item)">查看详情</md-button>
                     </div>
                 </div>
                 <md-scroll-view-more
