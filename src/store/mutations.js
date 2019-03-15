@@ -42,6 +42,9 @@ const mutations = {
   },
   [types.SET_QRCODEIMG] (state, data) {
     state.qrcodeImg = data
+  },
+  [types.SET_ORDERDETAIL] (state, order) {
+    state.orderDetail = order
   }
 }
 

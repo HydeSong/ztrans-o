@@ -20,34 +20,34 @@
                         v-for="(item, index) in customerOrders"
                         :key="index"
                         class="scroll-view-list">
-                    <p class="scroll-view-item">
-                    <ul class="bill-list">
-                        <li>订单号：{{item.series}}</li>
-                        <li>订单报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
-                        <li>订单状态：{{item.orderStatusName}}</li>
-                        <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
-                        <li>超里程价：{{item.overstepPrice}}元/公里</li>
-                        <li>车牌号：{{item.carPlateNumber}}</li>
-                        <li>车型：{{item.carTypeName}}</li>
-                        <li>车尺寸：{{item.carSizeName}}</li>
-                        <li>司机姓名：{{item.driverName}}</li>
-                        <li>司机手机：{{item.driverMobile}}</li>
-                        <li>线路别名：{{item.routerAlia}}</li>
-                        <li>发货人地址：{{item.sendAddressDetail}}</li>
-                        <li>发货点个数：{{item.sendGoodsLocationNum}}</li>
-                        <li>发货人电话：{{item.sendGoodsPersonMobile}}</li>
-                        <li>发货人名字：{{item.sendGoodsPersonName}}</li>
-                        <li>收件人地址：{{item.receiveAddressDetail}}</li>
-                        <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
-                        <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
-                        <li>路经其他站点：
-                            <ul class="ul-inner">
-                                <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
-                            </ul>
-                        </li>
-                        <li>备注：{{item.remark}}</li>
-                    </ul>
-                    </p>
+                    <div class="scroll-view-item">
+                        <ul class="bill-list">
+                            <li>订单号：{{item.series}}</li>
+                            <li>订单报价：{{item.initPrice}}元/（{{item.initDistance}}公里）</li>
+                            <li>订单状态：{{item.orderStatusName}}</li>
+                            <li>订单状态最后变化时间：{{item.orderStatusDate}}</li>
+                            <li>超里程价：{{item.overstepPrice}}元/公里</li>
+                            <li>车牌号：{{item.carPlateNumber}}</li>
+                            <li>车型：{{item.carTypeName}}</li>
+                            <li>车尺寸：{{item.carSizeName}}</li>
+                            <li>司机姓名：{{item.driverName}}</li>
+                            <li>司机手机：{{item.driverMobile}}</li>
+                            <li>线路别名：{{item.routerAlia}}</li>
+                            <li>发货人地址：{{item.sendAddressDetail}}</li>
+                            <li>发货点个数：{{item.sendGoodsLocationNum}}</li>
+                            <li>发货人电话：{{item.sendGoodsPersonMobile}}</li>
+                            <li>发货人名字：{{item.sendGoodsPersonName}}</li>
+                            <li>收件人地址：{{item.receiveAddressDetail}}</li>
+                            <li>收货人电话：{{item.receiveGoodsPersonMobile}}</li>
+                            <li>收货人名字：{{item.receiveGoodsPersonName}}</li>
+                            <li>路经其他站点：
+                                <ul class="ul-inner">
+                                    <li v-for="(itm, index) in item.goodsLocation" :key="index">{{itm}}</li>
+                                </ul>
+                            </li>
+                            <li>备注：{{item.remark}}</li>
+                        </ul>
+                    </div>
                 </div>
                 <md-scroll-view-more
                         slot="more"
@@ -175,6 +175,10 @@
 
             ul.ul-inner {
                 padding: 0 50px;
+
+                li {
+                    border: 0;
+                }
             }
 
             ul.bill-list {

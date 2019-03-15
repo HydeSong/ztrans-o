@@ -12,7 +12,8 @@ const state = {
   driverOrders: [],
   shippingDistrictDetail: '',
   receiveDistrictDetail: '',
-  qrcodeImg: ''
+  qrcodeImg: '',
+  orderDetail: {}
 }
 
 export default state
