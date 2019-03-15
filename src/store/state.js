@@ -1,4 +1,6 @@
-const state = {
+import storage from 'good-storage'
+
+const state = storage.get('__ztrans__state') || {
   cityIds: {},
   openId: '',
   wxcode: '',

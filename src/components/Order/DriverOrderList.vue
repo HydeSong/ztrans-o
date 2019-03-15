@@ -16,10 +16,9 @@
                     ref="scrollView"
                     :scrolling-x="false"
                     @endReached="$_onEndReached">
-                <div
-                        v-for="(item, index) in driverOrders"
-                        :key="index"
-                        class="scroll-view-list">
+                <div v-for="(item, index) in driverOrders"
+                     :key="index"
+                     class="scroll-view-list">
                     <div class="scroll-view-item">
                         <ul class="bill-list" @click="_detail(item)">
                             <li><span>订单号：</span>{{item.series}}</li>
@@ -63,7 +62,6 @@
         ScrollViewMore,
         Button,
         ResultPage,
-        Toast,
     } from 'mand-mobile';
     import Split from '../Base/Split';
     import NavBar from '../Base/NavBar';
@@ -133,7 +131,7 @@
                 const height = window.screen.availHeight;
                 this.$refs.page.style.height = `${height}px`;
             },
-            _detail(item){
+            _detail(item) {
                 this.setOrderDetail(item)
                 this.$router.push(`/driver/order-detail?orderStatus=${this.orderStatus}&startTime=${this.startTime}&endTime=${this.endTime}`)
             },
@@ -178,7 +176,7 @@
 
 <style lang="stylus">
     .driver-order-list {
-        padding: 0 0 2000px;
+        padding: 0 0 200px;
         height: 700px;
 
         .md-scroll-view {
@@ -207,7 +205,7 @@
                 padding: 0 50px;
 
                 li {
-                    border: 0!important;
+                    border: 0 !important;
                 }
             }
 
